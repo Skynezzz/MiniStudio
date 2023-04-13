@@ -37,10 +37,13 @@ while not(done):
     if keyPressed[pygame.K_a]:
         player.angle += 1
         player.setImgAngle()
+    if keyPressed[pygame.K_SPACE]:
+        player.launchProjectile()
 
     # Affichage du jeu
     screen.fill((0, 0, 0))
     screen.blit(player.img, player.rect)
+    player.all_projectiles.draw(screen)
 
     # Mise à jour de l'affichage
     pygame.display.flip()

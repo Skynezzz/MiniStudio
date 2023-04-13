@@ -1,4 +1,6 @@
 import pygame
+from projectile import Projectile
+
 
 class Player():
     def __init__(self):
@@ -7,6 +9,7 @@ class Player():
         self.imgBase = pygame.transform.scale(pygame.image.load('img/oiseau.jpg'), (50, 50))
         self.img = pygame.transform.scale(pygame.image.load('img/oiseau.jpg'), (50, 50))
         self.rect = self.img.get_rect()
+        self.all_projectiles = pygame.sprite.Group()
 
     def left(self):
         if self.rect.x - self.speed >= 0:
@@ -27,3 +30,6 @@ class Player():
     def setImgAngle(self):
         self.img = pygame.transform.rotozoom(self.imgBase, self.angle, 1)
         self.rect = self.img.get_rect(center=self.rect.center)
+        
+    def launchProjectile(self):
+        self.all_projectiles.add(Projectile())
