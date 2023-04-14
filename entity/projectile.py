@@ -1,6 +1,7 @@
 import pygame
+from entity.entity import Entity
 
-class Projectile(pygame.sprite.Sprite):
+class Projectile(Entity):
     
     def __init__(self):
         super().__init__()
@@ -10,9 +11,9 @@ class Projectile(pygame.sprite.Sprite):
         self.img = pygame.transform.scale(pygame.image.load('img/bullet.png'), (20, 20))
         self.react = self.img.get_rect()
 
-    def move(self):
-        while self.rect.x + self.speed <= screen.get_size()[0] - self.rect.width:
-            self.rect.x  += self.speed
+    def update(self):
+        self.rect.x  += self.speed
+        
 
     def setImgAngle(self):
         self.img = pygame.transform.rotozoom(self.imgBase, self.angle, 1)

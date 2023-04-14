@@ -1,6 +1,6 @@
 import pygame
-from entity import Entity
-from projectile import Projectile
+from entity.entity import Entity
+from entity.projectile import Projectile
 
 class Player(Entity):
 
