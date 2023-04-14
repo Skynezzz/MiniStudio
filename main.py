@@ -11,7 +11,7 @@ screen = pygame.display.set_mode(size)
 
 # Définir le titre de la fenêtre
 pygame.display.set_caption("Le Blaze")
-player = Player()
+player = Player(50, 'img/oiseau.jpg', True)
 
 # Boucle principale
 done = False

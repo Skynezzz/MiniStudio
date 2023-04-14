@@ -4,7 +4,8 @@ class Entity:
 
     def __init__(self, src: str, destruct: bool):
         self.destructible = destruct
-        self.img = pygame.transform.scale(pygame.image.load(src), (50, 50))
+        self.imgBase = pygame.transform.scale(pygame.image.load(src), (50, 50))
+        self.img = self.imgBase
         self.rect = self.img.get_rect()
 
     def rectOverlap(self, a: Entity, b: Entity):
