@@ -1,13 +1,13 @@
 import pygame
+from entity import Entity
 from projectile import Projectile
 
+class Player(Entity):
 
-class Player():
-    def __init__(self):
+    def __init__(self, life: int, src: str, destruct: bool):
+        super().__init__(src, destruct)
         self.speed = 4
         self.angle = 0
-        self.imgBase = pygame.transform.scale(pygame.image.load('img/oiseau.jpg'), (50, 50))
-        self.img = pygame.transform.scale(pygame.image.load('img/oiseau.jpg'), (50, 50))
         self.rect = self.img.get_rect()
         self.all_projectiles = pygame.sprite.Group()
 
