@@ -8,5 +8,5 @@ class Entity:
         self.img = self.imgBase
         self.rect = self.img.get_rect()
 
-    def rectOverlap(self, a: Entity, b: Entity):
+    def rectOverlap(self, a, b):
         return a.rect.x < b.rect.x + b.rect.width and a.rect.x + a.rect.width > b.rect.x and a.rect.y < b.rect.y + b.rect.height and a.rect.y + a.rect.height > b.rect.y
