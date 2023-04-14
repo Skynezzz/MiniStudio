@@ -11,8 +11,11 @@ screen = pygame.display.set_mode(size)
 
 # Définir le titre de la fenêtre
 pygame.display.set_caption("Le Blaze")
-player = Player(50, 'img/oiseau.jpg', True)
-projectile = []
+
+# intialisation de la variable en la remplissant de None
+projectiles = [None for i in range(30)]
+
+player = Player(projectiles, 50, 'img/oiseau.jpg', True)
 
 # Boucle principale
 done = False
@@ -23,16 +26,22 @@ while not(done):
         if event.type == pygame.QUIT:
             done = True
 
-    for proj in projectile:
-        proj.update()
 
     # Logique du jeu
     move(screen, player)
 
+    for i in range(len(projectiles)):
+        if projectiles[i]:
+            projectiles[i].update()
+
     # Affichage du jeu
     screen.fill((0, 0, 0))
-    screen.blit(player.img, player.rect)
-    player.all_projectiles.draw(screen)
+    screen.blit(player.image, player.rect)
+
+    for i in range(len(projectiles)):
+        if projectiles[i]:
+            cur = projectiles[i]
+            screen.blit(cur.image, (cur.rect.x, cur.rect.y, cur.rect.width, cur.rect.height))
 
     # Mise à jour de l'affichage
     pygame.display.flip()

@@ -4,12 +4,13 @@ from entity.projectile import Projectile
 
 class Player(Entity):
 
-    def __init__(self, life: int, src: str, destruct: bool):
+    def __init__(self, projectile, life: int, src: str, destruct: bool):
         super().__init__(src, destruct)
+        self.life = life
         self.speed = 4
         self.angle = 0
-        self.rect = self.img.get_rect()
-        self.all_projectiles = pygame.sprite.Group()
+        self.rect = self.image.get_rect()
+        self.all_projectiles = projectile
 
     def left(self):
         if self.rect.x - self.speed >= 0:
@@ -32,4 +33,10 @@ class Player(Entity):
         self.rect = self.img.get_rect(center=self.rect.center)
         
     def launchProjectile(self):
-        self.all_projectiles.add(Projectile("img/bullet.png", False, self.rect.x+self.rect.width+10, self.rect.y+self.rect.height/2))
+        offSetX=self.rect.x+self.rect.width+10
+        offSetY=self.rect.y+self.rect.height/2
+
+        for projIndex in range(len(self.all_projectiles)):
+            if not self.all_projectiles[projIndex]:
+                self.all_projectiles[projIndex] = Projectile(self.all_projectiles, projIndex,"img/bullet.png", False, offSetX, offSetY)
+                break
