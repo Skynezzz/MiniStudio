@@ -32,4 +32,4 @@ class Player(Entity):
         self.rect = self.img.get_rect(center=self.rect.center)
         
     def launchProjectile(self):
-        self.all_projectiles.add(Projectile())
+        self.all_projectiles.add(Projectile("img/bullet.png", False, self.rect.x+self.rect.width+10, self.rect.y+self.rect.height/2))
