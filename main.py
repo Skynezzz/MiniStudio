@@ -1,5 +1,6 @@
 import pygame
 from entity.player import Player
+from game.gameLogic.movement import move
 
 # Initialise Pygame
 pygame.init()
@@ -22,23 +23,7 @@ while not(done):
             done = True
 
     # Logique du jeu
-    keyPressed = pygame.key.get_pressed()
-    if keyPressed[pygame.K_q]:
-        player.left()
-    if keyPressed[pygame.K_d]:
-        player.right(screen)
-    if keyPressed[pygame.K_z]:
-        player.up()
-    if keyPressed[pygame.K_s]:
-        player.down(screen)
-    if keyPressed[pygame.K_e]:
-        player.angle -= 1
-        player.setImgAngle()
-    if keyPressed[pygame.K_a]:
-        player.angle += 1
-        player.setImgAngle()
-    if keyPressed[pygame.K_SPACE]:
-        player.launchProjectile()
+    move(screen, player)
 
     # Affichage du jeu
     screen.fill((0, 0, 0))
