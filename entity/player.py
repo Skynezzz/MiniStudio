@@ -1,4 +1,5 @@
 import pygame
+import math
 from entity.entity import Entity
 from entity.projectile import Projectile
 
@@ -14,7 +15,7 @@ class Player(Entity):
         self.fireCooldown = pygame.time.get_ticks()
 
     def resetFireCooldown(self):
-        self.fireCooldown = pygame.time.get_ticks()+15*16
+        self.fireCooldown = pygame.time.get_ticks()+10*16
 
     def left(self):
         if self.rect.x - self.speed >= 0:
@@ -38,13 +39,15 @@ class Player(Entity):
         
     def launchProjectile(self):
         if pygame.time.get_ticks() > self.fireCooldown:
-            vectX, vectY = pygame.mouse.get_pos()
+            offSetX = self.rect.x + self.rect.width + 10
+            offSetY = self.rect.y
+            mouseX, mouseY = pygame.mouse.get_pos()
+            vectX, vectY = mouseX - offSetX, mouseY - offSetY
+            norm = math.sqrt( vectX**2 + vectY**2 )
+            vect = (vectX/norm, vectY/norm)
             self.resetFireCooldown()
-            print(vectX, ",", vectY)
-            offSetX=self.rect.x+self.rect.width+10
-            offSetY=self.rect.y
 
             for projIndex in range(len(self.all_projectiles)):
                 if not self.all_projectiles[projIndex]:
-                    self.all_projectiles[projIndex] = Projectile(self.all_projectiles, projIndex,"img/bullet.png", False, offSetX, offSetY, True)
+                    self.all_projectiles[projIndex] = Projectile(self.all_projectiles, projIndex,"img/bullet.png", False, offSetX, offSetY, vect, True)
                     break

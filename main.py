@@ -37,6 +37,7 @@ while not(done):
     for i in range(len(projectiles)):
         if projectiles[i]:
             projectiles[i].update()
+            
 
     # Affichage du jeu
     screen.fill((0, 0, 0))
