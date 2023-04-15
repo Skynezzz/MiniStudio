@@ -44,5 +44,5 @@ class Player(Entity):
 
             for projIndex in range(len(self.all_projectiles)):
                 if not self.all_projectiles[projIndex]:
-                    self.all_projectiles[projIndex] = Projectile(self.all_projectiles, projIndex,"img/bullet.png", False, offSetX, offSetY)
+                    self.all_projectiles[projIndex] = Projectile(self.all_projectiles, projIndex,"img/bullet.png", False, offSetX, offSetY, True)
                     break

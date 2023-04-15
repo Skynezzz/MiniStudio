@@ -3,12 +3,13 @@ from entity.entity import Entity
 
 class Projectile(Entity):
     
-    def __init__(self, projInList, projIndex, spritePath: str, isDestructible: bool, x: int, y: int):
+    def __init__(self, projInList, projIndex, spritePath: str, isDestructible: bool, x: int, y: int, friendly=False):
         super().__init__(spritePath, isDestructible, x, y)
         self.projInList = projInList
         self.projIndex = projIndex
         self.speed = 5
         self.angle = 0
+        self.friendly = friendly
 
     def update(self):
         self.rect.x  += self.speed
