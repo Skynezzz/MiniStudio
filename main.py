@@ -18,7 +18,7 @@ pygame.display.set_caption("Le Blaze")
 # intialisation de la variable en la remplissant de None
 projectiles = [None for i in range(30)]
 
-player = Player(projectiles, 50, 'img/oiseau.jpg', True)
+player = Player(projectiles, 35, 'img/oiseau.jpg', True)
 
 # Boucle principale
 done = False
