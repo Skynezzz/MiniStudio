@@ -38,9 +38,11 @@ class Player(Entity):
         
     def launchProjectile(self):
         if pygame.time.get_ticks() > self.fireCooldown:
+            vectX, vectY = pygame.mouse.get_pos()
             self.resetFireCooldown()
+            print(vectX, ",", vectY)
             offSetX=self.rect.x+self.rect.width+10
-            offSetY=self.rect.y+self.rect.height/2
+            offSetY=self.rect.y
 
             for projIndex in range(len(self.all_projectiles)):
                 if not self.all_projectiles[projIndex]:
