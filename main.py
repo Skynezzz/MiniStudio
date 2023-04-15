@@ -9,6 +9,9 @@ pygame.init()
 size = (800, 600)
 screen = pygame.display.set_mode(size)
 
+#Définis une clock pour limiter des actions
+clock = pygame.time.Clock()
+
 # Définir le titre de la fenêtre
 pygame.display.set_caption("Le Blaze")
 
@@ -21,6 +24,7 @@ player = Player(projectiles, 50, 'img/oiseau.jpg', True)
 done = False
 while not(done):
     timeStart = pygame.time.get_ticks()
+    frames = timeStart//16
     # Gestion des événements
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -45,12 +49,15 @@ while not(done):
 
     # Mise à jour de l'affichage
     pygame.display.flip()
-    
 
     # timer
     timeEnd = pygame.time.get_ticks()
     if timeStart + 7 > timeEnd:
         pygame.time.delay(timeEnd - timeStart + 7)
+
+    
+    print(frames)
+    clock.tick(60)
 
 # Quitter Pygame
 pygame.quit()

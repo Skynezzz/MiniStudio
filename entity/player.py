@@ -11,6 +11,10 @@ class Player(Entity):
         self.angle = 0
         self.rect = self.image.get_rect()
         self.all_projectiles = projectile
+        self.fireCooldown = pygame.time.get_ticks()
+
+    def resetFireCooldown(self):
+        self.fireCooldown = pygame.time.get_ticks()+15*16
 
     def left(self):
         if self.rect.x - self.speed >= 0:
@@ -33,10 +37,12 @@ class Player(Entity):
         self.rect = self.img.get_rect(center=self.rect.center)
         
     def launchProjectile(self):
-        offSetX=self.rect.x+self.rect.width+10
-        offSetY=self.rect.y+self.rect.height/2
+        if pygame.time.get_ticks() > self.fireCooldown:
+            self.resetFireCooldown()
+            offSetX=self.rect.x+self.rect.width+10
+            offSetY=self.rect.y+self.rect.height/2
 
-        for projIndex in range(len(self.all_projectiles)):
-            if not self.all_projectiles[projIndex]:
-                self.all_projectiles[projIndex] = Projectile(self.all_projectiles, projIndex,"img/bullet.png", False, offSetX, offSetY)
-                break
+            for projIndex in range(len(self.all_projectiles)):
+                if not self.all_projectiles[projIndex]:
+                    self.all_projectiles[projIndex] = Projectile(self.all_projectiles, projIndex,"img/bullet.png", False, offSetX, offSetY)
+                    break
