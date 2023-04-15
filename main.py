@@ -55,8 +55,6 @@ while not(done):
     if timeStart + 7 > timeEnd:
         pygame.time.delay(timeEnd - timeStart + 7)
 
-    
-    print(frames)
     clock.tick(60)
 
 # Quitter Pygame
