@@ -1,8 +1,14 @@
 import pygame
-from entity import Entity
+from entity.entity import Entity
 
 class Enemy(Entity):
 
-    def __init__(self, life: int, src: str, destruct: bool):
-        super().__init__(src, destruct)
+    def __init__(self, life: int, spritePath: str):
+        super().__init__(spritePath, True)
         self.life = life
+    
+
+class Boss(Enemy):
+
+    def __init__(self, life, spritePath):
+        super().__init__(life, spritePath)
