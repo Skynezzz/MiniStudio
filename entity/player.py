@@ -6,7 +6,7 @@ from entity.projectile import Projectile
 class Player(Entity):
 
     def __init__(self, projectile, life: int, src: str, destruct: bool):
-        super().__init__(src, destruct)
+        super().__init__(destruct, spritePath=src)
         self.life = life
         self.speed = 4
         self.angle = 0
@@ -42,6 +42,7 @@ class Player(Entity):
             offSetX = self.rect.x + self.rect.width + 10
             offSetY = self.rect.y
             mouseX, mouseY = pygame.mouse.get_pos()
+            mouseY -= 25
             vectX, vectY = mouseX - offSetX, mouseY - offSetY
             norm = math.sqrt( vectX**2 + vectY**2 )
             vect = (vectX/norm, vectY/norm)
@@ -49,5 +50,5 @@ class Player(Entity):
 
             for projIndex in range(len(self.all_projectiles)):
                 if not self.all_projectiles[projIndex]:
-                    self.all_projectiles[projIndex] = Projectile(self.all_projectiles, projIndex,"img/bullet.png", False, offSetX, offSetY, vect, True)
+                    self.all_projectiles[projIndex] = Projectile("img/bullet.png", False, offSetX, offSetY, vect, True)
                     break

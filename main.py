@@ -1,5 +1,6 @@
 import pygame
 from entity.player import Player
+from entity.entity import Entity
 from game.gameLogic.movement import move
 
 # Initialise Pygame
@@ -8,6 +9,7 @@ pygame.init()
 # Définir la taille de la fenêtre
 size = (800, 600)
 screen = pygame.display.set_mode(size)
+screenEntity = Entity(False, 0, 0, size[0], size[1])
 
 #Définis une clock pour limiter des actions
 clock = pygame.time.Clock()
@@ -30,14 +32,15 @@ while not(done):
         if event.type == pygame.QUIT:
             done = True
 
-
     # Logique du jeu
     move(screen, player)
 
+    # update de la position des projectiles et suppression de ces dernier
     for i in range(len(projectiles)):
         if projectiles[i]:
             projectiles[i].update()
-            
+            if not projectiles[i].rectOverlap(screenEntity):
+                projectiles[i] = None
 
     # Affichage du jeu
     screen.fill((0, 0, 0))
