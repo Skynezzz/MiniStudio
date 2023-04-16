@@ -32,6 +32,9 @@ class Player(Entity):
     def down(self, screen):
         if self.rect.y + self.speed <= screen.get_size()[1] - self.rect.height:
             self.rect.y += self.speed
+    
+    def takeDamage(self, damageNumber):
+        self.life -= damageNumber
 
     def setImgAngle(self):
         self.img = pygame.transform.rotozoom(self.imgBase, self.angle, 1)

@@ -7,6 +7,9 @@ class Enemy(Entity):
         super().__init__(spritePath, True)
         self.life = life
     
+    def takeDamage(self, damageNumber):
+        self.life -= damageNumber
+    
 
 class Boss(Enemy):
 

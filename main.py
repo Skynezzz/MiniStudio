@@ -19,6 +19,7 @@ pygame.display.set_caption("Le Blaze")
 
 # intialisation de la variable en la remplissant de None
 projectiles = [None for i in range(30)]
+enemies = [None for i in range(30)]
 
 player = Player(projectiles, 50, 'img/oiseau.jpg', True)
 
@@ -35,12 +36,33 @@ while not(done):
     # Logique du jeu
     move(screen, player)
 
-    # update de la position des projectiles et suppression de ces dernier
+    # update de la position des projectiles et suppression de ces dernier lorsqu'il sortent de l'écran ou qu'ils entrent en colision avec un ennemi
     for i in range(len(projectiles)):
         if projectiles[i]:
             projectiles[i].update()
+            # si la balle sors de l'écran
             if not projectiles[i].rectOverlap(screenEntity):
                 projectiles[i] = None
+                pass
+            # si la balle touche un ennemi
+            if projectiles[i].friendly:
+                for j in range(len(enemies)):
+                    if enemies[j] and enemies[j].rectOverlap(projectiles[i]):
+                            enemies[j].takeDamage(10)
+                            projectiles[i] = None
+            else:
+                if player.rectOverlap(projectiles[i]):
+                        player.takeDamage(10)
+                        projectiles[i] = None
+            
+
+    # update de la position des ennemis et suppression de ces dernier
+    for i in range(len(enemies)):
+        if enemies[i]:
+            enemies[i].update()
+            if enemies[i].rectOverlap(player):
+                enemies[i] = None
+                player.takeDamage(10)
 
     # Affichage du jeu
     screen.fill((0, 0, 0))
