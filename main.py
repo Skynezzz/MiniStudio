@@ -40,10 +40,6 @@ while not(done):
     for i in range(len(projectiles)):
         if projectiles[i]:
             projectiles[i].update()
-            # si la balle sors de l'écran
-            if not projectiles[i].rectOverlap(screenEntity):
-                projectiles[i] = None
-                pass
             # si la balle touche un ennemi
             if projectiles[i].friendly:
                 for j in range(len(enemies)):
@@ -54,6 +50,10 @@ while not(done):
                 if player.rectOverlap(projectiles[i]):
                         player.takeDamage(10)
                         projectiles[i] = None
+            # si la balle sors de l'écran
+            if not projectiles[i].rectOverlap(screenEntity):
+                projectiles[i] = None
+                pass
             
 
     # update de la position des ennemis et suppression de ces dernier
