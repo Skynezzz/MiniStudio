@@ -2,7 +2,7 @@ import pygame
 from random import randint
 from entity.player import Player
 from entity.entity import Entity
-from entity.enemy import Enemy
+from entity.enemy import SuicidePigeon, StrafingPigeon
 from game.gameLogic.movement import move
 
 class Game:
@@ -55,7 +55,7 @@ class Game:
         if pygame.time.get_ticks() > self.enemySpawnCooldown:
             for i in range(len(self.enemies)):
                 if not self.enemies[i]:
-                    self.enemies[i] = Enemy(10, self.screenSize[0], randint(100, 500) , "img/oiseau.jpg")
+                    self.enemies[i] = StrafingPigeon(10, self.screenSize[0], randint(100, 500))
                     # reset du cooldown de spawn
                     self.enemySpawnCooldown = pygame.time.get_ticks() + 16 * 60
                     break
