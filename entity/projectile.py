@@ -1,5 +1,4 @@
-import pygame
-import math
+import pygame, math
 from entity.entity import Entity
 
 class Projectile(Entity):

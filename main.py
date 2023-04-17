@@ -23,8 +23,8 @@ class Game:
         pygame.display.set_caption("Le Blaze")
 
         # intialisation de la variable en la remplissant de None
-        self.projectiles = [None for i in range(30)]
-        self.enemies = [None for i in range(30)]
+        self.projectiles = [None for i in range(50)]
+        self.enemies = [None for i in range(10)]
         self.player = Player(self.projectiles, 50, 'img/oiseau.jpg', True)
 
         # initialisation des variables de cooldown
@@ -55,7 +55,7 @@ class Game:
         if pygame.time.get_ticks() > self.enemySpawnCooldown:
             for i in range(len(self.enemies)):
                 if not self.enemies[i]:
-                    self.enemies[i] = StrafingPigeon(10, self.screenSize[0], randint(100, 500))
+                    self.enemies[i] = StrafingPigeon(10, self.screenSize[0], randint(100, 500), self.projectiles)
                     # reset du cooldown de spawn
                     self.enemySpawnCooldown = pygame.time.get_ticks() + 16 * 60
                     break
