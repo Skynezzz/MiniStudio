@@ -40,6 +40,9 @@ class Player(Entity):
         self.img = pygame.transform.rotozoom(self.imgBase, self.angle, 1)
         self.rect = self.img.get_rect(center=self.rect.center)
         
+    def isDead(self):
+        return self.life <= 0
+    
     def launchProjectile(self):
         if pygame.time.get_ticks() > self.fireCooldown:
             offSetX = self.rect.x + self.rect.width + 10
