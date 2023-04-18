@@ -4,6 +4,7 @@ from entity.player import Player
 from entity.entity import Entity
 from entity.enemy import SuicidePigeon, StrafingPigeon
 from game.gameLogic.movement import move
+from settings import Setting
 
 class Game:
     
@@ -30,6 +31,9 @@ class Game:
         # initialisation des variables de cooldown
         self.enemySpawnCooldown = pygame.time.get_ticks()
 
+        # initialisation des paramettres
+        settings = Setting()
+
         # Boucle principale
         done = False
         while not(done):
@@ -39,17 +43,17 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     done = True
-            self.update()
+            self.update(settings)
             self.draw()
         
         # Quitter Pygame
         pygame.quit()
 
-    def update(self):
+    def update(self, settings):
 
         # déplacement du joueur si il est vivant
         if not self.player.isDead():
-            move(self.screen, self.player)
+            move(settings, self.screen, self.player)
         
         # ajout d'ennemis
         if pygame.time.get_ticks() > self.enemySpawnCooldown:
