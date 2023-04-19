@@ -30,10 +30,10 @@ class SuicidePigeon(Enemy):
         self.speed = 4
     
 
-class StrafingPigeon(Enemy):
+class StrafingDrone(Enemy):
 
     def __init__(self, life: int, x: int, y: int, projectile):
-        super().__init__(life, x, y, spritePath="img/oiseau.jpg")
+        super().__init__(life, x, y, spritePath="img/drone.png")
         self.speedVect = (-1, 0)
         self.threshold = False
         self.speed = 2
@@ -65,7 +65,7 @@ class StrafingPigeon(Enemy):
 
             for projIndex in range(len(self.all_projectiles)):
                 if not self.all_projectiles[projIndex]:
-                    self.all_projectiles[projIndex] = Projectile("img/bullet.png", False, offSetX, offSetY, vect, True)
+                    self.all_projectiles[projIndex] = Projectile("img/bullet.png", False, offSetX, offSetY, vect, False)
                     break
 
 
