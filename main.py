@@ -32,7 +32,7 @@ class Game:
         self.enemySpawnCooldown = pygame.time.get_ticks()
 
         # initialisation des paramettres
-        settings = Setting()
+        self.settings = Setting()
 
         # Boucle principale
         done = False
@@ -43,17 +43,17 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     done = True
-            self.update(settings)
+            self.update()
             self.draw()
         
         # Quitter Pygame
         pygame.quit()
 
-    def update(self, settings):
+    def update(self):
 
         # déplacement du joueur si il est vivant
         if not self.player.isDead():
-            move(settings, self.screen, self.player)
+            move(self.settings, self.screen, self.player)
         
         # ajout d'ennemis
         if pygame.time.get_ticks() > self.enemySpawnCooldown:
