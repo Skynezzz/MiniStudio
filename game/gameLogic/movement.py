@@ -14,3 +14,5 @@ def move(settings, screen, player):
         player.down(screen)
     if mousePressed == (1, 0, 0):
         player.launchProjectile()
+    if mousePressed == (0, 0, 1):
+        player.juanAbility()

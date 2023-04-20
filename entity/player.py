@@ -12,9 +12,13 @@ class Player(Entity):
         self.rect = self.image.get_rect()
         self.all_projectiles = projectile
         self.fireCooldown = pygame.time.get_ticks()
+        self.abilityCooldown = pygame.time.get_ticks()
 
     def resetFireCooldown(self):
         self.fireCooldown = pygame.time.get_ticks()+10*16
+    
+    def resetAbilityCooldown(self):
+        self.abilityCooldown = pygame.time.get_ticks()+1800*16
 
     def left(self):
         if self.rect.x - self.speed >= 0:
@@ -56,4 +60,25 @@ class Player(Entity):
             for projIndex in range(len(self.all_projectiles)):
                 if not self.all_projectiles[projIndex]:
                     self.all_projectiles[projIndex] = Projectile("img/bullet.png", False, offSetX, offSetY, vect, True)
+                    break
+    
+    def juanAbility(self):
+        if pygame.time.get_ticks() > self.abilityCooldown:
+            offSetX = self.rect.x + self.rect.width + 10
+            offSetY = self.rect.y
+            spawnX = 0-25
+            spawnY = 300-25
+            upX = spawnX - 20
+            upY = spawnY - 70
+            downX = spawnX - 20
+            downY = spawnY + 70
+            vect = (1, 0)
+            print("Millieu :", spawnX, ",", spawnY, "\n", "Haut :", upX, ",", upY, "\n", "Bas :", downX, ",", downY)
+            self.resetAbilityCooldown()
+
+            for projIndex in range(len(self.all_projectiles)):
+                if not self.all_projectiles[projIndex]:
+                    self.all_projectiles[projIndex] = Projectile("img/[Juan_Carlos_Brito]-Colombe.jpg", False, spawnX, spawnY, vect, True)
+                    self.all_projectiles[projIndex + 1] = Projectile("img/[Juan_Carlos_Brito]-Colombe.jpg", False, upX, upY, vect, True)
+                    self.all_projectiles[projIndex + 2] = Projectile("img/[Juan_Carlos_Brito]-Colombe.jpg", False, downX, downY, vect, True)
                     break
