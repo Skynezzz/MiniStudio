@@ -68,6 +68,21 @@ class StrafingDrone(Enemy):
                     self.all_projectiles[projIndex] = Projectile("img/bullet.png", False, offSetX, offSetY, vect, False)
                     break
 
+class DrunkPigeon(Enemy):
+    def __init__(self, life, reverse=False):
+        super().__init__(life, 700, 250, spritePath="img/oiseau.jpg")
+        # self.pathXAxis = 700
+        self.speedVect = (-1, 0)
+        self.reversed = reverse
+        self.speed = 3
+    
+    def update(self):
+        # self.pathXAxis += self.speedVect[0] * self.speed
+        self.rect.x += self.speedVect[0] * self.speed
+        if self.reversed:
+            self.rect.y = 275 + math.cos(self.rect.x/80) * 250
+        else:
+            self.rect.y = 275 + math.sin(self.rect.x/80) * 250
 
 class Boss(Enemy):
 

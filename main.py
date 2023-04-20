@@ -2,7 +2,7 @@ import pygame
 from random import randint
 from entity.player import Player
 from entity.entity import Entity
-from entity.enemy import SuicidePigeon, StrafingDrone
+from entity.enemy import SuicidePigeon, StrafingDrone, DrunkPigeon
 from game.gameLogic.movement import move
 from settings import Setting
 
@@ -59,9 +59,10 @@ class Game:
         if pygame.time.get_ticks() > self.enemySpawnCooldown:
             for i in range(len(self.enemies)):
                 if not self.enemies[i]:
-                    self.enemies[i] = StrafingDrone(10, self.screenSize[0], randint(100, 500), self.projectiles)
+                    self.enemies[i] = DrunkPigeon(10)
+                    # self.enemies[i] = StrafingDrone(10, self.screenSize[0], randint(100, 500), self.projectiles)
                     # reset du cooldown de spawn
-                    self.enemySpawnCooldown = pygame.time.get_ticks() + 16 * 60
+                    self.enemySpawnCooldown = pygame.time.get_ticks() + 16 * 60 * 2
                     break
 
         # update de la position des projectiles
