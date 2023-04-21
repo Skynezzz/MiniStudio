@@ -17,3 +17,13 @@ class Entity():
     def rectOverlap(self, otherEntity):
         """Renvoie True si l'entité entre en colision avec un autre"""
         return self.rect.x < otherEntity.rect.x + otherEntity.rect.width and self.rect.x + self.rect.width > otherEntity.rect.x and self.rect.y < otherEntity.rect.y + otherEntity.rect.height and self.rect.y + self.rect.height > otherEntity.rect.y
+
+class Button(Entity):
+
+    def __init__(self, x: int, y: int, w: int, h: int, img: str):
+        super().__init__(False, x, y, w, h, img)
+    
+    def isPressed(self):
+        if pygame.mouse.get_pressed(num_buttons=3):
+            mouseX, mouseY = pygame.mouse.get_pos()
+            return self.rectOverlap(Entity(False, mouseX, mouseY))
