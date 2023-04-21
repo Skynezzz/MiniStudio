@@ -26,7 +26,7 @@ class Game:
         # intialisation de la variable en la remplissant de None
         self.projectiles = [None for i in range(50)]
         self.enemies = [None for i in range(10)]
-        self.player = Player(self.projectiles, 50, 'img/oiseau.jpg', True)
+        self.player = Player(self.projectiles, 50, True)
 
         # initialisation des variables de cooldown
         self.enemySpawnCooldown = pygame.time.get_ticks()
@@ -106,14 +106,15 @@ class Game:
         if self.timeStart + 7 > timeEnd:
             pygame.time.delay(timeEnd - self.timeStart + 7)
 
-        self.clock.tick(60)
+        self.dt = self.clock.tick(60)
     
     def draw(self):
         # Affichage du jeu
         self.screen.fill((0, 0, 0))
 
         # Affichage du joueur
-        self.screen.blit(self.player.image, self.player.rect)
+        if self.player:
+            self.player.draw(self.screen, self.dt)
 
         # Affichage des ennemis
         for en in self.enemies:
