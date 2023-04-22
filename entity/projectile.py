@@ -3,8 +3,8 @@ from entity.entity import Entity
 
 class Projectile(Entity):
     
-    def __init__(self, spritePath: str, isDestructible: bool, x: int, y: int, speedVect: tuple, friendly=False):
-        super().__init__(isDestructible, x, y, spritePath=spritePath)
+    def __init__(self, spritePath: str, isDestructible: bool, x: int, y: int, w: int, h: int, speedVect: tuple, friendly=False):
+        super().__init__(isDestructible, x, y, w, h, spritePath=spritePath)
         self.speedVect = speedVect
         self.friendly = friendly
         vect = (1,0)

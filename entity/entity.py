@@ -6,7 +6,7 @@ class Entity():
         """spritePath est une string optionelle à n'utiliser que pour les entité visible"""
         self.destructible = destructible
         if spritePath:
-            self.imgBase = pygame.transform.scale(pygame.image.load(spritePath), (50, 50))
+            self.imgBase = pygame.transform.scale(pygame.image.load(spritePath), (w, h))
             self.image = self.imgBase
             self.rect = self.image.get_rect()
             if x != 0 and y != 0:
