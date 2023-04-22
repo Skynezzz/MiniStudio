@@ -27,7 +27,7 @@ class Game:
         # intialisation de la variable en la remplissant de None
         self.projectiles = [None for i in range(50)]
         self.enemies = [None for i in range(10)]
-        self.player = Player(self.projectiles, 50, True)
+        self.player = Player(0, 0, 100, 100, self.projectiles, 50, True)
 
         # initialisation des variables de cooldown
         self.enemySpawnCooldown = pygame.time.get_ticks()
@@ -45,27 +45,43 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     game = False
-            self.dt = self.clock.tick(60)
-            if self.state == "game":
-                self.updateLevel()
-                self.drawLevel()
-            elif self.state == "menu":
-                self.updateMenu()
-                self.drawMenu()
+            self.update()
+            self.draw()
         
         # Quitter Pygame
         pygame.quit()
+    
+    def draw(self):
+        if self.state == "game":
+            self.drawLevel()
+        elif self.state == "menu":
+            self.drawMenu()
+        # Mise à jour de l'affichage
+        pygame.display.flip()
+    
+    def update(self):
+        self.dt = self.clock.tick(60)
+        if self.state == "game":
+            self.updateLevel()
+        elif self.state == "menu":
+            self.updateMenu()
+        # timer
+        timeEnd = pygame.time.get_ticks()
+        if self.timeStart + 7 > timeEnd:
+            pygame.time.delay(timeEnd - self.timeStart + 7)
 
+                
     def updateMenu(self):
-        self.startButton = Button(self.screenSize[0]/2-30, self.screenSize[1]/2-30, 60, 60, img="img/drone.png")
+        self.startButton = Button(self.screenSize[0]/2-30, self.screenSize[1]/2-30, 60, 60, "img/drone.png")
         if self.startButton.isPressed():
             self.state = "game"
     
     def drawMenu(self):
+        self.screen.fill((0, 0, 0))
+        # self.startButton.draw(self.screen)
         self.startButton.draw(self.screen)
 
     def updateLevel(self):
-
         # déplacement du joueur si il est vivant
         if not self.player.isDead():
             move(self.settings, self.screen, self.player)
@@ -115,11 +131,6 @@ class Game:
                     self.player.takeDamage(10)
                 if self.enemies[i].isDead() or not self.enemies[i].rectOverlap(self.screenEntity):
                     self.enemies[i] = None
-
-        # timer
-        timeEnd = pygame.time.get_ticks()
-        if self.timeStart + 7 > timeEnd:
-            pygame.time.delay(timeEnd - self.timeStart + 7)
     
     def drawLevel(self):
         # Affichage du jeu
