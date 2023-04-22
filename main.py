@@ -1,7 +1,7 @@
 import pygame
 from random import randint
 from entity.player import Player
-from entity.entity import Entity
+from entity.entity import Entity, Button
 from entity.enemy import SuicidePigeon, StrafingDrone, DrunkPigeon
 from game.gameLogic.movement import move
 from settings import Setting
@@ -11,13 +11,14 @@ class Game:
     def __init__(self):
         # Initialise Pygame
         pygame.init()
+        self.state = "menu"
 
         # Définir la taille de la fenêtre
         self.screenSize = (800, 600)
         self.screen = pygame.display.set_mode(self.screenSize)
         self.screenEntity = Entity(False, 0, 0, self.screenSize[0], self.screenSize[1])
 
-        #Définis une clock pour limiter des actions
+        #Définis une clock pour limiter les actions
         self.clock = pygame.time.Clock()
 
         # Définir le titre de la fenêtre
@@ -33,23 +34,37 @@ class Game:
 
         # initialisation des paramettres
         self.settings = Setting()
+        self.startButton = None
 
         # Boucle principale
-        done = False
-        while not(done):
+        game = True
+        while game:
             self.timeStart = pygame.time.get_ticks()
             self.frames = self.timeStart//16
             # Gestion des événements
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    done = True
-            self.update()
-            self.draw()
+                    game = False
+            self.dt = self.clock.tick(60)
+            if self.state == "game":
+                self.updateLevel()
+                self.drawLevel()
+            elif self.state == "menu":
+                self.updateMenu()
+                self.drawMenu()
         
         # Quitter Pygame
         pygame.quit()
 
-    def update(self):
+    def updateMenu(self):
+        self.startButton = Button(self.screenSize[0]/2-30, self.screenSize[1]/2-30, 60, 60, img="img/drone.png")
+        if self.startButton.isPressed():
+            self.state = "game"
+    
+    def drawMenu(self):
+        self.startButton.draw(self.screen)
+
+    def updateLevel(self):
 
         # déplacement du joueur si il est vivant
         if not self.player.isDead():
@@ -105,10 +120,8 @@ class Game:
         timeEnd = pygame.time.get_ticks()
         if self.timeStart + 7 > timeEnd:
             pygame.time.delay(timeEnd - self.timeStart + 7)
-
-        self.dt = self.clock.tick(60)
     
-    def draw(self):
+    def drawLevel(self):
         # Affichage du jeu
         self.screen.fill((0, 0, 0))
 

@@ -20,10 +20,13 @@ class Entity():
 
 class Button(Entity):
 
-    def __init__(self, x: int, y: int, w: int, h: int, img: str):
+    def __init__(self, x: int, y: int, w: int, h: int, img=None):
         super().__init__(False, x, y, w, h, img)
     
     def isPressed(self):
-        if pygame.mouse.get_pressed(num_buttons=3):
+        if pygame.mouse.get_pressed(num_buttons=3)[0]:
             mouseX, mouseY = pygame.mouse.get_pos()
             return self.rectOverlap(Entity(False, mouseX, mouseY))
+
+    def draw(self, screen):
+        screen.blit(self.image, self.rect)
