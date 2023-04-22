@@ -4,29 +4,43 @@ from entity.projectile import Projectile
 
 class Player(Entity):
 
-    def __init__(self, projectile, life: int, destruct: bool):
-        super().__init__(destruct, spritePath="img/sprite_character.png")
+    def __init__(self, x: int, y: int, w: int, h: int, projectile, life: int, destruct: bool):
+        super().__init__(destruct, x, y, w, h, spritePath="img/sprite_character.png")
         self.life = life
         self.speed = 4
         self.angle = 0
+        self.damage = False
         self.all_projectiles = projectile
         self.fireCooldown = pygame.time.get_ticks()
         self.abilityCooldown = pygame.time.get_ticks()
         
-        # Création d'un nombre de frame précis pour animation
-        self.spriteSheet = pygame.image.load("img/sprite_character.png").convert_alpha()
-        self.WIDTH = 200
+        # Création de variables pour animation
+        self.charaWidth = self.charaHeigh = 100
+        self.spriteSheet = pygame.transform.scale(pygame.image.load("img/sprite_character.png").convert_alpha(), (self.charaWidth*9, self.charaHeigh))
         self.frame = 0
-        self.frame_rect = pygame.Rect(self.frame * self.WIDTH, 0, 200, 200)
-        self.time_next_frame = 200
+        self.actualFrame = pygame.Rect(self.frame * self.charaWidth, 0, self.charaWidth, self.charaHeigh)
+        self.timeNextFrame = 200
+    
+    def takeDamage(self, damageNumber):
+        self.life -= damageNumber
+        self.damage = True
     
     def draw(self, screen, dt):
-        self.time_next_frame -= dt
-        if self.time_next_frame < 0:
-            self.time_next_frame += 200
-            self.frame = (self.frame + 1) % 7
-            self.frame_rect = pygame.Rect(self.frame * self.WIDTH, 0, 200, 200)
-        screen.blit(self.spriteSheet, dest=(self.rect.x, self.rect.y), area=self.frame_rect)
+        self.timeNextFrame -= dt
+
+        if self.timeNextFrame < 0:
+            self.timeNextFrame += 200
+            if self.damage:
+                self.frame = 8
+                self.damage = False
+            else:
+                if self.frame >= 8:
+                    self.frame = 0
+                else:
+                    self.frame = (self.frame + 1) % 7
+            self.actualFrame = pygame.Rect(self.frame * self.charaWidth, 0, self.charaWidth, self.charaHeigh)
+
+        screen.blit(self.spriteSheet, dest=(self.rect.x, self.rect.y), area=self.actualFrame)
 
     def resetFireCooldown(self):
         self.fireCooldown = pygame.time.get_ticks()+10*16
@@ -49,9 +63,6 @@ class Player(Entity):
     def down(self, screen):
         if self.rect.y + self.speed <= screen.get_size()[1] - self.rect.height:
             self.rect.y += self.speed
-    
-    def takeDamage(self, damageNumber):
-        self.life -= damageNumber
 
     def setImgAngle(self):
         self.img = pygame.transform.rotozoom(self.imgBase, self.angle, 1)
@@ -73,7 +84,7 @@ class Player(Entity):
 
             for projIndex in range(len(self.all_projectiles)):
                 if not self.all_projectiles[projIndex]:
-                    self.all_projectiles[projIndex] = Projectile("img/bullet.png", False, offSetX, offSetY, vect, True)
+                    self.all_projectiles[projIndex] = Projectile("img/bullet.png", False, offSetX, offSetY, 50, 50, vect, True)
                     break
     
     def juanAbility(self):
@@ -89,7 +100,7 @@ class Player(Entity):
 
             for projIndex in range(len(self.all_projectiles)):
                 if not self.all_projectiles[projIndex]:
-                    self.all_projectiles[projIndex] = Projectile("img/[Juan_Carlos_Brito]-Colombe.jpg", False, spawnX, spawnY, vect, True)
-                    self.all_projectiles[projIndex + 1] = Projectile("img/[Juan_Carlos_Brito]-Colombe.jpg", False, upX, upY, vect, True)
-                    self.all_projectiles[projIndex + 2] = Projectile("img/[Juan_Carlos_Brito]-Colombe.jpg", False, downX, downY, vect, True)
+                    self.all_projectiles[projIndex] = Projectile("img/[Juan_Carlos_Brito]-Colombe.jpg", False, spawnX, spawnY, 50, 50, vect, True)
+                    self.all_projectiles[projIndex + 1] = Projectile("img/[Juan_Carlos_Brito]-Colombe.jpg", False, upX, upY, 50, 50, vect, True)
+                    self.all_projectiles[projIndex + 2] = Projectile("img/[Juan_Carlos_Brito]-Colombe.jpg", False, downX, downY, 50, 50, vect, True)
                     break

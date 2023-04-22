@@ -4,8 +4,8 @@ from entity.projectile import Projectile
 
 class Enemy(Entity):
 
-    def __init__(self, life: int, x: int, y: int, spritePath: str):
-        super().__init__(True, x, y, spritePath=spritePath)
+    def __init__(self, life: int, x: int, y: int, w: int, h: int, spritePath: str):
+        super().__init__(True, x, y, w, h, spritePath=spritePath)
         self.life = life
     
     def takeDamage(self, damageNumber):
@@ -25,7 +25,7 @@ class Enemy(Entity):
 class SuicidePigeon(Enemy):
 
     def __init__(self, life: int, x: int, y: int):
-        super().__init__(life, x, y, spritePath="img/oiseau.jpg")
+        super().__init__(life, x, y, 50, 50, spritePath="img/oiseau.jpg")
         self.speedVect = (-1, 0)
         self.speed = 4
     
@@ -33,7 +33,7 @@ class SuicidePigeon(Enemy):
 class StrafingDrone(Enemy):
 
     def __init__(self, life: int, x: int, y: int, projectile):
-        super().__init__(life, x, y, spritePath="img/drone.png")
+        super().__init__(life, x, y, 100, 100, spritePath="img/drone.png")
         self.speedVect = (-1, 0)
         self.threshold = False
         self.speed = 2
@@ -65,12 +65,12 @@ class StrafingDrone(Enemy):
 
             for projIndex in range(len(self.all_projectiles)):
                 if not self.all_projectiles[projIndex]:
-                    self.all_projectiles[projIndex] = Projectile("img/bullet.png", False, offSetX, offSetY, vect, False)
+                    self.all_projectiles[projIndex] = Projectile("img/bullet.png", False, offSetX, offSetY, 50, 50, vect, False)
                     break
 
 class DrunkPigeon(Enemy):
     def __init__(self, life, reverse=False):
-        super().__init__(life, 700, 250, spritePath="img/oiseau.jpg")
+        super().__init__(life, 700, 250, 50, 50, spritePath="img/oiseau.jpg")
         # self.pathXAxis = 700
         self.speedVect = (-1, 0)
         self.reversed = reverse
