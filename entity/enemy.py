@@ -70,7 +70,7 @@ class StrafingDrone(Enemy):
 
 class DrunkPigeon(Enemy):
     def __init__(self, life, reverse=False):
-        super().__init__(life, 700, 250, 50, 50, spritePath="img/oiseau.jpg")
+        super().__init__(life, 800, 250, 50, 50, spritePath="img/oiseau.jpg")
         # self.pathXAxis = 700
         self.speedVect = (-1, 0)
         self.reversed = reverse

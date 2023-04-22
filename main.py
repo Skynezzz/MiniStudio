@@ -1,5 +1,6 @@
 import pygame
 from random import randint
+from game.level.level import Demo
 from entity.player import Player
 from entity.entity import Entity, Button
 from entity.enemy import SuicidePigeon, StrafingDrone, DrunkPigeon
@@ -35,6 +36,7 @@ class Game:
         # initialisation des paramettres
         self.settings = Setting()
         self.startButton = None
+        self.level = None
 
         # Boucle principale
         game = True
@@ -75,6 +77,7 @@ class Game:
         self.startButton = Button(self.screenSize[0]/2-30, self.screenSize[1]/2-30, 60, 60, "img/drone.png")
         if self.startButton.isPressed():
             self.state = "game"
+            self.level = Demo("img/background.jpg", 0, None, None)
     
     def drawMenu(self):
         self.screen.fill((0, 0, 0))
@@ -135,6 +138,7 @@ class Game:
     def drawLevel(self):
         # Affichage du jeu
         self.screen.fill((0, 0, 0))
+        self.level.draw(self.screen)
 
         # Affichage du joueur
         if self.player:
