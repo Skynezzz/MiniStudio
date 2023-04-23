@@ -20,19 +20,26 @@ class Entity():
 
 class Button(Entity):
 
-    def __init__(self, x: int, y: int, w: int, h: int, img=None):
-        super().__init__(False, x, y, w, h, img)
+    def __init__(self, x: int, y: int, w: int, h: int):
+        super().__init__(False, x, y, w, h, "img/ui.png")
         self.hover = False
+        self.image = pygame.image.load("img/drone.png").convert_alpha()
+        self.background = pygame.Surface((self.rect.width,self.rect.height)).convert_alpha()
+        self.background.blit(self.image, (0,0), (160, 320, 730, 140))
+        self.textPlay = self.background
+        self.textPlay.blit(self.image, (180,20), (1620, 340, 360, 100))
+        self.textPlayHover = self.background
+        self.textPlayHover.blit(self.image, (180,20), (1060, 340, 360, 100))
     
     def isPressed(self):
         if pygame.mouse.get_pressed(num_buttons=3)[0]:
             mouseX, mouseY = pygame.mouse.get_pos()
             return self.rectOverlap(Entity(False, mouseX, mouseY))
-    
-    def isHovered(self):
-        mouseX, mouseY = pygame.mouse.get_pos()
-        if self.rectOverlap(Entity(False, mouseX, mouseY)):
-            self.hover = True
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
+        # mouseX, mouseY = pygame.mouse.get_pos()
+        # if self.rectOverlap(Entity(False, mouseX, mouseY)):
+        #     screen.blit(self.textPlayHover, self.rect)
+        # else:
+        #     screen.blit(self.textPlay, self.rect)

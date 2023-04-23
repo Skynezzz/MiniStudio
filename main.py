@@ -15,7 +15,7 @@ class Game:
         self.state = "menu"
 
         # Définir la taille de la fenêtre
-        self.screenSize = (800, 600)
+        self.screenSize = (1920, 1080)
         self.screen = pygame.display.set_mode(self.screenSize)
         self.screenEntity = Entity(False, 0, 0, self.screenSize[0], self.screenSize[1])
 
@@ -26,7 +26,8 @@ class Game:
         pygame.display.set_caption("Feathers of Freedom")
 
         # initialisation des variables de cooldown
-        self.enemySpawnCooldown = pygame.time.get_ticks()
+        self.enemySpawnCooldown = 0
+        self.actionCooldown = 0
 
         # initialisation des paramettres
         self.settings = Setting()
@@ -71,12 +72,11 @@ class Game:
         timeEnd = pygame.time.get_ticks()
         if self.timeStart + 7 > timeEnd:
             pygame.time.delay(timeEnd - self.timeStart + 7)
-
                 
     def updateMenu(self):
-        self.startButton = Button(self.screenSize[0]/2-30, self.screenSize[1]/2-30 - 70, 60, 60, "img/drone.png")
-        self.optionButton = Button(self.screenSize[0]/2-30, self.screenSize[1]/2-30, 60, 60, "img/drone.png")
-        self.quitButton = Button(self.screenSize[0]/2-30, self.screenSize[1]/2-30 + 70, 60, 60, "img/drone.png")
+        self.startButton = Button(self.screenSize[0]/2 - 365, self.screenSize[1]/2 - 70 - 160, 730, 140)
+        self.optionButton = Button(self.screenSize[0]/2 - 365, self.screenSize[1]/2 - 70, 730, 140)
+        self.quitButton = Button(self.screenSize[0]/2 - 365, self.screenSize[1]/2 - 70 + 160, 730, 140)
         if self.startButton.isPressed():
             self.initLevel()
             self.state = "game"
@@ -87,6 +87,7 @@ class Game:
             self.game = False
     
     def drawMenu(self):
+        mouseX, mouseY = pygame.mouse.get_pos()
         self.startButton.draw(self.screen)
         self.optionButton.draw(self.screen)
         self.quitButton.draw(self.screen)
@@ -94,7 +95,7 @@ class Game:
     def updateOption(self):
         if pygame.key.get_pressed()[pygame.K_BACKSPACE]:
             self.state = "menu"
-        self.optionButton = Button(self.screenSize[0]/2-30, self.screenSize[1]/2-30, 60, 60, "img/drone.png")
+        self.optionButton = Button(self.screenSize[0]/2-30, self.screenSize[1]/2-30, 100, 50)
         
     def drawOption(self):
         pass
@@ -107,13 +108,16 @@ class Game:
         self.gamePause = False
 
     def updateLevel(self):
-        if pygame.key.get_pressed()[pygame.K_ESCAPE]:
+        if pygame.key.get_pressed()[pygame.K_ESCAPE] and self.actionCooldown < pygame.time.get_ticks():
             self.gamePause = not self.gamePause
+            self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
 
         if not self.gamePause:
             # déplacement du joueur si il est vivant
             if not self.player.isDead():
                 move(self.settings, self.screen, self.player)
+            
+            self.level.update()
             
             # ajout d'ennemis
             if pygame.time.get_ticks() > self.enemySpawnCooldown:

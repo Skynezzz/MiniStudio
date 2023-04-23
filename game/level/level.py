@@ -27,7 +27,6 @@ class Demo(Level):
         self.scroll -= self.speed
 
     def update(self):
-        self.draw()
         # RESET THE SCROLL FRAME
         if abs(self.scroll) > self.background.get_width():
             self.scroll = 0
