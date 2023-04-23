@@ -1,22 +1,18 @@
 import pygame
 from entity.player import Player
 
-def move(screen, player):
+def move(settings, screen, player):
     keyPressed = pygame.key.get_pressed()
     mousePressed = pygame.mouse.get_pressed(num_buttons=3)
-    if keyPressed[pygame.K_q]:
+    if keyPressed[int(settings.settings['left'])]:
         player.left()
-    if keyPressed[pygame.K_d]:
+    if keyPressed[int(settings.settings['right'])]:
         player.right(screen)
-    if keyPressed[pygame.K_z]:
+    if keyPressed[int(settings.settings['up'])]:
         player.up()
-    if keyPressed[pygame.K_s]:
+    if keyPressed[int(settings.settings['down'])]:
         player.down(screen)
-    if keyPressed[pygame.K_e]:
-        player.angle -= 1
-        player.setImgAngle()
-    if keyPressed[pygame.K_a]:
-        player.angle += 1
-        player.setImgAngle()
     if mousePressed == (1, 0, 0):
         player.launchProjectile()
+    if mousePressed == (0, 0, 1):
+        player.juanAbility()
