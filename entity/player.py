@@ -74,7 +74,7 @@ class Player(Entity):
     def launchProjectile(self):
         if pygame.time.get_ticks() > self.fireCooldown:
             offSetX = self.rect.x + self.rect.width + 10
-            offSetY = self.rect.y
+            offSetY = self.rect.y + self.rect.height/2
             mouseX, mouseY = pygame.mouse.get_pos()
             mouseY -= 25
             vectX, vectY = mouseX - offSetX, mouseY - offSetY
