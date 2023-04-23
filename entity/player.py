@@ -84,7 +84,7 @@ class Player(Entity):
 
             for projIndex in range(len(self.all_projectiles)):
                 if not self.all_projectiles[projIndex]:
-                    self.all_projectiles[projIndex] = Projectile("img/bullet.png", False, offSetX, offSetY, 50, 50, vect, True)
+                    self.all_projectiles[projIndex] = Projectile("img/projectiles_sprite.png", False, offSetX, offSetY, 90, 30, vect, 3, True)
                     break
     
     def juanAbility(self):

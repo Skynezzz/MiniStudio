@@ -149,10 +149,10 @@ class Game:
             if en:
                 en.draw(self.screen)
 
-        for i in range(len(self.projectiles)):
-            if self.projectiles[i]:
-                cur = self.projectiles[i]
-                self.screen.blit(cur.image, (cur.rect.x, cur.rect.y, cur.rect.width, cur.rect.height))
+        # Affichage des projectiles
+        for i in self.projectiles:
+            if i:
+                i.draw(self.screen, self.dt)
 
         # Mise à jour de l'affichage
         pygame.display.flip()
