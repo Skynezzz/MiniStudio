@@ -25,7 +25,7 @@ class Player(Entity):
         self.life -= damageNumber
         self.damage = True
     
-    def draw(self, screen, dt):
+    def update(self, dt):
         self.timeNextFrame -= dt
 
         if self.timeNextFrame < 0:
@@ -40,6 +40,7 @@ class Player(Entity):
                     self.frame = (self.frame + 1) % 7
             self.actualFrame = pygame.Rect(self.frame * self.charaWidth, 0, self.charaWidth, self.charaHeigh)
 
+    def draw(self, screen):
         screen.blit(self.spriteSheet, dest=(self.rect.x, self.rect.y), area=self.actualFrame)
 
     def resetFireCooldown(self):
@@ -84,7 +85,7 @@ class Player(Entity):
 
             for projIndex in range(len(self.all_projectiles)):
                 if not self.all_projectiles[projIndex]:
-                    self.all_projectiles[projIndex] = Projectile("img/projectiles_sprite.png", False, offSetX, offSetY, 90, 30, vect, 3, True)
+                    self.all_projectiles[projIndex] = Projectile("img/projectiles_sheet.png", False, offSetX, offSetY, 52, 18, vect, 1, True)
                     break
     
     def juanAbility(self):
@@ -100,7 +101,7 @@ class Player(Entity):
 
             for projIndex in range(len(self.all_projectiles)):
                 if not self.all_projectiles[projIndex]:
-                    self.all_projectiles[projIndex] = Projectile("img/[Juan_Carlos_Brito]-Colombe.jpg", False, spawnX, spawnY, 50, 50, vect, True)
-                    self.all_projectiles[projIndex + 1] = Projectile("img/[Juan_Carlos_Brito]-Colombe.jpg", False, upX, upY, 50, 50, vect, True)
-                    self.all_projectiles[projIndex + 2] = Projectile("img/[Juan_Carlos_Brito]-Colombe.jpg", False, downX, downY, 50, 50, vect, True)
+                    self.all_projectiles[projIndex] = Projectile("img/projectiles_sheet.png", False, spawnX, spawnY, 52, 18, vect, 1, True)
+                    self.all_projectiles[projIndex + 1] = Projectile("img/projectiles_sheet.png", False, upX, upY, 52, 18, vect, 1, True)
+                    self.all_projectiles[projIndex + 2] = Projectile("img/projectiles_sheet.png", False, downX, downY, 52, 18, vect, 1, True)
                     break

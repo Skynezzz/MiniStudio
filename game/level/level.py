@@ -48,10 +48,10 @@ class Level():
         while(i < 100):
             screen.blit(self.background, (self.background.get_width()*i + self.scroll, 0))
             i += 1
-        # FRAME FOR SCROLLING
-        self.scroll -= self.speed
 
     def update(self):
+        # FRAME FOR SCROLLING
+        self.position -= self.speed
         # RESET THE SCROLL FRAME
-        if abs(self.scroll) > self.background.get_width():
-            self.scroll = 0
+        if abs(self.position) > self.background.get_width():
+            self.position = 0

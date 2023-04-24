@@ -13,29 +13,32 @@ class Projectile(Entity):
         self.temp = speedVect
         self.speed = 5
         # Création de variables pour animation
-        self.charaWidth = 90
-        self.charaHeigh = 30
-        self.spriteSheet = pygame.transform.scale(pygame.image.load("img/projectiles_sprite.png").convert_alpha(), (self.charaWidth*12, self.charaHeigh))
+        scale = 2
+        imgWidth = 78
+        imgHeigh = 128
+        self.spriteWidth = 26 * 2
+        self.spriteHeigh = 9 * 2
+        self.spriteSheet = pygame.transform.scale(pygame.image.load(spritePath).convert_alpha(), (imgWidth*scale, imgHeigh*scale))
         self.frame = 0
-        self.actualFrame = pygame.Rect(self.frame * self.charaWidth, 0, self.charaWidth, self.charaHeigh)
+        #self.frame1 = pygame.transform.scale(self.spriteSheet, ())
+        self.actualFrame = pygame.Rect(0*scale, 4*scale, 26*scale, 9*scale)
         self.timeNextFrame = 200
         # print((speedVect[0]*vect[0] + speedVect[1]*vect[1]) / math.sqrt(speedVect[0]**2 + speedVect[1]**2) * math.sqrt(vect[0]**2 + vect[1]**2))
         self.angle = math.degrees(math.acos((speedVect[0]*vect[0] + speedVect[1]*vect[1]) / math.sqrt(speedVect[0]**2 + speedVect[1]**2) * math.sqrt(vect[0]**2 + vect[1]**2)))
         self.setImgAngle()
 
-    def draw(self, screen, dt):
-        self.timeNextFrame -= dt
-
-        if self.timeNextFrame < 0:
-            self.timeNextFrame += 200
-            self.frame = (self.frame + 1) % (self.def_frame-1)
-            self.actualFrame = pygame.Rect(self.frame * self.charaWidth, 0, self.charaWidth, self.charaHeigh)
-
-        screen.blit(self.spriteSheet, dest=(self.rect.x, self.rect.y), area=self.actualFrame)
-
-    def update(self):
+    def update(self, dt):
         self.rect.x  += self.speedVect[0]*self.speed
         self.rect.y  += self.speedVect[1]*self.speed
+        # Algo animation
+        self.timeNextFrame -= dt
+        if self.timeNextFrame < 0:
+            self.timeNextFrame += 200
+            # self.frame = (self.frame + 1) % (self.def_frame-1)
+            # self.actualFrame = pygame.Rect(0, 4, 26, 9)
+
+    def draw(self, screen):
+        screen.blit(self.spriteSheet, dest=(self.rect.x, self.rect.y), area=self.actualFrame)
 
     def setImgAngle(self):
         if self.temp[1] > 0:
