@@ -14,9 +14,9 @@ class Player(Entity):
         self.fireCooldown = pygame.time.get_ticks()
         self.abilityCooldown = pygame.time.get_ticks()
         # Création de variables pour animation
-        self.scale = 4
+        self.scale = 5
         self.charaWidth, self.charaHeigh = w, h
-        self.spriteSheet = pygame.transform.scale(pygame.image.load("img/sprite_bird.png").convert_alpha(), (self.charaWidth*5 * self.scale, self.charaHeigh * self.scale))
+        self.spriteSheet = pygame.transform.scale(pygame.image.load("img/sprite_bird.png").convert_alpha(), (self.charaWidth * 5 * self.scale, self.charaHeigh * self.scale))
         self.frame = 0
         self.actualFrame = pygame.Rect(self.frame * self.charaWidth * self.scale, 0, self.charaWidth * self.scale, self.charaHeigh * self.scale)
         self.timeNextFrame = 150
@@ -85,14 +85,14 @@ class Player(Entity):
 
             for projIndex in range(len(self.all_projectiles)):
                 if not self.all_projectiles[projIndex]:
-                    self.all_projectiles[projIndex] = Projectile("img/projectiles_sheet.png", False, offSetX, offSetY, 52, 18, vect, 1, True)
+                    self.all_projectiles[projIndex] = Projectile("img/projectiles_sheet.png", False, offSetX, offSetY, 26, 9, vect, 3, 4, True)
                     break
     
     def juanAbility(self):
         if pygame.time.get_ticks() > self.abilityCooldown:
-            spawnX = 0 - 25
+            spawnX = 0 - 30
             spawnY = 1080/2 - self.rect.y/2
-            upX = spawnX - 20
+            upX = spawnX - 25
             upY = spawnY - 70
             downX = spawnX - 20
             downY = spawnY + 70
@@ -101,7 +101,7 @@ class Player(Entity):
 
             for projIndex in range(len(self.all_projectiles)):
                 if not self.all_projectiles[projIndex]:
-                    self.all_projectiles[projIndex] = Projectile("img/projectiles_sheet.png", False, spawnX, spawnY, 52, 18, vect, 1, True)
-                    self.all_projectiles[projIndex + 1] = Projectile("img/projectiles_sheet.png", False, upX, upY, 52, 18, vect, 1, True)
-                    self.all_projectiles[projIndex + 2] = Projectile("img/projectiles_sheet.png", False, downX, downY, 52, 18, vect, 1, True)
+                    self.all_projectiles[projIndex] = Projectile("img/projectiles_sheet.png", False, spawnX, spawnY, 26, 9, vect, 3, 4, True)
+                    self.all_projectiles[projIndex + 1] = Projectile("img/projectiles_sheet.png", False, upX, upY, 26, 9, vect, 3, 4, True)
+                    self.all_projectiles[projIndex + 2] = Projectile("img/projectiles_sheet.png", False, downX, downY, 26, 9, vect, 3, 4, True)
                     break

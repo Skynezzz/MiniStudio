@@ -3,24 +3,25 @@ from entity.entity import Entity
 
 class Projectile(Entity):
     
-    def __init__(self, spritePath: str, isDestructible: bool, x: int, y: int, w: int, h: int, speedVect: tuple, def_frame: int, friendly=False):
+    def __init__(self, spritePath: str, isDestructible: bool, x: int, y: int, w: int, h: int, speedVect: tuple, def_frame: int, spriteY: int, friendly=False):
         super().__init__(isDestructible, x, y, w, h, spritePath=spritePath)
         self.speedVect = speedVect
         self.def_frame = def_frame
+        self.spriteY = spriteY
         self.friendly = friendly
         vect = (1,0)
         speedVect = (speedVect[0],-speedVect[1])
         self.temp = speedVect
-        self.speed = 5
+        self.speed = 6
         # Création de variables pour animation
-        scale = 2
-        imgWidth = 78
-        imgHeigh = 128
-        self.spriteSheet = pygame.transform.scale(pygame.image.load(spritePath).convert_alpha(), (imgWidth*scale, imgHeigh*scale))
+        self.scale = 2.5
+        spritesWidth, spritesHeigh = 78, 128
+        self.imgWidth, self.imgHeigh = w, h
+        self.spriteSheet = pygame.transform.scale(pygame.image.load(spritePath).convert_alpha(), (spritesWidth * self.scale, spritesHeigh * self.scale))
         self.frame = 0
-        #self.frame1 = pygame.transform.scale(self.spriteSheet, ())
-        self.actualFrame = pygame.Rect(0*scale, 4*scale, 26*scale, 9*scale)
-        self.timeNextFrame = 200
+        self.actualFrame = pygame.Rect(self.frame * self.imgWidth * self.scale, self.spriteY * self.scale, self.imgWidth * self.scale, self.imgHeigh * self.scale)
+        self.timeNextFrame = 150
+        # Variables de rotation
         self.angle = math.degrees(math.acos((speedVect[0]*vect[0] + speedVect[1]*vect[1]) / math.sqrt(speedVect[0]**2 + speedVect[1]**2) * math.sqrt(vect[0]**2 + vect[1]**2)))
         self.setImgAngle()
 
@@ -30,9 +31,9 @@ class Projectile(Entity):
         # Algo animation
         self.timeNextFrame -= dt
         if self.timeNextFrame < 0:
-            self.timeNextFrame += 200
-            # self.frame = (self.frame + 1) % (self.def_frame-1)
-            # self.actualFrame = pygame.Rect(0, 4, 26, 9)
+            self.timeNextFrame += 150
+            self.frame = (self.frame + 1) % (self.def_frame-1)
+            self.actualFrame = pygame.Rect(self.frame * self.imgWidth * self.scale, self.spriteY * self.scale, self.imgWidth * self.scale, self.imgHeigh * self.scale)
 
     def draw(self, screen):
         screen.blit(self.spriteSheet, dest=(self.rect.x, self.rect.y), area=self.actualFrame)
