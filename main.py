@@ -74,9 +74,9 @@ class Game:
             pygame.time.delay(timeEnd - self.timeStart + 7)
                 
     def updateMenu(self):
-        self.startButton = Button(self.screenSize[0]/2 - 365, self.screenSize[1]/2 - 70 - 160, 730, 140)
-        self.optionButton = Button(self.screenSize[0]/2 - 365, self.screenSize[1]/2 - 70, 730, 140)
-        self.quitButton = Button(self.screenSize[0]/2 - 365, self.screenSize[1]/2 - 70 + 160, 730, 140)
+        self.startButton = Button(self.screenSize[0]/2 - 365, self.screenSize[1]/2 - 70 - 160, "start")
+        self.optionButton = Button(self.screenSize[0]/2 - 365, self.screenSize[1]/2 - 70, "option")
+        self.quitButton = Button(self.screenSize[0]/2 - 365, self.screenSize[1]/2 - 70 + 160, "quit")
         if self.startButton.isPressed():
             self.initLevel()
             self.state = "game"
@@ -95,7 +95,7 @@ class Game:
     def updateOption(self):
         if pygame.key.get_pressed()[pygame.K_BACKSPACE]:
             self.state = "menu"
-        self.optionButton = Button(self.screenSize[0]/2-30, self.screenSize[1]/2-30, 100, 50)
+        self.optionButton = Button(self.screenSize[0]/2-30, self.screenSize[1]/2-30, "option")
         
     def drawOption(self):
         pass

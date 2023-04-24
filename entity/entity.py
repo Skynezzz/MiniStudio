@@ -20,16 +20,12 @@ class Entity():
 
 class Button(Entity):
 
-    def __init__(self, x: int, y: int, w: int, h: int):
-        super().__init__(False, x, y, w, h, "img/ui.png")
+    def __init__(self, x: int, y: int, type: str):
+        super().__init__(False, x, y, 73*7.5, 14*7.5, "img/ui.png")
+        self.type = type
         self.hover = False
-        self.image = pygame.image.load("img/drone.png").convert_alpha()
+        self.image = pygame.transform.scale(pygame.image.load("img/ui.png").convert_alpha(), (1920, 960))
         self.background = pygame.Surface((self.rect.width,self.rect.height)).convert_alpha()
-        self.background.blit(self.image, (0,0), (160, 320, 730, 140))
-        self.textPlay = self.background
-        self.textPlay.blit(self.image, (180,20), (1620, 340, 360, 100))
-        self.textPlayHover = self.background
-        self.textPlayHover.blit(self.image, (180,20), (1060, 340, 360, 100))
     
     def isPressed(self):
         if pygame.mouse.get_pressed(num_buttons=3)[0]:
@@ -37,9 +33,20 @@ class Button(Entity):
             return self.rectOverlap(Entity(False, mouseX, mouseY))
 
     def draw(self, screen):
-        screen.blit(self.image, self.rect)
-        # mouseX, mouseY = pygame.mouse.get_pos()
-        # if self.rectOverlap(Entity(False, mouseX, mouseY)):
-        #     screen.blit(self.textPlayHover, self.rect)
-        # else:
-        #     screen.blit(self.textPlay, self.rect)
+        scale = 7.5
+        screen.blit(self.image, (self.rect.x, self.rect.y), (16*scale, 32*scale, 73*scale, 14*scale))
+        mouseX, mouseY = pygame.mouse.get_pos()
+        if self.rectOverlap(Entity(False, mouseX, mouseY)):
+            if self.type == "start":
+                screen.blit(self.image, (self.rect.x + 18*scale, self.rect.y + 2*scale), (162*scale, 34*scale, 36*scale, 10*scale))
+            elif self.type == "option":
+                screen.blit(self.image, (self.rect.x + 10*scale, self.rect.y + 2*scale), (23*scale, 66*scale, 56*scale, 10*scale))
+            elif self.type == "quit":
+                screen.blit(self.image, (self.rect.x + 20*scale, self.rect.y + 2*scale), (35*scale, 98*scale, 32*scale, 10*scale))
+        else:
+            if self.type == "start":
+                screen.blit(self.image, (self.rect.x + 18*scale, self.rect.y + 2*scale), (106*scale, 34*scale, 36*scale, 10*scale))
+            elif self.type == "option":
+                screen.blit(self.image, (self.rect.x + 10*scale, self.rect.y + 2*scale), (23*scale, 82*scale, 56*scale, 10*scale))
+            elif self.type == "quit":
+                screen.blit(self.image, (self.rect.x + 20*scale, self.rect.y + 2*scale), (35*scale, 114*scale, 32*scale, 10*scale))
