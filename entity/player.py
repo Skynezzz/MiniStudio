@@ -85,7 +85,7 @@ class Player(Entity):
 
             for projIndex in range(len(self.all_projectiles)):
                 if not self.all_projectiles[projIndex]:
-                    self.all_projectiles[projIndex] = Projectile("img/projectiles_sprite.png", False, offSetX, offSetY, 90, 30, vect, 3, True)
+                    self.all_projectiles[projIndex] = Projectile("img/projectiles_sheet.png", False, offSetX, offSetY, 52, 18, vect, 1, True)
                     break
     
     def juanAbility(self):
@@ -101,7 +101,7 @@ class Player(Entity):
 
             for projIndex in range(len(self.all_projectiles)):
                 if not self.all_projectiles[projIndex]:
-                    self.all_projectiles[projIndex] = Projectile("img/[Juan_Carlos_Brito]-Colombe.jpg", False, spawnX, spawnY, 50, 50, vect, 1, True)
-                    self.all_projectiles[projIndex + 1] = Projectile("img/[Juan_Carlos_Brito]-Colombe.jpg", False, upX, upY, 50, 50, vect, 1, True)
-                    self.all_projectiles[projIndex + 2] = Projectile("img/[Juan_Carlos_Brito]-Colombe.jpg", False, downX, downY, 50, 50, vect, 1, True)
+                    self.all_projectiles[projIndex] = Projectile("img/projectiles_sheet.png", False, spawnX, spawnY, 52, 18, vect, 1, True)
+                    self.all_projectiles[projIndex + 1] = Projectile("img/projectiles_sheet.png", False, upX, upY, 52, 18, vect, 1, True)
+                    self.all_projectiles[projIndex + 2] = Projectile("img/projectiles_sheet.png", False, downX, downY, 52, 18, vect, 1, True)
                     break
