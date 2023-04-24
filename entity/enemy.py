@@ -25,7 +25,7 @@ class Enemy(Entity):
 class SuicidePigeon(Enemy):
 
     def __init__(self, life: int, x: int, y: int):
-        super().__init__(life, x, y, 50, 50, spritePath="img/oiseau.jpg")
+        super().__init__(life, x, y, 50, 50, spritePath="img/drone_little.png")
         self.speedVect = (-1, 0)
         self.speed = 4
     
@@ -33,7 +33,7 @@ class SuicidePigeon(Enemy):
 class StrafingDrone(Enemy):
 
     def __init__(self, life: int, x: int, y: int, projectile):
-        super().__init__(life, x, y, 100, 100, spritePath="img/drone.png")
+        super().__init__(life, x, y, 100, 100, spritePath="img/drone_big.png")
         self.speedVect = (-1, 0)
         self.threshold = False
         self.speed = 2
@@ -70,7 +70,7 @@ class StrafingDrone(Enemy):
 
 class DrunkPigeon(Enemy):
     def __init__(self, life, reverse=False):
-        super().__init__(life, 800, 250, 50, 50, spritePath="img/oiseau.jpg")
+        super().__init__(life, 800, 250, 50, 50, spritePath="img/drone_little.png")
         # self.pathXAxis = 700
         self.speedVect = (-1, 0)
         self.reversed = reverse
