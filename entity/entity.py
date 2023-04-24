@@ -40,13 +40,13 @@ class Button(Entity):
             if self.type == "start":
                 screen.blit(self.image, (self.rect.x + 18*scale, self.rect.y + 2*scale), (162*scale, 34*scale, 36*scale, 10*scale))
             elif self.type == "option":
-                screen.blit(self.image, (self.rect.x + 10*scale, self.rect.y + 2*scale), (23*scale, 66*scale, 56*scale, 10*scale))
+                screen.blit(self.image, (self.rect.x + 10*scale, self.rect.y + 2*scale), (23*scale, 82*scale, 56*scale, 10*scale))
             elif self.type == "quit":
-                screen.blit(self.image, (self.rect.x + 20*scale, self.rect.y + 2*scale), (35*scale, 98*scale, 32*scale, 10*scale))
+                screen.blit(self.image, (self.rect.x + 20*scale, self.rect.y + 2*scale), (35*scale, 114*scale, 32*scale, 10*scale))
         else:
             if self.type == "start":
                 screen.blit(self.image, (self.rect.x + 18*scale, self.rect.y + 2*scale), (106*scale, 34*scale, 36*scale, 10*scale))
             elif self.type == "option":
-                screen.blit(self.image, (self.rect.x + 10*scale, self.rect.y + 2*scale), (23*scale, 82*scale, 56*scale, 10*scale))
+                screen.blit(self.image, (self.rect.x + 10*scale, self.rect.y + 2*scale), (23*scale, 66*scale, 56*scale, 10*scale))
             elif self.type == "quit":
-                screen.blit(self.image, (self.rect.x + 20*scale, self.rect.y + 2*scale), (35*scale, 114*scale, 32*scale, 10*scale))
+                screen.blit(self.image, (self.rect.x + 20*scale, self.rect.y + 2*scale), (35*scale, 98*scale, 32*scale, 10*scale))
