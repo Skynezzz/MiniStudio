@@ -7,7 +7,7 @@ class Player(Entity):
     def __init__(self, x: int, y: int, w: int, h: int, projectile, life: int, destruct: bool):
         super().__init__(destruct, x, y, w, h, spritePath="img/sprite_character.png")
         self.life = life
-        self.speed = 4
+        self.speed = 6
         self.angle = 0
         self.damage = False
         self.all_projectiles = projectile
