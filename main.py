@@ -118,6 +118,7 @@ class Game:
                 move(self.settings, self.screen, self.player)
             
             self.level.update()
+            self.player.update(self.dt)
             
             # ajout d'ennemis
             if pygame.time.get_ticks() > self.enemySpawnCooldown:
@@ -132,7 +133,7 @@ class Game:
             # update de la position des projectiles
             for i in range(len(self.projectiles)):
                 if self.projectiles[i]:
-                    self.projectiles[i].update()
+                    self.projectiles[i].update(self.dt)
                     # si la balle touche un ennemi
                     if self.projectiles[i].friendly:
                         for j in range(len(self.enemies)):
@@ -171,7 +172,7 @@ class Game:
 
         # Affichage du joueur
         if self.player:
-            self.player.draw(self.screen, self.dt)
+            self.player.draw(self.screen)
 
         # Affichage des ennemis
         for en in self.enemies:
@@ -181,7 +182,7 @@ class Game:
         # Affichage des projectiles
         for i in self.projectiles:
             if i:
-                i.draw(self.screen, self.dt)
+                i.draw(self.screen)
 
         # Mise à jour de l'affichage
         pygame.display.flip()
