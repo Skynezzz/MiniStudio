@@ -57,8 +57,12 @@ class Game:
             self.drawMenu()
         elif self.state == "option":
             self.drawOption()
+        elif self.state == "end":
+            self.drawEnd()
         # Mise à jour de l'affichage
         pygame.display.flip()
+        
+        
     
     def update(self):
         self.dt = self.clock.tick(60)
@@ -68,15 +72,18 @@ class Game:
             self.updateMenu()
         elif self.state == "option":
             self.updateOption()
+        elif self.state == "end" :
+            self.endMenu()
         # timer
         timeEnd = pygame.time.get_ticks()
         if self.timeStart + 7 > timeEnd:
             pygame.time.delay(timeEnd - self.timeStart + 7)
+        
                 
     def updateMenu(self):
-        self.startButton = Button(self.screenSize[0]/2 - 365, self.screenSize[1]/2 - 70 - 160, 730, 140)
-        self.optionButton = Button(self.screenSize[0]/2 - 365, self.screenSize[1]/2 - 70, 730, 140)
-        self.quitButton = Button(self.screenSize[0]/2 - 365, self.screenSize[1]/2 - 70 + 160, 730, 140)
+        self.startButton = Button(self.screenSize[0]/2 - 365, self.screenSize[1]/2 - 70 - 160, "start")
+        self.optionButton = Button(self.screenSize[0]/2 - 365, self.screenSize[1]/2 - 70, "option")
+        self.quitButton = Button(self.screenSize[0]/2 - 365, self.screenSize[1]/2 - 70 + 160, "quit")
         if self.startButton.isPressed():
             self.initLevel()
             self.state = "game"
@@ -91,11 +98,34 @@ class Game:
         self.startButton.draw(self.screen)
         self.optionButton.draw(self.screen)
         self.quitButton.draw(self.screen)
+       
+    def updateEnd(self):
+        self.homeButton = Button(self.screenSize[0]/2 - 365, self.screenSize[1]/2 - 70 - 160, 730, 140)
+        self.rewardButton = Button(self.screenSize[0]/2 - 365, self.screenSize[1]/2 - 70 - 160, 730, 140)
+        self.replayButton = Button(self.screenSize[0]/2 - 365, self.screenSize[1]/2 - 70 - 160, 730, 140)
+        if self.homeButton.isPressed():
+            self.game = False
+        elif self.rewardButton.isPressed():
+            self.state = "reward"
+        elif self.replayButton.isPressed():
+            self.initLevel()
+            self.state = "game"
+            self.level = Demo("img/background.jpg", 0, None, None)
     
+    def drawEnd(self):
+        mouseX, mouseY = pygame.mouse.get_pos()
+        image = pygame.image.load("img/backgroundMenu.png")
+        self.screen.blit(image, (300,300,400,400))
+        self.background.draw(self.screen)
+        self.startButton.draw(self.screen)
+        self.homeButton.draw(self.screen)
+        self.rewardButton.draw(self.screen)
+        
+        
     def updateOption(self):
         if pygame.key.get_pressed()[pygame.K_BACKSPACE]:
             self.state = "menu"
-        self.optionButton = Button(self.screenSize[0]/2-30, self.screenSize[1]/2-30, 100, 50)
+        self.optionButton = Button(self.screenSize[0]/2-30, self.screenSize[1]/2-30, "option")
         
     def drawOption(self):
         pass
@@ -106,6 +136,7 @@ class Game:
         self.enemies = [None for i in range(10)]
         self.player = Player(0, 0, 100, 100, self.projectiles, 50, True)
         self.gamePause = False
+        self.endMenu =  False
 
     def updateLevel(self):
         if pygame.key.get_pressed()[pygame.K_ESCAPE] and self.actionCooldown < pygame.time.get_ticks():
@@ -116,7 +147,8 @@ class Game:
             # déplacement du joueur si il est vivant
             if not self.player.isDead():
                 move(self.settings, self.screen, self.player)
-            
+                if self.player.isDead():
+                    self.endMenu.draw(self.screen)
             self.level.update()
             self.player.update(self.dt)
             
@@ -184,6 +216,8 @@ class Game:
             if i:
                 i.draw(self.screen)
 
+        if self.endMenu:
+            self.drawEnd.draw(self.screen)
         # Mise à jour de l'affichage
         pygame.display.flip()
 
