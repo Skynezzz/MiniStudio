@@ -16,14 +16,11 @@ class Projectile(Entity):
         scale = 2
         imgWidth = 78
         imgHeigh = 128
-        self.spriteWidth = 26 * 2
-        self.spriteHeigh = 9 * 2
         self.spriteSheet = pygame.transform.scale(pygame.image.load(spritePath).convert_alpha(), (imgWidth*scale, imgHeigh*scale))
         self.frame = 0
         #self.frame1 = pygame.transform.scale(self.spriteSheet, ())
         self.actualFrame = pygame.Rect(0*scale, 4*scale, 26*scale, 9*scale)
         self.timeNextFrame = 200
-        # print((speedVect[0]*vect[0] + speedVect[1]*vect[1]) / math.sqrt(speedVect[0]**2 + speedVect[1]**2) * math.sqrt(vect[0]**2 + vect[1]**2))
         self.angle = math.degrees(math.acos((speedVect[0]*vect[0] + speedVect[1]*vect[1]) / math.sqrt(speedVect[0]**2 + speedVect[1]**2) * math.sqrt(vect[0]**2 + vect[1]**2)))
         self.setImgAngle()
 

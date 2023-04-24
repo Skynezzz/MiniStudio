@@ -13,13 +13,13 @@ class Player(Entity):
         self.all_projectiles = projectile
         self.fireCooldown = pygame.time.get_ticks()
         self.abilityCooldown = pygame.time.get_ticks()
-        
         # Création de variables pour animation
-        self.charaWidth = self.charaHeigh = 100
-        self.spriteSheet = pygame.transform.scale(pygame.image.load("img/sprite_character.png").convert_alpha(), (self.charaWidth*9, self.charaHeigh))
+        self.scale = 4
+        self.charaWidth, self.charaHeigh = w, h
+        self.spriteSheet = pygame.transform.scale(pygame.image.load("img/sprite_bird.png").convert_alpha(), (self.charaWidth*5 * self.scale, self.charaHeigh * self.scale))
         self.frame = 0
-        self.actualFrame = pygame.Rect(self.frame * self.charaWidth, 0, self.charaWidth, self.charaHeigh)
-        self.timeNextFrame = 200
+        self.actualFrame = pygame.Rect(self.frame * self.charaWidth * self.scale, 0, self.charaWidth * self.scale, self.charaHeigh * self.scale)
+        self.timeNextFrame = 150
     
     def takeDamage(self, damageNumber):
         self.life -= damageNumber
@@ -27,18 +27,17 @@ class Player(Entity):
     
     def update(self, dt):
         self.timeNextFrame -= dt
-
         if self.timeNextFrame < 0:
-            self.timeNextFrame += 200
+            self.timeNextFrame += 150
             if self.damage:
-                self.frame = 8
+                self.frame = 5
                 self.damage = False
             else:
-                if self.frame >= 8:
+                if self.frame >= 5:
                     self.frame = 0
                 else:
-                    self.frame = (self.frame + 1) % 7
-            self.actualFrame = pygame.Rect(self.frame * self.charaWidth, 0, self.charaWidth, self.charaHeigh)
+                    self.frame = (self.frame + 1) % 4
+            self.actualFrame = pygame.Rect(self.frame * self.charaWidth * self.scale, 0, self.charaWidth * self.scale, self.charaHeigh * self.scale)
 
     def draw(self, screen):
         screen.blit(self.spriteSheet, dest=(self.rect.x, self.rect.y), area=self.actualFrame)
@@ -56,6 +55,7 @@ class Player(Entity):
     def right(self, screen):
         if self.rect.x + self.speed <= screen.get_size()[0] - self.rect.width:
             self.rect.x  += self.speed
+            self.timeNextFrame -= 25
 
     def up(self):
         if self.rect.y - self.speed >= 0:
@@ -74,8 +74,8 @@ class Player(Entity):
     
     def launchProjectile(self):
         if pygame.time.get_ticks() > self.fireCooldown:
-            offSetX = self.rect.x + self.rect.width + 10
-            offSetY = self.rect.y + self.rect.height/2
+            offSetX = self.rect.x + self.rect.width*self.scale + 10
+            offSetY = self.rect.y + self.rect.height*self.scale/2
             mouseX, mouseY = pygame.mouse.get_pos()
             mouseY -= 25
             vectX, vectY = mouseX - offSetX, mouseY - offSetY
@@ -90,8 +90,8 @@ class Player(Entity):
     
     def juanAbility(self):
         if pygame.time.get_ticks() > self.abilityCooldown:
-            spawnX = 0-25
-            spawnY = 300-25
+            spawnX = 0 - 25
+            spawnY = 1080/2 - self.rect.y/2
             upX = spawnX - 20
             upY = spawnY - 70
             downX = spawnX - 20

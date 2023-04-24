@@ -22,8 +22,8 @@ class Level():
             obstacleProps = obstacle.split('/')
             self.level['obstacles'].append({'time': int(obstacleProps[0]), 'type': obstacleProps[1]})
 
-        self.background = pygame.transform.scale(pygame.image.load(self.level['background']).convert(), (2150 * pygame.display.get_window_size()[1] / 600, pygame.display.get_window_size()[1]))
-        self.scroll = 0
+        self.background = pygame.transform.scale(pygame.image.load(self.level['background']).convert(), (5012 * pygame.display.get_window_size()[1] / 1280, pygame.display.get_window_size()[1]))
+        self.position = 0
         self.speed = 10
 
         print("ENEMY:" +  str(self.level['ennemies']))
@@ -46,7 +46,7 @@ class Level():
     def draw(self, screen):
         i = 0
         while(i < 100):
-            screen.blit(self.background, (self.background.get_width()*i + self.scroll, 0))
+            screen.blit(self.background, (self.background.get_width()*i + self.position, 0))
             i += 1
 
     def update(self):

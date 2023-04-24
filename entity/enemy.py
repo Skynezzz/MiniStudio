@@ -65,7 +65,7 @@ class StrafingDrone(Enemy):
 
             for projIndex in range(len(self.all_projectiles)):
                 if not self.all_projectiles[projIndex]:
-                    self.all_projectiles[projIndex] = Projectile("img/bullet.png", False, offSetX, offSetY, 50, 50, vect, False)
+                    self.all_projectiles[projIndex] = Projectile("img/projectiles_sheet.png", False, offSetX, offSetY, 52, 18, vect, 1, True)
                     break
 
 class DrunkPigeon(Enemy):

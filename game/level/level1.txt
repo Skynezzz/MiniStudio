@@ -1,3 +1,3 @@
-background: img/background.jpg
+background: img/bg1.png
 obstacles: 5/2, 3/1
 ennemies: 10/3, 15/2

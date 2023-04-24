@@ -16,7 +16,7 @@ class Game:
 
         # Définir la taille de la fenêtre
         self.screenSize = (1920, 1080)
-        self.screen = pygame.display.set_mode(self.screenSize)
+        self.screen = pygame.display.set_mode(self.screenSize, pygame.FULLSCREEN)
         self.screenEntity = Entity(False, 0, 0, self.screenSize[0], self.screenSize[1])
 
         #Définis une clock pour limiter les actions
@@ -94,7 +94,6 @@ class Game:
             self.game = False
     
     def drawMenu(self):
-        mouseX, mouseY = pygame.mouse.get_pos()
         self.startButton.draw(self.screen)
         self.optionButton.draw(self.screen)
         self.quitButton.draw(self.screen)
@@ -110,10 +109,9 @@ class Game:
         elif self.replayButton.isPressed():
             self.initLevel()
             self.state = "game"
-            self.level = Demo("img/background.jpg", 0, None, None)
+            self.level = Level(0)
     
     def drawEnd(self):
-        mouseX, mouseY = pygame.mouse.get_pos()
         image = pygame.image.load("img/backgroundMenu.png")
         self.screen.blit(image, (300,300,400,400))
         self.background.draw(self.screen)
@@ -134,7 +132,7 @@ class Game:
         # intialisation de la variable en la remplissant de None
         self.projectiles = [None for i in range(50)]
         self.enemies = [None for i in range(10)]
-        self.player = Player(0, 0, 100, 100, self.projectiles, 50, True)
+        self.player = Player(0, 0, 16, 16, self.projectiles, 50, True)
         self.gamePause = False
         self.endMenu =  False
         self.gameTimeStart = pygame.time.get_ticks()
