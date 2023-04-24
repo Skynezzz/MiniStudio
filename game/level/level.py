@@ -2,25 +2,50 @@ import pygame, math
 
 class Level():
     
-    def __init__(self, background, num=0, enemy=None, map=None):
-        self.background = background
-        self.num = num
-        self. enemy = enemy
-        self.map = map
+    def __init__(self, levelNumber):
+        self.level = {}
+        a = 'game/level/level' + str(levelNumber) + '.txt'
+        docLevels = open(a, 'r')
+        levels = docLevels.read()
+        docLevels.close
+        for row in levels.split('\n'):
+            level = row.split(': ')
+            self.level[level[0]] = level[1]
+        ennemies = self.level['ennemies'].split(', ')
+        self.level['ennemies'] = []
+        for ennemy in ennemies:
+            ennemyProps = ennemy.split('/')
+            self.level['ennemies'].append({'time': int(ennemyProps[0]), 'type': ennemyProps[1]})
+        obstacles = self.level['obstacles'].split(', ')
+        self.level['obstacles'] = []
+        for obstacle in obstacles:
+            obstacleProps = obstacle.split('/')
+            self.level['obstacles'].append({'time': int(obstacleProps[0]), 'type': obstacleProps[1]})
 
-class Demo(Level):
-    
-    def __init__(self, background: str, num, enemy, map):
-        super().__init__(background, num, enemy, map)
-        self.background = pygame.transform.scale(pygame.image.load(self.background).convert(), (2150, 600))
-        self.screenWidth = 600
+        self.background = pygame.transform.scale(pygame.image.load(self.level['background']).convert(), (2150 * pygame.display.get_window_size()[1] / 600, pygame.display.get_window_size()[1]))
         self.scroll = 0
-        self.speed = 4
-        self.tiles = math.ceil(self.screenWidth / self.background.get_width()) + 1
+        self.speed = 10
+
+        print("ENEMY:" +  str(self.level['ennemies']))
+        print("OBSTACLES:" +  str(self.level['obstacles']))
+        
+    def ennemiesSpawn(self, timer):
+        ennemyTab = []
+        for ennemy in self.level['ennemies']:
+            if timer >= ennemy['time']:
+                ennemyTab += [ennemy['type']]
+        return ennemyTab
+
+    def obstaclesSpawn(self, timer):
+        obstacleTab = []
+        for obstacle in self.level['obstacles']:
+            if timer >= obstacle['time']:
+                obstacleTab += [obstacle['type']]
+        return obstacleTab
     
     def draw(self, screen):
         i = 0
-        while(i < self.tiles):
+        while(i < 100):
             screen.blit(self.background, (self.background.get_width()*i + self.scroll, 0))
             i += 1
         # FRAME FOR SCROLLING

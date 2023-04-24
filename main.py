@@ -1,6 +1,6 @@
 import pygame
 from random import randint
-from game.level.level import Demo
+from game.level.level import Level
 from entity.player import Player
 from entity.entity import Entity, Button
 from entity.enemy import SuicidePigeon, StrafingDrone, DrunkPigeon
@@ -33,7 +33,7 @@ class Game:
         self.settings = Setting()
         self.startButton = None
         self.level = None
-
+        
         # Boucle principale
         self.game = True
         while self.game:
@@ -80,7 +80,7 @@ class Game:
         if self.startButton.isPressed():
             self.initLevel()
             self.state = "game"
-            self.level = Demo("img/background.jpg", 0, None, None)
+            self.level = Level(1)
         elif self.optionButton.isPressed():
             self.state = "option"
         elif self.quitButton.isPressed():
@@ -106,6 +106,7 @@ class Game:
         self.enemies = [None for i in range(10)]
         self.player = Player(0, 0, 100, 100, self.projectiles, 50, True)
         self.gamePause = False
+        self.gameTimeStart = pygame.time.get_ticks()
 
     def updateLevel(self):
         if pygame.key.get_pressed()[pygame.K_ESCAPE] and self.actionCooldown < pygame.time.get_ticks():
@@ -120,14 +121,10 @@ class Game:
             self.level.update()
             
             # ajout d'ennemis
-            if pygame.time.get_ticks() > self.enemySpawnCooldown:
-                for i in range(len(self.enemies)):
-                    if not self.enemies[i]:
-                        self.enemies[i] = DrunkPigeon(10)
-                        # self.enemies[i] = StrafingDrone(10, self.screenSize[0], randint(100, 500), self.projectiles)
-                        # reset du cooldown de spawn
-                        self.enemySpawnCooldown = pygame.time.get_ticks() + 16 * 60 * 2
-                        break
+            self.level.ennemiesSpawn(pygame.time.get_ticks() - self.gameTimeStart)
+
+            # ajout d'obstacles
+            self.level.obstaclesSpawn(pygame.time.get_ticks() - self.gameTimeStart)
 
             # update de la position des projectiles
             for i in range(len(self.projectiles)):
