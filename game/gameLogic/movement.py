@@ -12,6 +12,8 @@ def move(settings, screen, player):
         player.up()
     if keyPressed[int(settings.settings['down'])]:
         player.down(screen)
+    if keyPressed[int(settings.settings['dead'])]:
+        player.takeDamage(10)
     if mousePressed == (1, 0, 0):
         player.launchProjectile()
     if mousePressed == (0, 0, 1):
