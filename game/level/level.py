@@ -14,19 +14,19 @@ class Demo(Level):
         super().__init__(background, num, enemy, map)
         self.background = pygame.transform.scale(pygame.image.load(self.background).convert(), (2150, 600))
         self.screenWidth = 600
-        self.scroll = 0
+        self.position = 0
         self.speed = 4
         self.tiles = math.ceil(self.screenWidth / self.background.get_width()) + 1
     
     def draw(self, screen):
         i = 0
         while(i < self.tiles):
-            screen.blit(self.background, (self.background.get_width()*i + self.scroll, 0))
+            screen.blit(self.background, (self.background.get_width()*i + self.position, 0))
             i += 1
-        # FRAME FOR SCROLLING
-        self.scroll -= self.speed
 
     def update(self):
+        # FRAME FOR SCROLLING
+        self.position -= self.speed
         # RESET THE SCROLL FRAME
-        if abs(self.scroll) > self.background.get_width():
-            self.scroll = 0
+        if abs(self.position) > self.background.get_width():
+            self.position = 0

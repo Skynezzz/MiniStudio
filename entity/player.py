@@ -7,7 +7,7 @@ class Player(Entity):
     def __init__(self, x: int, y: int, w: int, h: int, projectile, life: int, destruct: bool):
         super().__init__(destruct, x, y, w, h, spritePath="img/sprite_character.png")
         self.life = life
-        self.speed = 4
+        self.speed = 6
         self.angle = 0
         self.damage = False
         self.all_projectiles = projectile
@@ -25,7 +25,7 @@ class Player(Entity):
         self.life -= damageNumber
         self.damage = True
     
-    def draw(self, screen, dt):
+    def update(self, dt):
         self.timeNextFrame -= dt
 
         if self.timeNextFrame < 0:
@@ -40,6 +40,7 @@ class Player(Entity):
                     self.frame = (self.frame + 1) % 7
             self.actualFrame = pygame.Rect(self.frame * self.charaWidth, 0, self.charaWidth, self.charaHeigh)
 
+    def draw(self, screen):
         screen.blit(self.spriteSheet, dest=(self.rect.x, self.rect.y), area=self.actualFrame)
 
     def resetFireCooldown(self):
@@ -100,7 +101,7 @@ class Player(Entity):
 
             for projIndex in range(len(self.all_projectiles)):
                 if not self.all_projectiles[projIndex]:
-                    self.all_projectiles[projIndex] = Projectile("img/[Juan_Carlos_Brito]-Colombe.jpg", False, spawnX, spawnY, 50, 50, vect, True)
-                    self.all_projectiles[projIndex + 1] = Projectile("img/[Juan_Carlos_Brito]-Colombe.jpg", False, upX, upY, 50, 50, vect, True)
-                    self.all_projectiles[projIndex + 2] = Projectile("img/[Juan_Carlos_Brito]-Colombe.jpg", False, downX, downY, 50, 50, vect, True)
+                    self.all_projectiles[projIndex] = Projectile("img/[Juan_Carlos_Brito]-Colombe.jpg", False, spawnX, spawnY, 50, 50, vect, 1, True)
+                    self.all_projectiles[projIndex + 1] = Projectile("img/[Juan_Carlos_Brito]-Colombe.jpg", False, upX, upY, 50, 50, vect, 1, True)
+                    self.all_projectiles[projIndex + 2] = Projectile("img/[Juan_Carlos_Brito]-Colombe.jpg", False, downX, downY, 50, 50, vect, 1, True)
                     break
