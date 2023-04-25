@@ -65,12 +65,12 @@ class StrafingDrone(Enemy):
 
             for projIndex in range(len(self.all_projectiles)):
                 if not self.all_projectiles[projIndex]:
-                    self.all_projectiles[projIndex] = Projectile("img/projectiles_sheet.png", False, offSetX, offSetY, 52, 18, vect, 1, True)
+                    self.all_projectiles[projIndex] = Projectile("img/projectiles_sheet.png", False, offSetX, offSetY, 26, 9, vect, 1, 4, True)
                     break
 
 class DrunkPigeon(Enemy):
     def __init__(self, life, reverse=False):
-        super().__init__(life, 800, 250, 50, 50, spritePath="img/drone_little.png")
+        super().__init__(life, 1920, 250, 50, 50, spritePath="img/drone_little.png")
         # self.pathXAxis = 700
         self.speedVect = (-1, 0)
         self.reversed = reverse
@@ -83,6 +83,33 @@ class DrunkPigeon(Enemy):
             self.rect.y = 275 + math.cos(self.rect.x/80) * 250
         else:
             self.rect.y = 275 + math.sin(self.rect.x/80) * 250
+
+class Scientist(Enemy):
+    def __init__(self, life: int, spritePath: str):
+        super().__init__(life, 1920, 1000, w=spritesWidth*self.scale, h=spritesHeigh*self.scale, spritePath="img/scient-cat-Sheet.png")
+        self.speedVect = (-1, 0)
+        self.speed = 3
+        # Création de variables pour animation
+        self.scale = 5
+        spritesWidth, spritesHeigh = 80, 48
+        self.imgWidth = self.imgHeigh = 16
+        self.spriteY = 16
+        self.spriteSheet = pygame.transform.scale(pygame.image.load(spritePath).convert_alpha(), (spritesWidth * self.scale, spritesHeigh * self.scale))
+        self.frame = 0
+        self.actualFrame = pygame.Rect(self.frame * self.imgWidth * self.scale, self.spriteY * self.scale, self.imgWidth * self.scale, self.imgHeigh * self.scale)
+        self.timeNextFrame = 150
+
+    def update(self, dt):
+        # Algo animation
+        self.timeNextFrame -= dt
+        if self.timeNextFrame < 0:
+            self.timeNextFrame += 150
+            self.frame = (self.frame + 1) % (self.def_frame-1)
+            self.actualFrame = pygame.Rect(self.frame * self.imgWidth * self.scale, self.spriteY * self.scale, self.imgWidth * self.scale, self.imgHeigh * self.scale)
+
+    def draw(self, screen):
+        screen.blit(self.spriteSheet, dest=(self.rect.x, self.rect.y), area=self.actualFrame)
+
 
 class Boss(Enemy):
 
