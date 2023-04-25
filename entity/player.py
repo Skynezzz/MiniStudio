@@ -5,7 +5,7 @@ from entity.projectile import Projectile
 class Player(Entity):
 
     def __init__(self, x: int, y: int, w: int, h: int, projectile, life: int, destruct: bool):
-        super().__init__(destruct, x, y, w, h, spritePath="img/sprite_character.png")
+        super().__init__(destruct, x, y, w, h, spritePath="img/sprite_bird.png")
         self.life = life
         self.speed = 6
         self.angle = 0
