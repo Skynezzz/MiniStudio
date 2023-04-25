@@ -124,7 +124,7 @@ class Game:
             
     
     def drawEnd(self):
-        image = pygame.transform.scale(pygame.image.load("img/dora.jpg"),(self.screen.get_width()*0.8,self.screen.get_height()*0.7))
+        image = pygame.transform.scale(pygame.image.load("img/bg_gacha.png"),(self.screen.get_width()*0.76,self.screen.get_height()*0.745))
         self.screen.blit(image, (200,150))
         self.replayButton.draw(self.screen)
         self.homeButton.draw(self.screen)
