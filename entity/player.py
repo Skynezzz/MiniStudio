@@ -14,7 +14,7 @@ class Player(Entity):
         self.fireCooldown = pygame.time.get_ticks()
         self.abilityCooldown = pygame.time.get_ticks()
         # Création de variables pour animation
-        self.scale = 5
+        self.scale = 7
         self.charaWidth, self.charaHeigh = w, h
         self.spriteSheet = pygame.transform.scale(pygame.image.load("img/sprite_bird.png").convert_alpha(), (self.charaWidth * 5 * self.scale, self.charaHeigh * self.scale))
         self.frame = 0
@@ -62,7 +62,7 @@ class Player(Entity):
             self.rect.y -= self.speed
 
     def down(self, screen):
-        if self.rect.y + self.speed <= screen.get_size()[1] - self.rect.height:
+        if self.rect.y + self.speed <= screen.get_size()[1] - self.rect.height - 100:
             self.rect.y += self.speed
 
     def setImgAngle(self):
