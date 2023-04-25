@@ -75,7 +75,7 @@ class Game:
         elif self.state == "option":
             self.updateOption()
         elif self.state == "end" :
-            self.endMenu()
+            self.updateEnd()
         # timer
         timeEnd = pygame.time.get_ticks()
         if self.timeStart + 7 > timeEnd:
@@ -105,9 +105,10 @@ class Game:
         self.screen.blit(title, (self.screenSize[0]/2 - titleW/2, 0, 0, 0))
        
     def updateEnd(self):
-        self.homeButton = Button(self.screenSize[0]/2 - 365, self.screenSize[1]/2 - 70 - 160, 730, 140)
-        self.rewardButton = Button(self.screenSize[0]/2 - 365, self.screenSize[1]/2 - 70 - 160, 730, 140)
-        self.replayButton = Button(self.screenSize[0]/2 - 365, self.screenSize[1]/2 - 70 - 160, 730, 140)
+        print("updateEnd")
+        self.homeButton = Button(150, 300, "home")
+        self.rewardButton = Button(700, 650, "reward")
+        self.replayButton = Button(15, 50, "replay")
         if self.homeButton.isPressed():
             self.game = False
         elif self.rewardButton.isPressed():
@@ -118,9 +119,8 @@ class Game:
             self.level = Level(0)
     
     def drawEnd(self):
-        image = pygame.image.load("img/backgroundMenu.png")
-        self.screen.blit(image, (300,300,400,400))
-        self.background.draw(self.screen)
+        image = pygame.image.load("img/dora.jpg")
+        self.screen.blit(image, (640,360,2500,2500))
         self.startButton.draw(self.screen)
         self.homeButton.draw(self.screen)
         self.rewardButton.draw(self.screen)
@@ -143,7 +143,11 @@ class Game:
         self.obstacle = [None for i in range(10)]
         self.player = Player(0, 0, 16, 16, self.projectiles, 50, True)
         self.gamePause = False
+<<<<<<< HEAD
+        self.gameTimeStart = pygame.time.get_ticks()
+=======
         self.endMenu =  False
+>>>>>>> 5ddd8a8c555769aed49be8df3eb93330a5214873
 
     def updateLevel(self):
         if pygame.key.get_pressed()[pygame.K_ESCAPE] and self.actionCooldown < pygame.time.get_ticks():
@@ -154,8 +158,11 @@ class Game:
             # déplacement du joueur si il est vivant
             if not self.player.isDead():
                 move(self.settings, self.screen, self.player)
-                if self.player.isDead():
-                    self.endMenu.draw(self.screen)
+            elif self.player.isDead():
+                print("is dead")
+                self.state = "end"
+                self.updateEnd()
+                self.drawEnd()
             self.level.update()
             self.player.update(self.dt)
             
@@ -219,8 +226,7 @@ class Game:
             if i:
                 i.draw(self.screen)
 
-        if self.endMenu:
-            self.drawEnd.draw(self.screen)
+       
         # Mise à jour de l'affichage
         pygame.display.flip()
 
