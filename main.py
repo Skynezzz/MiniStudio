@@ -33,6 +33,9 @@ class Game:
         self.settings = Setting()
         self.startButton = None
         self.level = None
+
+        self.background = pygame.Surface(self.screenSize).convert_alpha()
+        self.background.blit(pygame.image.load("img/bg1.png"),(0,0), (0,0,self.screenSize[0],self.screenSize[1]))
         
         # Boucle principale
         self.game = True
@@ -78,9 +81,9 @@ class Game:
             pygame.time.delay(timeEnd - self.timeStart + 7)
                 
     def updateMenu(self):
-        self.startButton = Button(self.screenSize[0]/2 - 365, self.screenSize[1]/2 - 70 - 160, "start")
-        self.optionButton = Button(self.screenSize[0]/2 - 365, self.screenSize[1]/2 - 70, "option")
-        self.quitButton = Button(self.screenSize[0]/2 - 365, self.screenSize[1]/2 - 70 + 160, "quit")
+        self.startButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 - 100, "start")
+        self.optionButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 80, "option")
+        self.quitButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 260, "quit")
         if self.startButton.isPressed():
             self.initLevel()
             self.state = "game"
@@ -92,9 +95,13 @@ class Game:
             self.game = False
     
     def drawMenu(self):
+        self.screen.blit(self.background, (0,0,0,0))
         self.startButton.draw(self.screen)
         self.optionButton.draw(self.screen)
         self.quitButton.draw(self.screen)
+        title = pygame.transform.scale(pygame.image.load("img/game-title.png"), (256*7, 64*7))
+        titleW, titleH = 256*7, 64*7
+        self.screen.blit(title, (self.screenSize[0]/2 - titleW/2, 0, 0, 0))
        
     def updateEnd(self):
         self.homeButton = Button(self.screenSize[0]/2 - 365, self.screenSize[1]/2 - 70 - 160, 730, 140)
