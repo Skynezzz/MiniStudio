@@ -49,12 +49,12 @@ class StrafingDrone(Enemy):
         self.rect.x += self.speedVect[0] * self.speed
         self.rect.y += self.speedVect[1] * self.speed
         # avance puis monte et descend
-        if self.rect.x <= 700 and not self.threshold:
+        if self.rect.x <= 1000 and not self.threshold:
             self.speedVect = (0, -1)
             self.threshold = True
         elif self.rect.y <= 50:
             self.speedVect = (0, 1)
-        elif self.rect.y >= 550:
+        elif self.rect.y >= 900:
             self.speedVect = (0, -1)
         # fonction de tir des ennemies
         if self.threshold and pygame.time.get_ticks() > self.fireCooldown:
@@ -65,7 +65,7 @@ class StrafingDrone(Enemy):
 
             for projIndex in range(len(self.all_projectiles)):
                 if not self.all_projectiles[projIndex]:
-                    self.all_projectiles[projIndex] = Projectile("img/projectiles_sheet.png", False, offSetX, offSetY, 26, 9, vect, 1, 4, True)
+                    self.all_projectiles[projIndex] = Projectile("img/projectiles_sheet.png", False, offSetX, offSetY, 26, 9, vect, 3, 4, False)
                     break
 
 class DrunkPigeon(Enemy):

@@ -16,7 +16,7 @@ class Game:
 
         # Définir la taille de la fenêtre
         self.screenSize = (1920, 1080)
-        self.screen = pygame.display.set_mode(self.screenSize)
+        self.screen = pygame.display.set_mode(self.screenSize, pygame.FULLSCREEN)
         self.screenEntity = Entity(False, 0, 0, self.screenSize[0], self.screenSize[1])
 
         #Définis une clock pour limiter les actions
