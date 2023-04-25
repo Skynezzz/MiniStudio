@@ -105,23 +105,28 @@ class Game:
         self.screen.blit(title, (self.screenSize[0]/2 - titleW/2, 0, 0, 0))
        
     def updateEnd(self):
-        print("updateEnd")
-        self.homeButton = Button(150, 300, "home")
-        self.rewardButton = Button(700, 650, "reward")
-        self.replayButton = Button(15, 50, "replay")
+        
+        self.homeButton = Button(385, 525, "home")
+        self.rewardButton = Button(975, 525, "reward")
+        self.replayButton = Button(686, 700, "replay")
         if self.homeButton.isPressed():
-            self.game = False
+            print("home")
+            self.state = "menu"
         elif self.rewardButton.isPressed():
+            print("reward")
             self.state = "reward"
         elif self.replayButton.isPressed():
+            print("rejouer")
             self.initLevel()
             self.state = "game"
-            self.level = Level(0)
+            self.level = Level(1)
+            self.gameTimeStart = pygame.time.get_ticks()
+            
     
     def drawEnd(self):
-        image = pygame.image.load("img/dora.jpg")
-        self.screen.blit(image, (640,360,2500,2500))
-        self.startButton.draw(self.screen)
+        image = pygame.transform.scale(pygame.image.load("img/dora.jpg"),(self.screen.get_width()*0.8,self.screen.get_height()*0.7))
+        self.screen.blit(image, (200,150))
+        self.replayButton.draw(self.screen)
         self.homeButton.draw(self.screen)
         self.rewardButton.draw(self.screen)
         
@@ -143,11 +148,7 @@ class Game:
         self.obstacle = [None for i in range(10)]
         self.player = Player(0, 0, 16, 16, self.projectiles, 50, True)
         self.gamePause = False
-<<<<<<< HEAD
         self.gameTimeStart = pygame.time.get_ticks()
-=======
-        self.endMenu =  False
->>>>>>> 5ddd8a8c555769aed49be8df3eb93330a5214873
 
     def updateLevel(self):
         if pygame.key.get_pressed()[pygame.K_ESCAPE] and self.actionCooldown < pygame.time.get_ticks():
