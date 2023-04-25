@@ -5,7 +5,7 @@ from entity.projectile import Projectile
 class Player(Entity):
 
     def __init__(self, x: int, y: int, w: int, h: int, projectile, life: int, destruct: bool):
-        super().__init__(destruct, x, y, w, h, spritePath="img/sprite_character.png")
+        super().__init__(destruct, x, y, w, h, spritePath="img/sprite_bird.png")
         self.life = life
         self.speed = 6
         self.angle = 0
@@ -85,7 +85,7 @@ class Player(Entity):
 
             for projIndex in range(len(self.all_projectiles)):
                 if not self.all_projectiles[projIndex]:
-                    self.all_projectiles[projIndex] = Projectile("img/projectiles_sheet.png", False, offSetX, offSetY, 26, 9, vect, 3, 4, True)
+                    self.all_projectiles[projIndex] = Projectile("img/projectiles_sheet.png", False, offSetX, offSetY, 26, 11, vect, 3, 35, True)
                     break
     
     def juanAbility(self):

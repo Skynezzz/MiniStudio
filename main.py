@@ -16,7 +16,7 @@ class Game:
 
         # Définir la taille de la fenêtre
         self.screenSize = (1920, 1080)
-        self.screen = pygame.display.set_mode(self.screenSize, pygame.FULLSCREEN)
+        self.screen = pygame.display.set_mode(self.screenSize)
         self.screenEntity = Entity(False, 0, 0, self.screenSize[0], self.screenSize[1])
 
         #Définis une clock pour limiter les actions
@@ -50,7 +50,7 @@ class Game:
         pygame.quit()
     
     def draw(self):
-        self.screen.fill((0, 0, 0))
+        self.screen.fill("aliceblue")
         if self.state == "game":
             self.drawLevel()
         elif self.state == "menu":
@@ -61,8 +61,6 @@ class Game:
             self.drawEnd()
         # Mise à jour de l'affichage
         pygame.display.flip()
-        
-        
     
     def update(self):
         self.dt = self.clock.tick(60)
@@ -78,7 +76,6 @@ class Game:
         timeEnd = pygame.time.get_ticks()
         if self.timeStart + 7 > timeEnd:
             pygame.time.delay(timeEnd - self.timeStart + 7)
-        
                 
     def updateMenu(self):
         self.startButton = Button(self.screenSize[0]/2 - 365, self.screenSize[1]/2 - 70 - 160, "start")
@@ -124,10 +121,12 @@ class Game:
     def updateOption(self):
         if pygame.key.get_pressed()[pygame.K_BACKSPACE]:
             self.state = "menu"
-        self.optionButton = Button(self.screenSize[0]/2-30, self.screenSize[1]/2-30, "option")
+        self.optionButton = Button(self.screenSize[0]/2-30, self.screenSize[1]/2-30, "quit")
+        if self.optionButton.isPressed():
+            self.state = "menu"
         
     def drawOption(self):
-        pass
+        self.optionButton.draw(self.screen)
 
     def initLevel(self):
         # intialisation de la variable en la remplissant de None

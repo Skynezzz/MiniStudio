@@ -14,7 +14,7 @@ class Projectile(Entity):
         self.temp = speedVect
         self.speed = 6
         # Création de variables pour animation
-        self.scale = 2.5
+        self.scale = 5
         spritesWidth, spritesHeigh = 78, 128
         self.imgWidth, self.imgHeigh = w, h
         self.spriteSheet = pygame.transform.scale(pygame.image.load(spritePath).convert_alpha(), (spritesWidth * self.scale, spritesHeigh * self.scale))
