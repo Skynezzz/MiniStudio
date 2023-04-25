@@ -49,12 +49,12 @@ class StrafingDrone(Enemy):
         self.rect.x += self.speedVect[0] * self.speed
         self.rect.y += self.speedVect[1] * self.speed
         # avance puis monte et descend
-        if self.rect.x <= 700 and not self.threshold:
+        if self.rect.x <= 1000 and not self.threshold:
             self.speedVect = (0, -1)
             self.threshold = True
         elif self.rect.y <= 50:
             self.speedVect = (0, 1)
-        elif self.rect.y >= 550:
+        elif self.rect.y >= 900:
             self.speedVect = (0, -1)
         # fonction de tir des ennemies
         if self.threshold and pygame.time.get_ticks() > self.fireCooldown:
@@ -65,12 +65,12 @@ class StrafingDrone(Enemy):
 
             for projIndex in range(len(self.all_projectiles)):
                 if not self.all_projectiles[projIndex]:
-                    self.all_projectiles[projIndex] = Projectile("img/projectiles_sheet.png", False, offSetX, offSetY, 52, 18, vect, 1, True)
+                    self.all_projectiles[projIndex] = Projectile("img/projectiles_sheet.png", False, offSetX, offSetY, 26, 9, vect, 3, 4, False)
                     break
 
 class DrunkPigeon(Enemy):
     def __init__(self, life, reverse=False):
-        super().__init__(life, 800, 250, 50, 50, spritePath="img/drone_little.png")
+        super().__init__(life, 1920, 250, 50, 50, spritePath="img/drone_little.png")
         # self.pathXAxis = 700
         self.speedVect = (-1, 0)
         self.reversed = reverse
@@ -83,6 +83,35 @@ class DrunkPigeon(Enemy):
             self.rect.y = 275 + math.cos(self.rect.x/80) * 250
         else:
             self.rect.y = 275 + math.sin(self.rect.x/80) * 250
+
+class Scientist(Enemy):
+    def __init__(self, life: int):
+        super().__init__(life, 1000, 700, 80, 80, spritePath="img/scient-cat-Sheet.png")
+        self.speedVect = (-1, 0)
+        self.speed = 7
+        # Création de variables pour animation
+        self.scale = 5
+        spritesWidth, spritesHeigh = 80, 48
+        self.imgWidth = self.imgHeigh = 16
+        self.spriteY = 16
+        self.spriteSheet = pygame.transform.scale(pygame.image.load("img/scient-cat-Sheet.png").convert_alpha(), (spritesWidth * self.scale, spritesHeigh * self.scale))
+        self.frame = 0
+        self.actualFrame = pygame.Rect(self.frame * self.imgWidth * self.scale, self.spriteY * self.scale, self.imgWidth * self.scale, self.imgHeigh * self.scale)
+        self.timeNextFrame = 150
+
+    def update(self, dt):
+        self.rect.x += self.speedVect[0] * self.speed
+        self.rect.y += self.speedVect[1] * self.speed
+        # Algo animation
+        self.timeNextFrame -= dt
+        if self.timeNextFrame < 0:
+            self.timeNextFrame += 150
+            self.frame = (self.frame + 1) % (4)
+            self.actualFrame = pygame.Rect(self.frame * self.imgWidth * self.scale, self.spriteY * self.scale, self.imgWidth * self.scale, self.imgHeigh * self.scale)
+
+    def draw(self, screen):
+        screen.blit(self.spriteSheet, dest=(self.rect.x, self.rect.y), area=self.actualFrame)
+
 
 class Boss(Enemy):
 

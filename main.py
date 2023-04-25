@@ -16,7 +16,7 @@ class Game:
 
         # Définir la taille de la fenêtre
         self.screenSize = (1920, 1080)
-        self.screen = pygame.display.set_mode(self.screenSize)
+        self.screen = pygame.display.set_mode(self.screenSize, pygame.FULLSCREEN)
         self.screenEntity = Entity(False, 0, 0, self.screenSize[0], self.screenSize[1])
 
         #Définis une clock pour limiter les actions
@@ -33,6 +33,10 @@ class Game:
         self.settings = Setting()
         self.startButton = None
         self.level = None
+
+        # chargement et réduction de l'image de background pour un affichage moins gourmand
+        self.background = pygame.Surface(self.screenSize).convert_alpha()
+        self.background.blit(pygame.image.load("img/bg1.png"),(0,0), (0,0,self.screenSize[0],self.screenSize[1]))
         
         # Boucle principale
         self.game = True
@@ -78,22 +82,27 @@ class Game:
             pygame.time.delay(timeEnd - self.timeStart + 7)
                 
     def updateMenu(self):
-        self.startButton = Button(self.screenSize[0]/2 - 365, self.screenSize[1]/2 - 70 - 160, "start")
-        self.optionButton = Button(self.screenSize[0]/2 - 365, self.screenSize[1]/2 - 70, "option")
-        self.quitButton = Button(self.screenSize[0]/2 - 365, self.screenSize[1]/2 - 70 + 160, "quit")
+        self.startButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 - 100, "start")
+        self.optionButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 80, "option")
+        self.quitButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 260, "quit")
         if self.startButton.isPressed():
             self.initLevel()
             self.state = "game"
             self.level = Level(1)
+            self.gameTimeStart = pygame.time.get_ticks()
         elif self.optionButton.isPressed():
             self.state = "option"
         elif self.quitButton.isPressed():
             self.game = False
     
     def drawMenu(self):
+        self.screen.blit(self.background, (0,0,0,0))
         self.startButton.draw(self.screen)
         self.optionButton.draw(self.screen)
         self.quitButton.draw(self.screen)
+        title = pygame.transform.scale(pygame.image.load("img/game-title.png"), (256*7, 64*7))
+        titleW, titleH = 256*7, 64*7
+        self.screen.blit(title, (self.screenSize[0]/2 - titleW/2, 0, 0, 0))
        
     def updateEnd(self):
         print("updateEnd")
@@ -131,9 +140,14 @@ class Game:
         # intialisation de la variable en la remplissant de None
         self.projectiles = [None for i in range(50)]
         self.enemies = [None for i in range(10)]
+        self.obstacle = [None for i in range(10)]
         self.player = Player(0, 0, 16, 16, self.projectiles, 50, True)
         self.gamePause = False
+<<<<<<< HEAD
         self.gameTimeStart = pygame.time.get_ticks()
+=======
+        self.endMenu =  False
+>>>>>>> 5ddd8a8c555769aed49be8df3eb93330a5214873
 
     def updateLevel(self):
         if pygame.key.get_pressed()[pygame.K_ESCAPE] and self.actionCooldown < pygame.time.get_ticks():
@@ -153,10 +167,10 @@ class Game:
             self.player.update(self.dt)
             
             # ajout d'ennemis
-            self.level.ennemiesSpawn(pygame.time.get_ticks() - self.gameTimeStart)
+            self.level.ennemiesSpawn(pygame.time.get_ticks() - self.gameTimeStart, self)
 
-            # ajout d'obstacles
-            self.level.obstaclesSpawn(pygame.time.get_ticks() - self.gameTimeStart)
+            # ajout d'obstacle
+            #self.level.obstaclesSpawn(pygame.time.get_ticks() - self.gameTimeStart, self)
 
             # update de la position des projectiles
             for i in range(len(self.projectiles)):
