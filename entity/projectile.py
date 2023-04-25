@@ -19,7 +19,7 @@ class Projectile(Entity):
         self.imgWidth, self.imgHeigh = w, h
         self.spriteSheet = pygame.transform.scale(pygame.image.load(spritePath).convert_alpha(), (spritesWidth * self.scale, spritesHeigh * self.scale))
         self.frame = 0
-        self.actualFrame = pygame.Rect(self.frame * self.imgWidth * self.scale, self.spriteY * self.scale, self.imgWidth * self.scale, self.imgHeigh * self.scale)
+        self.curentFrame = pygame.Rect(self.frame * self.imgWidth * self.scale, self.spriteY * self.scale, self.imgWidth * self.scale, self.imgHeigh * self.scale)
         self.timeNextFrame = 150
         # Variables de rotation
         self.angle = math.degrees(math.acos((speedVect[0]*vect[0] + speedVect[1]*vect[1]) / math.sqrt(speedVect[0]**2 + speedVect[1]**2) * math.sqrt(vect[0]**2 + vect[1]**2)))
@@ -33,10 +33,13 @@ class Projectile(Entity):
         if self.timeNextFrame < 0:
             self.timeNextFrame += 150
             self.frame = (self.frame + 1) % (self.def_frame-1)
-            self.actualFrame = pygame.Rect(self.frame * self.imgWidth * self.scale, self.spriteY * self.scale, self.imgWidth * self.scale, self.imgHeigh * self.scale)
+            if self.friendly:
+                self.curentFrame = pygame.Rect(self.frame * self.imgWidth * self.scale, self.spriteY * self.scale, self.imgWidth * self.scale, self.imgHeigh * self.scale)
+            else:
+                self.curentFrame = pygame.Rect(self.frame * self.imgWidth * self.scale, self.spriteY * self.scale, self.imgWidth * self.scale, self.imgHeigh * self.scale)
 
     def draw(self, screen):
-        screen.blit(self.spriteSheet, dest=(self.rect.x, self.rect.y), area=self.actualFrame)
+        screen.blit(self.spriteSheet, dest=(self.rect.x, self.rect.y), area=self.curentFrame)
 
     def setImgAngle(self):
         if self.temp[1] > 0:

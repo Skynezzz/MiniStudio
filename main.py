@@ -34,6 +34,7 @@ class Game:
         self.startButton = None
         self.level = None
 
+        # chargement et réduction de l'image de background pour un affichage moins gourmand
         self.background = pygame.Surface(self.screenSize).convert_alpha()
         self.background.blit(pygame.image.load("img/bg1.png"),(0,0), (0,0,self.screenSize[0],self.screenSize[1]))
         
