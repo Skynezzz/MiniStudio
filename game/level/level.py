@@ -1,4 +1,6 @@
 import pygame, math
+from entity.enemy import StrafingDrone
+from random import randint
 
 class Level():
     
@@ -21,27 +23,37 @@ class Level():
         for obstacle in obstacles:
             obstacleProps = obstacle.split('/')
             self.level['obstacles'].append({'time': int(obstacleProps[0]), 'type': obstacleProps[1]})
+        self.level['difficulty'] = int(self.level['difficulty'])
 
         self.background = pygame.transform.scale(pygame.image.load(self.level['background']).convert(), (5012 * pygame.display.get_window_size()[1] / 1280, pygame.display.get_window_size()[1]))
         self.position = 0
         self.speed = 10
-
-        print("ENEMY:" +  str(self.level['ennemies']))
-        print("OBSTACLES:" +  str(self.level['obstacles']))
         
-    def ennemiesSpawn(self, timer):
-        ennemyTab = []
-        for ennemy in self.level['ennemies']:
-            if timer >= ennemy['time']:
-                ennemyTab += [ennemy['type']]
-        return ennemyTab
+    def ennemiesSpawn(self, timer, game):
+        #print("timer:" + str(timer))
+        for i in range(len(self.level['ennemies'])-1, -1, -1):
+            if timer >= self.level['ennemies'][i]['time'] * 1000 + 5000:
+                print(timer)
+                print(self.level['ennemies'][i])
+                for j in range(len(game.enemies)):
+                    if game.enemies[j] == None:
+                        game.enemies[j] = StrafingDrone(self.level['difficulty'], pygame.display.get_window_size()[0], randint(0, pygame.display.get_window_size()[1]), game.projectiles)
+                        print("spawned")
+                        break
+                self.level['ennemies'].pop(i)
 
-    def obstaclesSpawn(self, timer):
-        obstacleTab = []
-        for obstacle in self.level['obstacles']:
-            if timer >= obstacle['time']:
-                obstacleTab += [obstacle['type']]
-        return obstacleTab
+    def obstaclesSpawn(self, timer, game):
+        #print("timer:" + str(timer))
+        for i in range(len(self.level['obstacles'])-1, -1, -1):
+            if timer >= self.level['obstacles'][i]['time'] * 1000 + 5000:
+                print(timer)
+                print(self.level['obstacles'][i])
+                for j in range(len(game.obstacles)):
+                    if game.obstacles[j] == None:
+                        #game.obstacles[j] = Obstacle()
+                        print("spawned")
+                        break
+                self.level['obstacles'].pop(i)
     
     def draw(self, screen):
         i = 0

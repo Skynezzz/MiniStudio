@@ -88,6 +88,7 @@ class Game:
             self.initLevel()
             self.state = "game"
             self.level = Level(1)
+            self.gameTimeStart = pygame.time.get_ticks()
         elif self.optionButton.isPressed():
             self.state = "option"
         elif self.quitButton.isPressed():
@@ -132,10 +133,10 @@ class Game:
         # intialisation de la variable en la remplissant de None
         self.projectiles = [None for i in range(50)]
         self.enemies = [None for i in range(10)]
+        self.obstacle = [None for i in range(10)]
         self.player = Player(0, 0, 16, 16, self.projectiles, 50, True)
         self.gamePause = False
         self.endMenu =  False
-        self.gameTimeStart = pygame.time.get_ticks()
 
     def updateLevel(self):
         if pygame.key.get_pressed()[pygame.K_ESCAPE] and self.actionCooldown < pygame.time.get_ticks():
@@ -152,10 +153,10 @@ class Game:
             self.player.update(self.dt)
             
             # ajout d'ennemis
-            self.level.ennemiesSpawn(pygame.time.get_ticks() - self.gameTimeStart)
+            self.level.ennemiesSpawn(pygame.time.get_ticks() - self.gameTimeStart, self)
 
-            # ajout d'obstacles
-            self.level.obstaclesSpawn(pygame.time.get_ticks() - self.gameTimeStart)
+            # ajout d'obstacle
+            #self.level.obstaclesSpawn(pygame.time.get_ticks() - self.gameTimeStart, self)
 
             # update de la position des projectiles
             for i in range(len(self.projectiles)):
