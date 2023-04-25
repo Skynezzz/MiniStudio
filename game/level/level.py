@@ -33,8 +33,6 @@ class Level():
         #print("timer:" + str(timer))
         for i in range(len(self.level['ennemies'])-1, -1, -1):
             if timer >= self.level['ennemies'][i]['time'] * 1000 + 5000:
-                print(timer)
-                print(self.level['ennemies'][i])
                 for j in range(len(game.enemies)):
                     if game.enemies[j] == None:
                         game.enemies[j] = StrafingDrone(self.level['difficulty'], pygame.display.get_window_size()[0], randint(0, pygame.display.get_window_size()[1]), game.projectiles)
@@ -46,8 +44,6 @@ class Level():
         #print("timer:" + str(timer))
         for i in range(len(self.level['obstacles'])-1, -1, -1):
             if timer >= self.level['obstacles'][i]['time'] * 1000 + 5000:
-                print(timer)
-                print(self.level['obstacles'][i])
                 for j in range(len(game.obstacles)):
                     if game.obstacles[j] == None:
                         #game.obstacles[j] = Obstacle()
