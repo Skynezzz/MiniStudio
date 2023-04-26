@@ -34,9 +34,11 @@ class Game:
         self.level = None
 
         # chargement et réduction de l'image de background pour un affichage moins gourmand
-        alpha = 125
         self.background = pygame.Surface(self.screenSize).convert_alpha()
         self.background.blit(pygame.image.load("img/bg1.png"),(0,0), (0,0,self.screenSize[0],self.screenSize[1]))
+        
+        self.backgroundGacha = pygame.Surface(self.screenSize).convert_alpha()
+        self.backgroundGacha.blit(pygame.image.load("img/bg_gacha.png"),(0,0), (0,0,self.screenSize[0],self.screenSize[1]))
         
         #initialisation des boutons
         self.backButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 260 , "menu")
@@ -46,6 +48,8 @@ class Game:
         self.startButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 - 100, "start")
         self.optionButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 80, "option")
         self.quitButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 260, "quit")
+        self.openButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 180, "open")
+        self.back1Button = Button(self.screenSize[0] - 680 + 100, self.screenSize[1]/2 + 400 , "menu")
 
         
         # Boucle principale
@@ -73,6 +77,8 @@ class Game:
             self.drawOption()
         elif self.state == "end":
             self.drawEnd()
+        elif self.state == "gacha":
+            self.drawReward()
         # Mise à jour de l'affichage
         pygame.display.flip()
     
@@ -81,26 +87,33 @@ class Game:
         if self.state == "game":
             self.updateLevel()
         elif self.state == "menu":
+            print("menu")
             self.updateMenu()
         elif self.state == "option":
             self.updateOption()
         elif self.state == "end" :
             self.updateEnd()
+        elif self.state == "gacha":
+            self.updateReward()
         # timer
         timeEnd = pygame.time.get_ticks()
         if self.timeStart + 7 > timeEnd:
             pygame.time.delay(timeEnd - self.timeStart + 7)
+            print("cooldown")
                 
     def updateMenu(self):
         
-        if self.startButton.isPressed():
+        if self.startButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
+            self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
             self.initLevel()
             self.state = "game"
             self.level = Level(1)
             self.gameTimeStart = pygame.time.get_ticks()
-        elif self.optionButton.isPressed():
+        elif self.optionButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
+            self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
             self.state = "option"
-        elif self.quitButton.isPressed():
+        elif self.quitButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
+            self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
             self.game = False
     
     def drawMenu(self):
@@ -114,13 +127,17 @@ class Game:
        
     def updateEnd(self):
         
-        if self.backButton.isPressed():
+        if self.backButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
+            self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
             print("back")
             self.state = "menu"
-        elif self.gachaButton.isPressed():
+        elif self.gachaButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
+            self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
             print("gacha")
             self.state = "gacha"
-        elif self.replayButton.isPressed():
+        elif self.replayButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
+            self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
+            print("rejouer")
             self.initLevel()
             self.state = "game"
             self.level = Level(1)
@@ -131,15 +148,25 @@ class Game:
         self.drawLevel()
         self.game_overButton.draw(self.screen)
         self.replayButton.draw(self.screen)
-        self.backButton.draw(self.screen)
         self.gachaButton.draw(self.screen)
+        self.backButton.draw(self.screen)
     
     def updateReward (self):
-        pass
+        
+        if self.openButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
+            self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
+            print("ouverture")
+            self.state = "open"
+        if self.back1Button.isPressed() and self.actionCooldown < pygame.time.get_ticks():
+            self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
+            print("back")
+            self.state = "menu"
     
     def drawReward(self):
-        image = pygame.transform.scale(pygame.image.load("img/bg_gacha.png"),(self.screen.get_width()*0.76,self.screen.get_height()*0.745))
-        self.screen.blit(image, (200,150))
+        image = pygame.transform.scale(pygame.image.load("img/bg_gacha.png"),(self.screenSize[0]*1,self.screenSize[1]*1))
+        self.screen.blit(image, (0,0))
+        self.openButton.draw(self.screen)
+        self.back1Button.draw(self.screen)
         
     def updateOption(self):
         if pygame.key.get_pressed()[pygame.K_BACKSPACE]:
@@ -162,8 +189,8 @@ class Game:
 
     def updateLevel(self):
         if pygame.key.get_pressed()[pygame.K_ESCAPE] and self.actionCooldown < pygame.time.get_ticks():
-            self.gamePause = not self.gamePause
             self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
+            self.gamePause = not self.gamePause
 
         if not self.gamePause:
             # déplacement du joueur si il est vivant
