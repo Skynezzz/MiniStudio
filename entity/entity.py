@@ -29,7 +29,6 @@ class Button(Entity):
     
     def isPressed(self):
         if pygame.mouse.get_pressed(num_buttons=3)[0]:
-            print("mdr")
             mouseX, mouseY = pygame.mouse.get_pos()
             return self.rectOverlap(Entity(False, mouseX, mouseY))
 
