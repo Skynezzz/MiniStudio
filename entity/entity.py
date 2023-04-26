@@ -25,6 +25,8 @@ class Button(Entity):
         self.type = type
         self.hover = False
         self.image = pygame.transform.scale(pygame.image.load("img/ui_sheet.png").convert_alpha(), (1920, 960))
+        self.image2 = pygame.transform.scale(pygame.image.load("img/ui_hold_to_open_Sheet.png").convert_alpha(), (512*5, 32*5))
+        self.oeuf = pygame.transform.scale(pygame.image.load("img/ui_eggs2-Sheet.png").convert_alpha(), (1442*5, 112*5))
         self.background = pygame.Surface((self.rect.width,self.rect.height)).convert_alpha()
     
     def isPressed(self):
@@ -62,6 +64,10 @@ class Button(Entity):
                 screen.blit(self.image, (self.rect.x + 11*scale, self.rect.y + 2*scale), (101*scale, 65*scale, 78*scale, 10*scale))
             elif self.type == "pause":
                 screen.blit(self.image, (self.rect.x + 7*scale, self.rect.y + 2*scale), (58*scale, 51*scale, 7*scale, 7*scale))
+            elif self.type == "open":
+                screen.blit(self.image2, (self.rect.x + 8*5, self.rect.y + 5*5), (401*5, 19*5, 93*5, 10*5))
+            elif self.type == "oeuf":
+                screen.blit(self.oeuf, (self.rect.x + 8*5, self.rect.y + 5*5), (811*5, 4*5, 147*5, 107*5))
             elif self.type == "win":
                 screen.blit(self.image, (self.rect.x + 23*scale, self.rect.y + 2*scale), (189*scale, 51*scale, 57*scale, 10*scale))
             
@@ -83,7 +89,50 @@ class Button(Entity):
                 screen.blit(self.image, (self.rect.x + 11*scale, self.rect.y + 2*scale), (101*scale, 65*scale, 78*scale, 10*scale))
             elif self.type == "pause":
                 screen.blit(self.image, (self.rect.x + 7*scale, self.rect.y + 2*scale), (43*scale, 51*scale, 7*scale, 7*scale))
-            elif self.type == "win":
-                screen.blit(self.image, (self.rect.x + 23*scale, self.rect.y + 2*scale), (189*scale, 35*scale, 57*scale, 10*scale))
+            elif self.type == "open":
+                screen.blit(self.image2, (self.rect.x + 8*5, self.rect.y + 5*5), (17*5, 19*5, 93*5, 10*5))
+            elif self.type == "oeuf":
+                screen.blit(self.oeuf, (self.rect.x + 8*5, self.rect.y + 5*5), (55*5, 32*5, 46*5, 56*5))
         
-        
+class Egg(Entity):
+
+    def __init__(self, x: int, y: int, type: str):
+        super().__init__(False, x, y, 100*5, 100*5, "img/ui_eggs2-Sheet.png")
+        self.type = type
+        self.hover = False
+        self.oeuf = pygame.transform.scale(pygame.image.load("img/ui_eggs2-Sheet.png").convert_alpha(), (1442*5, 112*5))
+        self.background = pygame.Surface((self.rect.width,self.rect.height)).convert_alpha()
+        self.w = 160
+        self.h = 114
+        self.scale = 5
+        self.spriteSheet = pygame.transform.scale(pygame.image.load("img/ui_eggs2-Sheet.png").convert_alpha(), (self.w * 5 * self.scale, self.h * self.scale))
+        self.frame = 0
+        # Création de variables pour animation
+        self.actualFrame = pygame.Rect(self.frame * self.w * self.scale, 0, self.w * self.scale, self.h * self.scale)
+        self.timeNextFrame = 150
+    
+    def isPressed(self):
+        if pygame.mouse.get_pressed(num_buttons=3)[0]:
+            mouseX, mouseY = pygame.mouse.get_pos()
+            return self.rectOverlap(Entity(False, mouseX, mouseY))
+    
+    def update(self, dt):
+        print("updateEgg")
+        self.timeNextFrame -= dt
+        print(self.timeNextFrame)
+        if self.timeNextFrame < 0:
+            self.timeNextFrame += 150
+            if self.frame >= 9:
+                self.frame = 0
+            else:
+                self.frame = (self.frame + 1) % 8
+        self.actualFrame = pygame.Rect(self.frame * self.w * self.scale, 0, self.w * self.scale, self.h * self.scale)
+
+    def draw(self, screen): 
+        mouseX, mouseY = pygame.mouse.get_pos()
+        if self.rectOverlap(Entity(False, mouseX, mouseY)):
+            if self.type == "oeuf":
+                screen.blit(self.oeuf, (self.rect.x + 8*5, self.rect.y + 1*5), area = self.actualFrame)
+        else:
+            if self.type == "oeuf":
+                screen.blit(self.oeuf, (self.rect.x + 60*5, self.rect.y + 40*5), (44*self.scale, 26*self.scale, 69*self.scale, 70*self.scale))

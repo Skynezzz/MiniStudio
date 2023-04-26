@@ -2,7 +2,7 @@ import pygame
 from random import randint
 from game.level.level import Level
 from entity.player import Player
-from entity.entity import Entity, Button
+from entity.entity import Entity, Button, Egg
 from entity.enemy import SuicidePigeon, StrafingDrone, DrunkPigeon, Boss
 from game.gameLogic.movement import move
 from settings import Setting
@@ -63,9 +63,8 @@ class Game:
         self.quitButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 260, "quit")
         self.openButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 180, "open")
         self.back1Button = Button(self.screenSize[0] - 680 + 100, self.screenSize[1]/2 + 400 , "menu")
-
-        # bouton menu option
-        self.optionQuitButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 400, "menu")
+        self.oeufOpening = Egg(self.screenSize[0]/2 - 550 + 100, self.screenSize[1]/2 - 450, "oeuf")
+        
         
         # Boucle principale
         self.game = True
@@ -95,8 +94,8 @@ class Game:
             self.drawEnd()
         elif self.state == "gacha":
             self.drawReward()
-        elif self.state == "win":
-            self.drawWin()
+        elif self.state == "oeuf":
+            self.drawEgg()
         # Mise à jour de l'affichage
         pygame.display.flip()
     
@@ -187,8 +186,11 @@ class Game:
         self.gachaButton.draw(self.screen)
         self.backButton.draw(self.screen)
     
-    def updateReward (self):
-        
+    def updateReward(self):
+        self.oeufOpening.update(self.dt)
+        if self.oeufOpening.isPressed() and self.actionCooldown < pygame.time.get_ticks():
+            self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
+            self.state = "oeuf"
         if self.openButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
             self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
             self.state = "open"
@@ -199,12 +201,27 @@ class Game:
     def drawReward(self):
         image = pygame.transform.scale(pygame.image.load("img/bg_gacha.png"),(self.screenSize[0]*1,self.screenSize[1]*1))
         self.screen.blit(image, (0,0))
+        self.oeufOpening.draw(self.screen)
         self.openButton.draw(self.screen)
         self.back1Button.draw(self.screen)
-        
-    def rect_overlap(self, x1, x2, y1, y2, w1, w2, h1, h2):
-        return x1 < x2 + w2 and x1 + w1 > x2 and y1 < y2 + h2 and y1 + h1 > y2
-
+    
+    def updateEgg(self):
+        print("updateEgg")
+        # Création de variables pour animation
+        Egg.timeNextFrame -= self.dt
+        if Egg.timeNextFrame < 0:
+            Egg.timeNextFrame += 150
+            if Egg.frame >= 9:
+                Egg.frame = 0
+            else:
+                Egg.frame = (Egg.frame + 1) % 8
+        Egg.actualFrame = pygame.Rect(Egg.frame * Egg.w * Egg.scale, 0, Egg.w * Egg.scale, Egg.h * Egg.scale)
+    
+    def drawEgg(self):
+        Egg.update(self.dt)
+        Egg.rect.update(Egg.rect.x, Egg.rect.y, 160*Egg.scale, 160*Egg.scale)
+        Egg.draw(self.screen)
+    
     def updateOption(self):
         mouseX, mouseY = pygame.mouse.get_pos()
         if pygame.key.get_pressed()[pygame.K_BACKSPACE]:
