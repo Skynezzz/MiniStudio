@@ -31,7 +31,7 @@ class SuicidePigeon(Enemy):
         self.imgHeigh = 32
         self.sprite = pygame.transform.scale(pygame.image.load("img/drone.png"), (self.imgWidth*self.scale, self.imgHeigh*self.scale))
         self.speedVect = (-1, 0)
-        self.speed = 12
+        self.speed = 20
 
     def update(self, dt):
         self.rect.x += self.speedVect[0] * self.speed
@@ -65,7 +65,7 @@ class StrafingDrone(Enemy):
         self.rect.x += self.speedVect[0] * self.speed
         self.rect.y += self.speedVect[1] * self.speed
         # avance puis monte et descend
-        if self.rect.x <= 1000 and not self.threshold:
+        if self.rect.x <= 1500 and not self.threshold:
             self.speedVect = (0, -1)
             self.threshold = True
         elif self.rect.y <= 50:
@@ -98,7 +98,7 @@ class DrunkPigeon(Enemy):
         self.threshold = False
         self.speedVect = (-1, 0)
         self.reversed = reverse
-        self.speed = 3
+        self.speed = 6
         self.all_projectiles = projectile
         self.fireCooldown = pygame.time.get_ticks()
 

@@ -260,9 +260,6 @@ class Game:
         # Affichage du jeu
         self.level.draw(self.screen)
         self.PauseButton.draw(self.screen)
-
-
-
         # Affichage du joueur
         if self.player:
             self.player.draw(self.screen)
