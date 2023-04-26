@@ -35,8 +35,19 @@ class Game:
         self.level = None
 
         # chargement et réduction de l'image de background pour un affichage moins gourmand
+        alpha = 125
         self.background = pygame.Surface(self.screenSize).convert_alpha()
         self.background.blit(pygame.image.load("img/bg1.png"),(0,0), (0,0,self.screenSize[0],self.screenSize[1]))
+        
+        #initialisation des boutons
+        self.backButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 260 , "menu")
+        self.gachaButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 80 , "gacha")
+        self.replayButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 - 100, "replay")
+        self.game_overButton = Button(self.screenSize[0]/2 - 460 + 100, self.screenSize[1]/2 - 300, "game_over")
+        self.startButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 - 100, "start")
+        self.optionButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 80, "option")
+        self.quitButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 260, "quit")
+
         
         # Boucle principale
         self.game = True
@@ -82,9 +93,7 @@ class Game:
             pygame.time.delay(timeEnd - self.timeStart + 7)
                 
     def updateMenu(self):
-        self.startButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 - 100, "start")
-        self.optionButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 80, "option")
-        self.quitButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 260, "quit")
+        
         if self.startButton.isPressed():
             self.initLevel()
             self.state = "game"
@@ -106,17 +115,13 @@ class Game:
        
     def updateEnd(self):
         
-        self.homeButton = Button(385, 525, "home")
-        self.rewardButton = Button(975, 525, "reward")
-        self.replayButton = Button(686, 700, "replay")
-        if self.homeButton.isPressed():
-            print("home")
+        if self.backButton.isPressed():
+            print("back")
             self.state = "menu"
-        elif self.rewardButton.isPressed():
-            print("reward")
-            self.state = "reward"
+        elif self.gachaButton.isPressed():
+            print("gacha")
+            self.state = "gacha"
         elif self.replayButton.isPressed():
-            print("rejouer")
             self.initLevel()
             self.state = "game"
             self.level = Level(1)
@@ -124,12 +129,18 @@ class Game:
             
     
     def drawEnd(self):
+        self.drawLevel()
+        self.game_overButton.draw(self.screen)
+        self.replayButton.draw(self.screen)
+        self.backButton.draw(self.screen)
+        self.gachaButton.draw(self.screen)
+    
+    def updateReward (self):
+        pass
+    
+    def drawReward(self):
         image = pygame.transform.scale(pygame.image.load("img/bg_gacha.png"),(self.screen.get_width()*0.76,self.screen.get_height()*0.745))
         self.screen.blit(image, (200,150))
-        self.replayButton.draw(self.screen)
-        self.homeButton.draw(self.screen)
-        self.rewardButton.draw(self.screen)
-        
         
     def updateOption(self):
         if pygame.key.get_pressed()[pygame.K_BACKSPACE]:
@@ -226,9 +237,5 @@ class Game:
         for i in self.projectiles:
             if i:
                 i.draw(self.screen)
-
-       
-        # Mise à jour de l'affichage
-        pygame.display.flip()
 
 Game()
