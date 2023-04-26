@@ -87,7 +87,7 @@ class StrafingDrone(Enemy):
             self.resetFireCooldown()
             for projIndex in range(len(self.all_projectiles)):
                 if not self.all_projectiles[projIndex]:
-                    self.all_projectiles[projIndex] = Projectile("img/fusée_rouge-Sheet.png", False, offSetX, offSetY, 26, 16, vect, 3, False)
+                    self.all_projectiles[projIndex] = Projectile("img/fusée_rouge-Sheet.png", False, offSetX, offSetY, 23, 7, vect, 3, False)
                     break
 
 
@@ -205,7 +205,7 @@ class Boss(Enemy):
                 self.Cooldown = 1000
     
     def draw(self, screen):
-        self.rect.update(self.rect.x, self.rect.y, self.imgWidth*self.scale, self.imgHeigh*self.scale)
+        self.rect.update(self.rect.x+self.spriteX, self.rect.y+self.spriteY, (self.imgWidth-27)*self.scale, (self.imgHeigh-10)*self.scale)
         screen.blit(self.spriteSheet, dest=(self.rect.x, self.rect.y), area=self.actualFrame)
 
     def canShot(self):
