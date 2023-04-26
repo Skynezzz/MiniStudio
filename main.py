@@ -174,7 +174,8 @@ class Game:
             # déplacement du joueur si il est vivant
             if not self.player.isDead():
                 move(self.settings, self.screen, self.player)
-            elif self.player.isDead():
+            else:
+                self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
                 print("is dead")
                 self.state = "end"
                 self.updateEnd()
