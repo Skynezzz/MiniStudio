@@ -13,10 +13,6 @@ class Enemy(Entity):
 
     def isDead(self):
         return self.life <= 0
-    
-    def update(self):
-        self.rect.x += self.speedVect[0] * self.speed
-        self.rect.y += self.speedVect[1] * self.speed
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
@@ -28,6 +24,10 @@ class SuicidePigeon(Enemy):
         super().__init__(life, x, y, 50, 50, spritePath="img/drone_little.png")
         self.speedVect = (-1, 0)
         self.speed = 4
+
+    def update(self, dt):
+        self.rect.x += self.speedVect[0] * self.speed
+        self.rect.y += self.speedVect[1] * self.speed
     
 
 class StrafingDrone(Enemy):
@@ -45,7 +45,7 @@ class StrafingDrone(Enemy):
         self.fireCooldown = pygame.time.get_ticks()+10*200
 
 
-    def update(self):
+    def update(self, dt):
         self.rect.x += self.speedVect[0] * self.speed
         self.rect.y += self.speedVect[1] * self.speed
         # avance puis monte et descend
@@ -76,7 +76,7 @@ class DrunkPigeon(Enemy):
         self.reversed = reverse
         self.speed = 3
     
-    def update(self):
+    def update(self, dt):
         # self.pathXAxis += self.speedVect[0] * self.speed
         self.rect.x += self.speedVect[0] * self.speed
         if self.reversed:
