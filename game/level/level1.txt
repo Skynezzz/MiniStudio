@@ -1,4 +1,4 @@
 background: img/bg1.png
 obstacles: 1/5
-ennemies: 1/4, 2/4
+ennemies: 1/2, 1/2, 2/2, 2/2, 4/4
 difficulty: 1

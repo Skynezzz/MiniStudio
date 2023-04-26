@@ -79,7 +79,6 @@ class DrunkPigeon(Enemy):
         self.speedVect = (-1, 0)
         self.reversed = reverse
         self.speed = 3
-        self.rect.update(None, None, 50, 50)
     
     def update(self, dt):
         # self.pathXAxis += self.speedVect[0] * self.speed
