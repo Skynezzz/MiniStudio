@@ -282,14 +282,15 @@ class Game:
         self.gameTimeStart = pygame.time.get_ticks()
 
     def drawLife(self):
+        self.screen.blit(self.ui_sheet, (30, 30, 0, 0), (16*5,16*5,68*5,13*5))
         health = self.player.life
         incr = 0
 
-        while health > 0 : 
-            incr += 50 
-            x = 50 + incr
-            y = 50
-            self.screen.blit(self.ui_sheet, (x,y,0,0), (98*5,18*5,11*5,9*5))
+        while health > 0:
+            incr += 60
+            x = incr - 20
+            y = 40
+            self.screen.blit(self.ui_sheet, (x,y,0,0), (98*5, 18*5, 11*5, 9*5))
             health -= 10
 
     def updateLevel(self):
@@ -372,8 +373,6 @@ class Game:
 
         # Affichage du jeu
         self.level.draw(self.screen)
-        self.PauseButton.draw(self.screen)
-        self.drawLife()
 
         # Affichage du joueur
         if self.player:
@@ -388,6 +387,9 @@ class Game:
         for i in self.projectiles:
             if i:
                 i.draw(self.screen)
+        
+        self.PauseButton.draw(self.screen)
+        self.drawLife()
         
         if self.gamePause:
             self.pauseHomeButton.draw(self.screen)
