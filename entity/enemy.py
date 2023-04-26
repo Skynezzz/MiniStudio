@@ -1,6 +1,7 @@
-import pygame, math, random
+import pygame, math
 from entity.entity import Entity
 from entity.projectile import Projectile
+from random import random
 
 class Enemy(Entity):
 
@@ -31,7 +32,7 @@ class SuicidePigeon(Enemy):
         self.imgHeigh = 32
         self.sprite = pygame.transform.scale(pygame.image.load("img/drone.png"), (self.imgWidth*self.scale, self.imgHeigh*self.scale))
         self.speedVect = (-1, 0)
-        self.speed = 12
+        self.speed = 20
 
     def update(self, dt):
         self.rect.x += self.speedVect[0] * self.speed
@@ -54,7 +55,7 @@ class StrafingDrone(Enemy):
         self.sprite = pygame.transform.scale(pygame.image.load("img/drone.png"), (self.imgWidth*self.scale, self.imgHeigh*self.scale))
         self.speedVect = (-1, 0)
         self.threshold = False
-        self.speed = 6
+        self.speed = 2
         self.angle = 0
         self.all_projectiles = projectile
         self.fireCooldown = pygame.time.get_ticks()
@@ -63,7 +64,7 @@ class StrafingDrone(Enemy):
         self.rect.x += self.speedVect[0] * self.speed
         self.rect.y += self.speedVect[1] * self.speed
         # avance puis monte et descend
-        if self.rect.x <= 1000 and not self.threshold:
+        if self.rect.x <= 1500 and not self.threshold:
             self.speedVect = (0, -1)
             self.threshold = True
         elif self.rect.y <= 50:
@@ -87,7 +88,7 @@ class StrafingDrone(Enemy):
             self.resetFireCooldown()
             for projIndex in range(len(self.all_projectiles)):
                 if not self.all_projectiles[projIndex]:
-                    self.all_projectiles[projIndex] = Projectile("img/fusée_rouge-Sheet.png", False, offSetX, offSetY, 21, 7, vect, 3, False)
+                    self.all_projectiles[projIndex] = Projectile("img/fusée_rouge-Sheet.png", False, offSetX, offSetY, 26, 16, vect, 3, False)
                     break
 
 
@@ -126,12 +127,10 @@ class Scientist(Enemy):
         # self.threshold = False
         self.fireCooldown = pygame.time.get_ticks()
         # Création de variables pour animation
-        self.scale = 7
+        self.scale = 5
         spritesWidth, spritesHeigh = 80, 48
         self.imgWidth = self.imgHeigh = 16
-        posY = [16,32]
-        couleur = random.choice(posY)
-        self.spriteY = couleur
+        self.spriteY = 16
         self.spriteSheet = pygame.transform.scale(pygame.image.load("img/scient-cat-Sheet.png").convert_alpha(), (spritesWidth * self.scale, spritesHeigh * self.scale))
         self.frame = 0
         self.actualFrame = pygame.Rect(self.frame * self.imgWidth * self.scale, self.spriteY * self.scale, self.imgWidth * self.scale, self.imgHeigh * self.scale)
@@ -168,7 +167,37 @@ class Scientist(Enemy):
 
 class Boss(Enemy):
 
-    def __init__(self, level):
+    def __init__(self, level, projectile):
         path = 'img/boss' + str(level) + '.png'
-        super().__init__(level*1000, path)
+        self.level = level
+        self.Cooldown = 3000
+        self.timeStart = pygame.time.get_ticks()
+        self.all_projectiles = projectile
+        super().__init__(level*1000, 1700, 950, 128, 128, path)
         
+    def update(self, dt):
+        if self.life > self.level*1000:
+            if self.canShot():
+                self.timeStart = pygame.time.get_ticks()
+                self.shot(self, 5)
+        if self.life > self.level*500:
+            if self.canShot():
+                self.timeStart = pygame.time.get_ticks()
+                self.shot(self, 10)
+        if self.life > self.level*250:
+            if self.canShot():
+                self.timeStart = pygame.time.get_ticks()
+                self.shot(self, 20)
+
+    def canShot(self):
+        return pygame.time.get_ticks() - self.timeStart > self.Cooldown
+
+    def shot(self):
+        offSetX = self.rect.x - 60
+        offSetY = self.rect.y
+        vect = (-1, random() - 0.5)
+
+        for projIndex in range(len(self.all_projectiles)):
+            if not self.all_projectiles[projIndex]:
+                self.all_projectiles[projIndex] = Projectile("img/egg-in-fire.png", False, offSetX, offSetY, 26, 16, vect, 3, False)
+                break

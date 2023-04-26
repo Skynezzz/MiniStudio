@@ -36,6 +36,8 @@ class Button(Entity):
         scale = 7.5
         if self.type == "game_over":
             screen.blit(self.image, (self.rect.x, self.rect.y), (128*scale, 16*scale, 101*scale, 14*scale)) 
+        elif self.type == "HP":
+            screen.blit(self.image, (self.rect.x, self.rect.y), (98*scale, 18*scale, 11*scale, 9*scale)) 
         elif self.type == "pause":
             screen.blit(self.image, (self.rect.x, self.rect.y), (16*scale, 48*scale, 18*scale, 13*scale))
         else:

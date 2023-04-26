@@ -45,7 +45,7 @@ class Level():
                             case 4:
                                 game.enemies[j] = Scientist(self.level['difficulty'], game.projectiles)
                             case 5:
-                                game.enemies[j] = Boss(self.level['difficulty'], 'Path Img')
+                                game.enemies[j] = Boss(self.level['difficulty'], game.projectiles)
                             case _:
                                 print("Not spawned\ncase: " + str(self.level['ennemies'][i]['type']))
                         break
