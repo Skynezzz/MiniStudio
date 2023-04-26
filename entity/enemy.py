@@ -177,7 +177,7 @@ class Boss(Enemy):
         self.all_projectiles = projectile
         self.shootCount = 1
         # Création de variables pour animation
-        self.scale = 5
+        self.scale = 7
         self.spriteY, self.spriteX = 4, 7
         spritesWidth, spritesHeigh = 768, 128
         self.imgWidth, self.imgHeigh = 128, 128
@@ -205,7 +205,7 @@ class Boss(Enemy):
                 self.Cooldown = 1000
     
     def draw(self, screen):
-        self.rect.update(self.rect.x+self.spriteX, self.rect.y+self.spriteY, (self.imgWidth-27)*self.scale, (self.imgHeigh-10)*self.scale)
+        self.rect.update(self.rect.x, self.rect.y, self.imgWidth*self.scale, self.imgHeigh*self.scale)
         screen.blit(self.spriteSheet, dest=(self.rect.x, self.rect.y), area=self.actualFrame)
 
     def canShot(self):
