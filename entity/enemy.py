@@ -79,7 +79,6 @@ class DrunkPigeon(Enemy):
         self.speedVect = (-1, 0)
         self.reversed = reverse
         self.speed = 3
-        self.rect.update(None, None, 50, 50)
     
     def update(self, dt):
         # self.pathXAxis += self.speedVect[0] * self.speed
@@ -91,7 +90,7 @@ class DrunkPigeon(Enemy):
 
 class Scientist(Enemy):
     def __init__(self, life: int):
-        super().__init__(life, 1000, 700, 80, 80, spritePath="img/scient-cat-Sheet.png")
+        super().__init__(life, 1920, 920, 80, 80, spritePath="img/scient-cat-Sheet.png")
         self.speedVect = (-1, 0)
         self.speed = 7
         # Création de variables pour animation
@@ -121,5 +120,7 @@ class Scientist(Enemy):
 
 class Boss(Enemy):
 
-    def __init__(self, life, spritePath):
-        super().__init__(life, spritePath)
+    def __init__(self, level):
+        path = 'img/boss' + str(level) + '.png'
+        super().__init__(level*1000, path)
+        
