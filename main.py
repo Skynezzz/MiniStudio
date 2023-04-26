@@ -28,7 +28,6 @@ class Game:
         # initialisation des variables de cooldown
         self.enemySpawnCooldown = 0
         self.actionCooldown = 0
-
         # initialisation des paramettres
         self.settings = Setting()
         self.startButton = None
