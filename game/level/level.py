@@ -30,7 +30,6 @@ class Level():
         self.speed = 10
         
     def ennemiesSpawn(self, timer, game):
-        #print("timer:" + str(timer))
         for i in range(len(self.level['ennemies'])-1, -1, -1):
             if timer >= self.level['ennemies'][i]['time'] * 1000:
                 for j in range(len(game.enemies)):
@@ -52,13 +51,11 @@ class Level():
                 self.level['ennemies'].pop(i)
 
     def obstaclesSpawn(self, timer, game):
-        #print("timer:" + str(timer))
         for i in range(len(self.level['obstacles'])-1, -1, -1):
             if timer >= self.level['obstacles'][i]['time'] * 1000 + 5000:
                 for j in range(len(game.obstacles)):
                     if game.obstacles[j] == None:
                         #game.obstacles[j] = Obstacle()
-                        print("spawned")
                         break
                 self.level['obstacles'].pop(i)
     
