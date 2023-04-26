@@ -31,7 +31,10 @@ class Projectile(Entity):
         self.timeNextFrame -= dt
         if self.timeNextFrame < 0:
             self.timeNextFrame += 150
-            self.frame = (self.frame + 1) % (self.def_frame-1)
+            if self.def_frame <= 2:
+                self.frame = (self.frame + 1) % 2
+            else:
+                self.frame = (self.frame + 1) % (self.def_frame-1)
             if self.friendly:
                 self.curentFrame = pygame.Rect(self.frame * self.imgWidth * self.scale, 0, self.imgWidth * self.scale, self.imgHeigh * self.scale)
             else:
