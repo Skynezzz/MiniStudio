@@ -74,3 +74,4 @@ class Level():
         # RESET THE SCROLL FRAME
         if abs(self.position) > self.background.get_width():
             self.position = 0
+        

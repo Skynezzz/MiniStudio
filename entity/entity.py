@@ -36,6 +36,10 @@ class Button(Entity):
         scale = 7.5
         if self.type == "game_over":
             screen.blit(self.image, (self.rect.x, self.rect.y), (128*scale, 16*scale, 101*scale, 14*scale)) 
+        elif self.type == "HP":
+            screen.blit(self.image, (self.rect.x, self.rect.y), (98*scale, 18*scale, 11*scale, 9*scale)) 
+        elif self.type == "pause":
+            screen.blit(self.image, (self.rect.x, self.rect.y), (16*scale, 48*scale, 18*scale, 13*scale))
         else:
             screen.blit(self.image, (self.rect.x, self.rect.y), (16*scale, 32*scale, 73*scale, 14*scale)) 
         mouseX, mouseY = pygame.mouse.get_pos()
@@ -54,6 +58,9 @@ class Button(Entity):
                 screen.blit(self.image, (self.rect.x + 11*scale, self.rect.y + 2*scale), (113*scale, 112*scale, 53*scale, 10*scale))
             elif self.type == "game_over":
                 screen.blit(self.image, (self.rect.x + 11*scale, self.rect.y + 2*scale), (101*scale, 65*scale, 78*scale, 10*scale))
+            elif self.type == "pause":
+                screen.blit(self.image, (self.rect.x + 7*scale, self.rect.y + 2*scale), (58*scale, 51*scale, 7*scale, 7*scale))
+            
         
         else:
             if self.type == "start":
@@ -70,5 +77,7 @@ class Button(Entity):
                 screen.blit(self.image, (self.rect.x + 11*scale, self.rect.y + 2*scale), (113*scale, 97*scale, 53*scale, 10*scale))
             elif self.type == "game_over":
                 screen.blit(self.image, (self.rect.x + 11*scale, self.rect.y + 2*scale), (101*scale, 65*scale, 78*scale, 10*scale))
+            elif self.type == "pause":
+                screen.blit(self.image, (self.rect.x + 7*scale, self.rect.y + 2*scale), (43*scale, 51*scale, 7*scale, 7*scale))
         
         
