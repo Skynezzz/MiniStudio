@@ -167,7 +167,7 @@ class Boss(Enemy):
         self.Cooldown = 3000
         self.timeStart = pygame.time.get_ticks()
         self.all_projectiles = projectile
-        super().__init__(level*1000, 1700, 950, ,path)
+        super().__init__(level*1000, 1700, 950, 128, 128, path)
         
     def update(self, dt):
         if self.life > self.level*1000:
