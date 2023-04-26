@@ -1,7 +1,6 @@
 import pygame, math, random
 from entity.entity import Entity
 from entity.projectile import Projectile
-from random import random
 
 class Enemy(Entity):
 
@@ -220,7 +219,7 @@ class Boss(Enemy):
             for i in range(self.shootCount):
                 offSetX = self.rect.x - 60
                 offSetY = self.rect.y
-                vect = (-1, random() - 0.5)
+                vect = (-1, random.random() - 0.5)
                 for projIndex in range(len(self.all_projectiles)):
                     if not self.all_projectiles[projIndex]:
                         self.all_projectiles[projIndex] = Projectile("img/egges-in-fire.png", False, offSetX, offSetY, 39, 16, vect, 2, False)
