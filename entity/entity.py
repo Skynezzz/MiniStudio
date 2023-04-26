@@ -63,7 +63,7 @@ class Button(Entity):
             elif self.type == "game_over":
                 screen.blit(self.image, (self.rect.x + 11*scale, self.rect.y + 2*scale), (101*scale, 65*scale, 78*scale, 10*scale))
             elif self.type == "pause":
-                screen.blit(self.image, (self.rect.x + 7*scale, self.rect.y + 2*scale), (58*scale, 51*scale, 7*scale, 7*scale))
+                screen.blit(self.image, (self.rect.x + 7*scale, self.rect.y + 3*scale), (58*scale, 51*scale, 7*scale, 7*scale))
             elif self.type == "open":
                 screen.blit(self.image2, (self.rect.x + 8*5, self.rect.y + 5*5), (401*5, 19*5, 93*5, 10*5))
             elif self.type == "oeuf":
@@ -88,7 +88,7 @@ class Button(Entity):
             elif self.type == "game_over":
                 screen.blit(self.image, (self.rect.x + 11*scale, self.rect.y + 2*scale), (101*scale, 65*scale, 78*scale, 10*scale))
             elif self.type == "pause":
-                screen.blit(self.image, (self.rect.x + 7*scale, self.rect.y + 2*scale), (43*scale, 51*scale, 7*scale, 7*scale))
+                screen.blit(self.image, (self.rect.x + 7*scale, self.rect.y + 3*scale), (43*scale, 51*scale, 7*scale, 7*scale))
             elif self.type == "open":
                 screen.blit(self.image2, (self.rect.x + 8*5, self.rect.y + 5*5), (17*5, 19*5, 93*5, 10*5))
             elif self.type == "oeuf":

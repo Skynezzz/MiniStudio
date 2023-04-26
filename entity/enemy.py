@@ -119,7 +119,7 @@ class DrunkPigeon(Enemy):
 
 class Scientist(Enemy):
     def __init__(self, life: int, projectile):
-        super().__init__(life, 1920, 900, 80, 80, spritePath="img/scient-cat-Sheet.png")
+        super().__init__(life, 1920, 860, 80, 80, spritePath="img/scient-cat-Sheet.png")
         self.speedVect = (-1, 0)
         self.speed = 7
         self.all_projectiles = projectile
