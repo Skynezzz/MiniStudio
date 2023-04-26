@@ -49,11 +49,16 @@ class Game:
         self.controleSpriteSheet = pygame.transform.scale(pygame.image.load("img/mapping-options_sheet.png"), (112*7, 64*7))
 
         #initialisation des boutons
+        # bouton de pause
         self.PauseButton = Button(self.screenSize[0]/2 + 825, self.screenSize[1]/2 - 539, "pause")
+        self.pauseHomeButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 260 , "menu")
+        self.pauseReplayButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 80 , "replay")
+
+
+        # bouton de mort
         self.backButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 260 , "menu")
         self.gachaButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 80 , "gacha")
         self.replayButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 - 100, "replay")
-        self.pauseReplayButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 - 100, "replay")
         self.game_overButton = Button(self.screenSize[0]/2 - 460 + 100, self.screenSize[1]/2 - 300, "game_over")
 
         # bouton menu principal
@@ -290,12 +295,12 @@ class Game:
     def updateLevel(self):
 
         if pygame.key.get_pressed()[pygame.K_ESCAPE] and self.actionCooldown < pygame.time.get_ticks():
-            self.gamePause = not self.gamePause
             self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
+            self.gamePause = not self.gamePause
         
         if self.PauseButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
-            self.gamePause = not self.gamePause
             self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
+            self.gamePause = not self.gamePause
 
         if not self.gamePause:
             # déplacement du joueur si il est vivant
@@ -354,6 +359,14 @@ class Game:
                         if type(self.enemies[i]) == Boss:
                             self.state = 'win'
                         self.enemies[i] = None
+        else:
+            if self.pauseHomeButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
+                self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
+                self.state = "menu"
+            if self.pauseReplayButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
+                self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
+                self.gamePause = not self.gamePause
+                self.initLevel()
     
     def drawLevel(self):
 
@@ -375,5 +388,9 @@ class Game:
         for i in self.projectiles:
             if i:
                 i.draw(self.screen)
+        
+        if self.gamePause:
+            self.pauseHomeButton.draw(self.screen)
+            self.pauseReplayButton.draw(self.screen)
 
 Game()
