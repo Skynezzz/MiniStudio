@@ -47,6 +47,7 @@ class Game:
         self.game_overButton = Button(self.screenSize[0]/2 - 460 + 100, self.screenSize[1]/2 - 300, "game_over")
         self.startButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 - 100, "start")
         self.optionButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 80, "option")
+        self.optionQuitButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 80, "menu")
         self.quitButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 260, "quit")
         self.openButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 180, "open")
         self.back1Button = Button(self.screenSize[0] - 680 + 100, self.screenSize[1]/2 + 400 , "menu")
@@ -171,18 +172,18 @@ class Game:
     def updateOption(self):
         if pygame.key.get_pressed()[pygame.K_BACKSPACE]:
             self.state = "menu"
-        self.optionButton = Button(self.screenSize[0]/2-30, self.screenSize[1]/2-30, "quit")
-        if self.optionButton.isPressed():
+        if self.optionQuitButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
+            self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.5
             self.state = "menu"
         
     def drawOption(self):
-        self.optionButton.draw(self.screen)
+        self.optionQuitButton.draw(self.screen)
 
     def initLevel(self):
         # intialisation de la variable en la remplissant de None
         self.projectiles = [None for i in range(50)]
-        self.enemies = [None for i in range(10)]
-        self.obstacle = [None for i in range(10)]
+        self.enemies = [None for i in range(100)]
+        self.obstacle = [None for i in range(100)]
         self.player = Player(0, 0, 16, 16, self.projectiles, 50, True)
         self.gamePause = False
         self.gameTimeStart = pygame.time.get_ticks()
@@ -196,7 +197,8 @@ class Game:
             # déplacement du joueur si il est vivant
             if not self.player.isDead():
                 move(self.settings, self.screen, self.player)
-            elif self.player.isDead():
+            else:
+                self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
                 print("is dead")
                 self.state = "end"
                 self.updateEnd()
