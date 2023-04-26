@@ -64,7 +64,9 @@ class Game:
         self.openButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 180, "open")
         self.back1Button = Button(self.screenSize[0] - 680 + 100, self.screenSize[1]/2 + 400 , "menu")
         self.oeufOpening = Egg(self.screenSize[0]/2 - 550 + 100, self.screenSize[1]/2 - 450, "oeuf")
-        
+
+        # bouton menu option
+        self.optionQuitButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 260, "menu")
         
         # Boucle principale
         self.game = True
@@ -96,6 +98,8 @@ class Game:
             self.drawReward()
         elif self.state == "oeuf":
             self.drawEgg()
+        elif self.state == "win":
+            self.drawWin()
         # Mise à jour de l'affichage
         pygame.display.flip()
     
@@ -113,6 +117,8 @@ class Game:
             self.updateReward()
         elif self.state == "oeuf":
             self.updateEgg()
+        elif self.state == "win":
+            self.updateWin()
         # timer
         timeEnd = pygame.time.get_ticks()
         if self.timeStart + 7 > timeEnd:
@@ -183,6 +189,9 @@ class Game:
             self.state = "game"
             self.level = Level(1)
             self.gameTimeStart = pygame.time.get_ticks()
+        
+    def rect_overlap(self, x1, x2, y1, y2, w1, w2, h1, h2):
+        return x1 < x2 + w2 and x1 + w1 > x2 and y1 < y2 + h2 and y1 + h1 > y2
     
     def drawWin(self):
         self.drawLevel()

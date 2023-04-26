@@ -69,7 +69,7 @@ class Button(Entity):
             elif self.type == "oeuf":
                 screen.blit(self.oeuf, (self.rect.x + 8*5, self.rect.y + 5*5), (811*5, 4*5, 147*5, 107*5))
             elif self.type == "win":
-                screen.blit(self.image, (self.rect.x + 23*scale, self.rect.y + 2*scale), (189*scale, 51*scale, 57*scale, 10*scale))
+                screen.blit(self.image, (self.rect.x + 23*scale, self.rect.y + 2*scale), (189*scale, 35*scale, 57*scale, 10*scale))
             
         
         else:
@@ -93,6 +93,8 @@ class Button(Entity):
                 screen.blit(self.image2, (self.rect.x + 8*5, self.rect.y + 5*5), (17*5, 19*5, 93*5, 10*5))
             elif self.type == "oeuf":
                 screen.blit(self.oeuf, (self.rect.x + 8*5, self.rect.y + 5*5), (55*5, 32*5, 46*5, 56*5))
+            elif self.type == "win":
+                screen.blit(self.image, (self.rect.x + 23*scale, self.rect.y + 2*scale), (189*scale, 35*scale, 57*scale, 10*scale))
         
 class Egg(Entity):
 
