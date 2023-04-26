@@ -45,6 +45,7 @@ class Game:
         self.game_overButton = Button(self.screenSize[0]/2 - 460 + 100, self.screenSize[1]/2 - 300, "game_over")
         self.startButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 - 100, "start")
         self.optionButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 80, "option")
+        self.optionQuitButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 80, "menu")
         self.quitButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 260, "quit")
 
         
@@ -93,14 +94,15 @@ class Game:
                 
     def updateMenu(self):
         
-        if self.startButton.isPressed():
+        if self.startButton.isPressed() and self.actionCooldown  < pygame.time.get_ticks():
             self.initLevel()
             self.state = "game"
             self.level = Level(1)
             self.gameTimeStart = pygame.time.get_ticks()
-        elif self.optionButton.isPressed():
+        elif self.optionButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
+            self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.5
             self.state = "option"
-        elif self.quitButton.isPressed():
+        elif self.quitButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
             self.game = False
     
     def drawMenu(self):
@@ -114,13 +116,16 @@ class Game:
        
     def updateEnd(self):
         
-        if self.backButton.isPressed():
+        if self.backButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
+            self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.5
             print("back")
             self.state = "menu"
-        elif self.gachaButton.isPressed():
+        elif self.gachaButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
+            self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.5
             print("gacha")
             self.state = "gacha"
-        elif self.replayButton.isPressed():
+        elif self.replayButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
+            self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.5
             self.initLevel()
             self.state = "game"
             self.level = Level(1)
@@ -144,12 +149,12 @@ class Game:
     def updateOption(self):
         if pygame.key.get_pressed()[pygame.K_BACKSPACE]:
             self.state = "menu"
-        self.optionButton = Button(self.screenSize[0]/2-30, self.screenSize[1]/2-30, "quit")
-        if self.optionButton.isPressed():
+        if self.optionQuitButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
+            self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.5
             self.state = "menu"
         
     def drawOption(self):
-        self.optionButton.draw(self.screen)
+        self.optionQuitButton.draw(self.screen)
 
     def initLevel(self):
         # intialisation de la variable en la remplissant de None
@@ -162,14 +167,15 @@ class Game:
 
     def updateLevel(self):
         if pygame.key.get_pressed()[pygame.K_ESCAPE] and self.actionCooldown < pygame.time.get_ticks():
-            self.gamePause = not self.gamePause
             self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
+            self.gamePause = not self.gamePause
 
         if not self.gamePause:
             # déplacement du joueur si il est vivant
             if not self.player.isDead():
                 move(self.settings, self.screen, self.player)
-            elif self.player.isDead():
+            else:
+                self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
                 print("is dead")
                 self.state = "end"
                 self.updateEnd()
