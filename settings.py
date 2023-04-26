@@ -14,7 +14,7 @@ class Setting:
         """
         txtSettings = ''
         for key in self.settings.keys():
-            txtSettings += key + ': ' + self.settings[key] + '\n'
+            txtSettings += str(key) + ': ' + str(self.settings[key]) + '\n'
         txtSettings = txtSettings[:-1]
         docSettings = open('settings.txt', 'w')
         docSettings.write(txtSettings)
