@@ -20,6 +20,7 @@ class Player(Entity):
         self.frame = 0
         self.actualFrame = pygame.Rect(self.frame * self.charaWidth * self.scale, 0, self.charaWidth * self.scale, self.charaHeigh * self.scale)
         self.timeNextFrame = 150
+        self.rect.update(self.rect.x, self.rect.y, self.charaWidth*self.scale, self.charaHeigh*self.scale)
     
     def takeDamage(self, damageNumber):
         self.life -= damageNumber
@@ -74,8 +75,8 @@ class Player(Entity):
     
     def launchProjectile(self):
         if pygame.time.get_ticks() > self.fireCooldown:
-            offSetX = self.rect.x + self.rect.width*self.scale + 10
-            offSetY = self.rect.y + self.rect.height*self.scale/2
+            offSetX = self.rect.x
+            offSetY = self.rect.y
             mouseX, mouseY = pygame.mouse.get_pos()
             mouseY -= 25
             vectX, vectY = mouseX - offSetX, mouseY - offSetY
@@ -85,7 +86,7 @@ class Player(Entity):
 
             for projIndex in range(len(self.all_projectiles)):
                 if not self.all_projectiles[projIndex]:
-                    self.all_projectiles[projIndex] = Projectile("img/projectiles_sheet.png", False, offSetX, offSetY, 26, 11, vect, 3, 35, True)
+                    self.all_projectiles[projIndex] = Projectile("img/bouledefeu_2.png", False, offSetX, offSetY, 32, 16, vect, 3, True)
                     break
     
     def juanAbility(self):
