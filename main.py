@@ -191,15 +191,13 @@ class Game:
 
     def updateLevel(self):
         if pygame.key.get_pressed()[pygame.K_ESCAPE] and self.actionCooldown < pygame.time.get_ticks():
-            self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
-        
-        if self.PauseButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
             self.gamePause = not self.gamePause
             self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
         
         if self.PauseButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
             self.gamePause = not self.gamePause
             self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
+        
 
         if not self.gamePause:
             # déplacement du joueur si il est vivant
