@@ -3,7 +3,7 @@ from random import randint
 from game.level.level import Level
 from entity.player import Player
 from entity.entity import Entity, Button
-from entity.enemy import SuicidePigeon, StrafingDrone, DrunkPigeon
+from entity.enemy import SuicidePigeon, StrafingDrone, DrunkPigeon, Boss
 from game.gameLogic.movement import move
 from settings import Setting
 
@@ -274,6 +274,8 @@ class Game:
                         self.enemies[i].takeDamage(10)
                         self.player.takeDamage(10)
                     if self.enemies[i].isDead() or not self.enemies[i].rectOverlap(self.screenEntity):
+                        if type(self.enemies[i]) == Boss:
+                            self.state = 'win'
                         self.enemies[i] = None
     
     def drawLevel(self):

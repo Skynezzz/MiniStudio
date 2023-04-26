@@ -173,25 +173,25 @@ class Boss(Enemy):
         if self.life > self.level*1000:
             if self.canShot():
                 self.timeStart = pygame.time.get_ticks()
-                self.shot(self, 5)
+                self.shot(5)
         if self.life > self.level*500:
             if self.canShot():
                 self.timeStart = pygame.time.get_ticks()
-                self.shot(self, 10)
+                self.shot(10)
         if self.life > self.level*250:
             if self.canShot():
                 self.timeStart = pygame.time.get_ticks()
-                self.shot(self, 20)
+                self.shot(20)
 
     def canShot(self):
         return pygame.time.get_ticks() - self.timeStart > self.Cooldown
 
-    def shot(self):
+    def shot(self, shotCount):
         offSetX = self.rect.x - 60
         offSetY = self.rect.y
         vect = (-1, random() - 0.5)
 
         for projIndex in range(len(self.all_projectiles)):
             if not self.all_projectiles[projIndex]:
-                self.all_projectiles[projIndex] = Projectile("img/egg-in-fire.png", False, offSetX, offSetY, 26, 16, vect, 3, False)
+                self.all_projectiles[projIndex] = Projectile("img/egges-in-fire.png", False, offSetX, offSetY, 26, 16, vect, 3, False)
                 break
