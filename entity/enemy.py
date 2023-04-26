@@ -1,4 +1,4 @@
-import pygame, math
+import pygame, math, random
 from entity.entity import Entity
 from entity.projectile import Projectile
 from random import random
@@ -124,13 +124,14 @@ class Scientist(Enemy):
         self.speedVect = (-1, 0)
         self.speed = 7
         self.all_projectiles = projectile
-        # self.threshold = False
         self.fireCooldown = pygame.time.get_ticks()
         # Création de variables pour animation
-        self.scale = 5
+        self.scale = 7
         spritesWidth, spritesHeigh = 80, 48
         self.imgWidth = self.imgHeigh = 16
-        self.spriteY = 16
+        liste = [16, 32]
+        couleur = random.choice(liste)
+        self.spriteY = couleur
         self.spriteSheet = pygame.transform.scale(pygame.image.load("img/scient-cat-Sheet.png").convert_alpha(), (spritesWidth * self.scale, spritesHeigh * self.scale))
         self.frame = 0
         self.actualFrame = pygame.Rect(self.frame * self.imgWidth * self.scale, self.spriteY * self.scale, self.imgWidth * self.scale, self.imgHeigh * self.scale)
@@ -169,15 +170,31 @@ class Boss(Enemy):
 
     def __init__(self, level, projectile):
         path = 'img/boss' + str(level) + '.png'
-        super().__init__(level*1000, 1700, 300, 128, 128, path)
+        super().__init__(level*1000, 900, 300, 128, 128, path)
         self.maxLife = self.life
         self.level = level
         self.Cooldown = 3000
         self.timeStart = pygame.time.get_ticks()
         self.all_projectiles = projectile
         self.shootCount = 1
+        # Création de variables pour animation
+        self.scale = 5
+        self.spriteY, self.spriteX = 4, 7
+        spritesWidth, spritesHeigh = 768, 128
+        self.imgWidth, self.imgHeigh = 128, 128
+        self.spriteSheet = pygame.transform.scale(pygame.image.load(path).convert_alpha(), (spritesWidth * self.scale, spritesHeigh * self.scale))
+        self.frame = 0
+        self.actualFrame = pygame.Rect(self.spriteX + self.frame * self.imgWidth * self.scale, 0, self.imgWidth * self.scale, self.imgHeigh * self.scale)
+        self.timeNextFrame = 150
         
     def update(self, dt):
+        # Algo animation
+        self.timeNextFrame -= dt
+        if self.timeNextFrame < 0:
+            self.timeNextFrame += 150
+            self.frame = (self.frame + 1) % (5)
+            self.actualFrame = pygame.Rect(self.spriteX + self.frame * self.imgWidth * self.scale, 0, self.imgWidth * self.scale, self.imgHeigh * self.scale)
+        # Définition des phases
         if self.life < self.maxLife//2:
                 self.shootCount = 2
                 self.Cooldown = 2000
@@ -187,6 +204,10 @@ class Boss(Enemy):
         if self.life < self.maxLife//4:
                 self.shootCount = 4
                 self.Cooldown = 1000
+    
+    def draw(self, screen):
+        self.rect.update(self.rect.x, self.rect.y, self.imgWidth*self.scale, self.imgHeigh*self.scale)
+        screen.blit(self.spriteSheet, dest=(self.rect.x, self.rect.y), area=self.actualFrame)
 
     def canShot(self):
         if pygame.time.get_ticks() - self.timeStart > self.Cooldown:
@@ -200,8 +221,7 @@ class Boss(Enemy):
                 offSetX = self.rect.x - 60
                 offSetY = self.rect.y
                 vect = (-1, random() - 0.5)
-
                 for projIndex in range(len(self.all_projectiles)):
                     if not self.all_projectiles[projIndex]:
-                        self.all_projectiles[projIndex] = Projectile("img/egges-in-fire.png", False, offSetX, offSetY, 26, 16, vect, 3, False)
+                        self.all_projectiles[projIndex] = Projectile("img/egges-in-fire.png", False, offSetX, offSetY, 39, 16, vect, 2, False)
                         break
