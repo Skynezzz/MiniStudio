@@ -41,9 +41,11 @@ class Game:
         self.backgroundGacha.blit(pygame.image.load("img/bg_gacha.png"),(0,0), (0,0,self.screenSize[0],self.screenSize[1]))
         
         #initialisation des boutons
+        self.PauseButton = Button(self.screenSize[0]/2 + 825, self.screenSize[1]/2 - 539, "pause")
         self.backButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 260 , "menu")
         self.gachaButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 80 , "gacha")
         self.replayButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 - 100, "replay")
+        self.pauseReplayButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 - 100, "replay")
         self.game_overButton = Button(self.screenSize[0]/2 - 460 + 100, self.screenSize[1]/2 - 300, "game_over")
         self.startButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 - 100, "start")
         self.optionButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 80, "option")
@@ -143,8 +145,7 @@ class Game:
             self.state = "game"
             self.level = Level(1)
             self.gameTimeStart = pygame.time.get_ticks()
-            
-    
+
     def drawEnd(self):
         self.drawLevel()
         self.game_overButton.draw(self.screen)
@@ -191,11 +192,19 @@ class Game:
     def updateLevel(self):
         if pygame.key.get_pressed()[pygame.K_ESCAPE] and self.actionCooldown < pygame.time.get_ticks():
             self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
+        
+        if self.PauseButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
             self.gamePause = not self.gamePause
+            self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
+        
+        if self.PauseButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
+            self.gamePause = not self.gamePause
+            self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
 
         if not self.gamePause:
             # déplacement du joueur si il est vivant
             if not self.player.isDead():
+
                 move(self.settings, self.screen, self.player)
             else:
                 self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
@@ -249,8 +258,12 @@ class Game:
                         self.enemies[i] = None
     
     def drawLevel(self):
+
         # Affichage du jeu
         self.level.draw(self.screen)
+        self.PauseButton.draw(self.screen)
+
+
 
         # Affichage du joueur
         if self.player:
