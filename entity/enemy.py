@@ -1,4 +1,4 @@
-import pygame, math
+import pygame, math, random
 from entity.entity import Entity
 from entity.projectile import Projectile
 
@@ -69,7 +69,7 @@ class StrafingDrone(Enemy):
 
             for projIndex in range(len(self.all_projectiles)):
                 if not self.all_projectiles[projIndex]:
-                    self.all_projectiles[projIndex] = Projectile("img/fusée_rouge-Sheet.png", False, offSetX, offSetY, 26, 16, vect, 3, False)
+                    self.all_projectiles[projIndex] = Projectile("img/fusée_rouge-Sheet.png", False, offSetX, offSetY, 21, 7, vect, 3, False)
                     break
 
 class DrunkPigeon(Enemy):
@@ -106,15 +106,19 @@ class DrunkPigeon(Enemy):
                     break
 
 class Scientist(Enemy):
+    def __init__(self, life):
+        super().__init__(life, 1000, 700, 80, 80, spritePath="img/scient-cat-Sheet.png")
     def __init__(self, life: int):
         super().__init__(life, 1920, 920, 80, 80, spritePath="img/scient-cat-Sheet.png")
         self.speedVect = (-1, 0)
         self.speed = 7
         # Création de variables pour animation
-        self.scale = 5
+        self.scale = 7
         spritesWidth, spritesHeigh = 80, 48
         self.imgWidth = self.imgHeigh = 16
-        self.spriteY = 16
+        posY = [16,32]
+        couleur = random.choice(posY)
+        self.spriteY = couleur
         self.spriteSheet = pygame.transform.scale(pygame.image.load("img/scient-cat-Sheet.png").convert_alpha(), (spritesWidth * self.scale, spritesHeigh * self.scale))
         self.frame = 0
         self.actualFrame = pygame.Rect(self.frame * self.imgWidth * self.scale, self.spriteY * self.scale, self.imgWidth * self.scale, self.imgHeigh * self.scale)

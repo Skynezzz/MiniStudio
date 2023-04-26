@@ -86,13 +86,13 @@ class Player(Entity):
 
             for projIndex in range(len(self.all_projectiles)):
                 if not self.all_projectiles[projIndex]:
-                    self.all_projectiles[projIndex] = Projectile("img/bouledefeu_2.png", False, offSetX, offSetY, 32, 16, vect, 3, True)
+                    self.all_projectiles[projIndex] = Projectile("img/boule_de_feu_bleu2-Sheet.png", False, offSetX, offSetY, 21, 9, vect, 3, True)
                     break
     
     def juanAbility(self):
         if pygame.time.get_ticks() > self.abilityCooldown:
-            spawnX = 0 - 30
-            spawnY = 1080/2 - self.rect.y/2
+            spawnX = 0
+            spawnY = 600 - self.rect.y/2
             upX = spawnX - 25
             upY = spawnY - 70
             downX = spawnX - 20
@@ -102,7 +102,7 @@ class Player(Entity):
 
             for projIndex in range(len(self.all_projectiles)):
                 if not self.all_projectiles[projIndex]:
-                    self.all_projectiles[projIndex] = Projectile("img/projectiles_sheet.png", False, spawnX, spawnY, 26, 9, vect, 3, 4, True)
-                    self.all_projectiles[projIndex + 1] = Projectile("img/projectiles_sheet.png", False, upX, upY, 26, 9, vect, 3, 4, True)
-                    self.all_projectiles[projIndex + 2] = Projectile("img/projectiles_sheet.png", False, downX, downY, 26, 9, vect, 3, 4, True)
+                    self.all_projectiles[projIndex] = Projectile("img/boule_de_feu_bleu2-Sheet.png", False, spawnX, spawnY, 21, 9, vect, 3, True)
+                    self.all_projectiles[projIndex + 1] = Projectile("img/boule_de_feu_bleu2-Sheet.png", False, upX, upY, 21, 9, vect, 3, True)
+                    self.all_projectiles[projIndex + 2] = Projectile("img/boule_de_feu_bleu2-Sheet.png", False, downX, downY, 21, 9, vect, 3, True)
                     break
