@@ -154,8 +154,8 @@ class Game:
     def initLevel(self):
         # intialisation de la variable en la remplissant de None
         self.projectiles = [None for i in range(50)]
-        self.enemies = [None for i in range(10)]
-        self.obstacle = [None for i in range(10)]
+        self.enemies = [None for i in range(100)]
+        self.obstacle = [None for i in range(100)]
         self.player = Player(0, 0, 16, 16, self.projectiles, 50, True)
         self.gamePause = False
         self.gameTimeStart = pygame.time.get_ticks()
