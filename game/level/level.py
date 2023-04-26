@@ -41,7 +41,7 @@ class Level():
                             case 2:
                                 game.enemies[j] = StrafingDrone(self.level['difficulty'], pygame.display.get_window_size()[0], randint(0, pygame.display.get_window_size()[1]), game.projectiles)
                             case 3:
-                                game.enemies[j] = DrunkPigeon(self.level['difficulty'])
+                                game.enemies[j] = DrunkPigeon(self.level['difficulty'], game.projectiles)
                             case 4:
                                 game.enemies[j] = Scientist(self.level['difficulty'])
                             case 5:

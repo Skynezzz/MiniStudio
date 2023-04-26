@@ -27,7 +27,7 @@ class SuicidePigeon(Enemy):
     def __init__(self, life: int, x: int, y: int):
         super().__init__(life, x, y, 50, 50, spritePath="img/drone_little.png")
         self.speedVect = (-1, 0)
-        self.speed = 4
+        self.speed = 12
 
     def update(self, dt):
         self.rect.x += self.speedVect[0] * self.speed
@@ -40,7 +40,7 @@ class StrafingDrone(Enemy):
         super().__init__(life, x, y, 100, 100, spritePath="img/drone_big.png")
         self.speedVect = (-1, 0)
         self.threshold = False
-        self.speed = 4
+        self.speed = 6
         self.angle = 0
         self.all_projectiles = projectile
         self.fireCooldown = pygame.time.get_ticks()
@@ -73,12 +73,18 @@ class StrafingDrone(Enemy):
                     break
 
 class DrunkPigeon(Enemy):
-    def __init__(self, life, reverse=False):
+    def __init__(self, life, projectile, reverse=False):
         super().__init__(life, 1920, 250, 50, 50, spritePath="img/drone_little.png")
         # self.pathXAxis = 700
+        self.threshold = False
         self.speedVect = (-1, 0)
         self.reversed = reverse
         self.speed = 3
+        self.all_projectiles = projectile
+        self.fireCooldown = pygame.time.get_ticks()
+
+    def resetFireCooldown(self):
+        self.fireCooldown = pygame.time.get_ticks()+10*200
     
     def update(self, dt):
         # self.pathXAxis += self.speedVect[0] * self.speed
@@ -87,6 +93,17 @@ class DrunkPigeon(Enemy):
             self.rect.y = 275 + math.cos(self.rect.x/80) * 250
         else:
             self.rect.y = 275 + math.sin(self.rect.x/80) * 250
+        # fonction de tir des ennemies
+        if self.threshold and pygame.time.get_ticks() > self.fireCooldown:
+            offSetX = self.rect.x - 60
+            offSetY = self.rect.y
+            vect = (-1, 0)
+            self.resetFireCooldown()
+
+            for projIndex in range(len(self.all_projectiles)):
+                if not self.all_projectiles[projIndex]:
+                    self.all_projectiles[projIndex] = Projectile("img/fusée_rouge-Sheet.png", False, offSetX, offSetY, 26, 16, vect, 3, False)
+                    break
 
 class Scientist(Enemy):
     def __init__(self, life: int):
