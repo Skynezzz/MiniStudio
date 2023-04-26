@@ -119,8 +119,6 @@ class Game:
             self.updateEgg()
         elif self.state == "win":
             self.updateWin()
-        elif self.state == "win" :
-            self.updateWin()
 
         # timer
         timeEnd = pygame.time.get_ticks()
@@ -298,18 +296,12 @@ class Game:
         if self.PauseButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
             self.gamePause = not self.gamePause
             self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
-        
 
         if not self.gamePause:
             # déplacement du joueur si il est vivant
             if not self.player.isDead():
                 
                 move(self.settings, self.screen, self.player,self)
-                
-
-            
-            
-
             else:
                 self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
                 self.state = "end"
