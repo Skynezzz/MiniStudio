@@ -3,7 +3,7 @@ from random import randint
 from game.level.level import Level
 from entity.player import Player
 from entity.entity import Entity, Button, Egg
-from entity.enemy import SuicidePigeon, StrafingDrone, DrunkPigeon
+from entity.enemy import SuicidePigeon, StrafingDrone, DrunkPigeon, Boss
 from game.gameLogic.movement import move
 from settings import Setting
 
@@ -32,14 +32,22 @@ class Game:
         self.settings = Setting()
         self.startButton = None
         self.level = None
+        self.controleArrowsToggle = False
+        self.controleQWERTYToggle = False
 
         # chargement et réduction de l'image de background pour un affichage moins gourmand
         self.background = pygame.Surface(self.screenSize).convert_alpha()
         self.background.blit(pygame.image.load("img/bg1.png"),(0,0), (0,0,self.screenSize[0],self.screenSize[1]))
-        
+
+        # chargement et réduction de l'image de coeur pour un affichage moins gourmand
+        self.ui_sheet = pygame.transform.scale(pygame.image.load("img/ui_sheet.png"), (256*5, 128*5))
+
         self.backgroundGacha = pygame.Surface(self.screenSize).convert_alpha()
         self.backgroundGacha.blit(pygame.image.load("img/bg_gacha.png"),(0,0), (0,0,self.screenSize[0],self.screenSize[1]))
         
+        
+        self.controleSpriteSheet = pygame.transform.scale(pygame.image.load("img/mapping-options_sheet.png"), (112*7, 64*7))
+
         #initialisation des boutons
         self.PauseButton = Button(self.screenSize[0]/2 + 825, self.screenSize[1]/2 - 539, "pause")
         self.backButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 260 , "menu")
@@ -47,9 +55,11 @@ class Game:
         self.replayButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 - 100, "replay")
         self.pauseReplayButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 - 100, "replay")
         self.game_overButton = Button(self.screenSize[0]/2 - 460 + 100, self.screenSize[1]/2 - 300, "game_over")
+
+        # bouton menu principal
+        self.winButton = Button(self.screenSize[0]/2 - 375 , self.screenSize[1]/2 - 300, "win")
         self.startButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 - 100, "start")
         self.optionButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 80, "option")
-        self.optionQuitButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 80, "menu")
         self.quitButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 260, "quit")
         self.openButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 180, "open")
         self.back1Button = Button(self.screenSize[0] - 680 + 100, self.screenSize[1]/2 + 400 , "menu")
@@ -69,6 +79,7 @@ class Game:
             self.draw()
         
         # Quitter Pygame
+        self.settings.saveSettings()
         pygame.quit()
     
     def draw(self):
@@ -155,6 +166,30 @@ class Game:
         self.replayButton.draw(self.screen)
         self.gachaButton.draw(self.screen)
         self.backButton.draw(self.screen)
+
+    def updateWin(self):
+        if self.backButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
+            self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
+            print("back")
+            self.state = "menu"
+        elif self.gachaButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
+            self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
+            print("gacha")
+            self.state = "gacha"
+        elif self.replayButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
+            self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
+            print("rejouer")
+            self.initLevel()
+            self.state = "game"
+            self.level = Level(1)
+            self.gameTimeStart = pygame.time.get_ticks()
+    
+    def drawWin(self):
+        self.drawLevel()
+        self.winButton.draw(self.screen)
+        self.replayButton.draw(self.screen)
+        self.gachaButton.draw(self.screen)
+        self.backButton.draw(self.screen)
     
     def updateReward(self):
         self.oeufOpening.update(self.dt)
@@ -193,25 +228,67 @@ class Game:
         Egg.draw(self.screen)
     
     def updateOption(self):
+        mouseX, mouseY = pygame.mouse.get_pos()
         if pygame.key.get_pressed()[pygame.K_BACKSPACE]:
             self.state = "menu"
         if self.optionQuitButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
             self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.5
+            if self.controleArrowsToggle:
+                self.settings.changeBinds({'up': 1073741906,'down': 1073741905,'left':1073741904,'right': 1073741903}) #pour les fleches
+            else:
+                if not self.controleQWERTYToggle:
+                    self.settings.changeBinds({'up': 122,'down': 115,'left':113,'right': 100}) #pour azerty
+                else:
+                    self.settings.changeBinds({'up': 119,'down': 115,'left':97,'right': 100}) #pour qwerty
             self.state = "menu"
-        
+
+        if self.rect_overlap(mouseX, self.screenSize[0]-600, mouseY, 300, 1, 41*7, 1, 24*7) and pygame.mouse.get_pressed()[0] and self.actionCooldown < pygame.time.get_ticks():
+            self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
+            self.controleArrowsToggle = not self.controleArrowsToggle
+
+        if self.rect_overlap(mouseX, 300, mouseY, 300, 1, 41*7, 1, 24*7) and pygame.mouse.get_pressed()[0] and self.actionCooldown < pygame.time.get_ticks():
+            self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
+            self.controleQWERTYToggle = not self.controleQWERTYToggle
+
+
     def drawOption(self):
+        self.screen.blit(self.background, (0,0,0,0))
         self.optionQuitButton.draw(self.screen)
+        if not self.controleQWERTYToggle:
+            self.screen.blit(self.controleSpriteSheet, (300,300,0,0), (4*7, 5*7, 41*7, 24*7))
+        else:
+            self.screen.blit(self.controleSpriteSheet, (300,300,0,0), (4*7, 37*7, 41*7, 24*7))
+        if not self.controleArrowsToggle:
+            self.screen.blit(self.controleSpriteSheet, (self.screenSize[0]-600,300,0,0), (67*7, 5*7, 41*7, 24*7))
+        else:
+            self.screen.blit(self.controleSpriteSheet, (self.screenSize[0]-600,300,0,0), (67*7, 37*7, 41*7, 24*7))
 
     def initLevel(self):
         # intialisation de la variable en la remplissant de None
         self.projectiles = [None for i in range(50)]
         self.enemies = [None for i in range(100)]
         self.obstacle = [None for i in range(100)]
-        self.player = Player(0, 0, 16, 16, self.projectiles, 50, True)
+        self.player = Player(self.screenSize[0]/3-56, self.screenSize[1]/2-56, 16, 16, self.projectiles, 50, True)
         self.gamePause = False
         self.gameTimeStart = pygame.time.get_ticks()
 
+    def drawLife(self):
+        print (self.player.life)
+        health = self.player.life
+        print(health)
+        incr = 0
+
+        while health > 0 : 
+            print("vie de :",health)
+            print ("1 coeur de dessiner")
+            incr += 50 
+            x = 50 + incr
+            y = 50
+            self.screen.blit(self.ui_sheet, (x,y,0,0), (98*5,18*5,11*5,9*5))
+            health -= 10
+
     def updateLevel(self):
+
         if pygame.key.get_pressed()[pygame.K_ESCAPE] and self.actionCooldown < pygame.time.get_ticks():
             self.gamePause = not self.gamePause
             self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
@@ -224,8 +301,14 @@ class Game:
         if not self.gamePause:
             # déplacement du joueur si il est vivant
             if not self.player.isDead():
+                print(self.state)
+                
+                move(self.settings, self.screen, self.player,self)
+                
 
-                move(self.settings, self.screen, self.player)
+            
+            
+
             else:
                 self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
                 print("is dead")
@@ -271,10 +354,13 @@ class Game:
             for i in range(len(self.enemies)):
                 if self.enemies[i]:
                     self.enemies[i].update(self.dt)
+                    self.enemies[i].shoot()
                     if self.enemies[i].rectOverlap(self.player):
                         self.enemies[i].takeDamage(10)
                         self.player.takeDamage(10)
                     if self.enemies[i].isDead() or not self.enemies[i].rectOverlap(self.screenEntity):
+                        if type(self.enemies[i]) == Boss:
+                            self.state = 'win'
                         self.enemies[i] = None
     
     def drawLevel(self):
@@ -282,6 +368,8 @@ class Game:
         # Affichage du jeu
         self.level.draw(self.screen)
         self.PauseButton.draw(self.screen)
+        self.drawLife()
+
         # Affichage du joueur
         if self.player:
             self.player.draw(self.screen)

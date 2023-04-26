@@ -1,6 +1,7 @@
-import pygame, math, random
+import pygame, math
 from entity.entity import Entity
 from entity.projectile import Projectile
+from random import random
 
 class Enemy(Entity):
 
@@ -40,7 +41,9 @@ class SuicidePigeon(Enemy):
     def draw(self, screen):
         self.rect.update(self.rect.x, self.rect.y, self.imgWidth*self.scale, self.imgHeigh*self.scale)
         screen.blit(self.sprite, dest=(self.rect.x, self.rect.y))
-    
+
+    def shoot(self):
+        None
 
 class StrafingDrone(Enemy):
 
@@ -52,14 +55,10 @@ class StrafingDrone(Enemy):
         self.sprite = pygame.transform.scale(pygame.image.load("img/drone.png"), (self.imgWidth*self.scale, self.imgHeigh*self.scale))
         self.speedVect = (-1, 0)
         self.threshold = False
-        self.speed = 6
+        self.speed = 2
         self.angle = 0
         self.all_projectiles = projectile
         self.fireCooldown = pygame.time.get_ticks()
-    
-    def resetFireCooldown(self):
-        self.fireCooldown = pygame.time.get_ticks()+10*200
-
 
     def update(self, dt):
         self.rect.x += self.speedVect[0] * self.speed
@@ -72,39 +71,38 @@ class StrafingDrone(Enemy):
             self.speedVect = (0, 1)
         elif self.rect.y >= 900:
             self.speedVect = (0, -1)
+        
+    def draw(self, screen):
+        self.rect.update(self.rect.x, self.rect.y, self.imgWidth*self.scale, self.imgHeigh*self.scale)
+        screen.blit(self.sprite, dest=(self.rect.x, self.rect.y))
+    
+    def resetFireCooldown(self):
+        self.fireCooldown = pygame.time.get_ticks()+10*150
+    
+    def shoot(self):
         # fonction de tir des ennemies
         if self.threshold and pygame.time.get_ticks() > self.fireCooldown:
             offSetX = self.rect.x - 60
             offSetY = self.rect.y
             vect = (-1, 0)
             self.resetFireCooldown()
-
             for projIndex in range(len(self.all_projectiles)):
                 if not self.all_projectiles[projIndex]:
-                    self.all_projectiles[projIndex] = Projectile("img/fusée_rouge-Sheet.png", False, offSetX, offSetY, 21, 7, vect, 3, False)
+                    self.all_projectiles[projIndex] = Projectile("img/fusée_rouge-Sheet.png", False, offSetX, offSetY, 26, 16, vect, 3, False)
                     break
-    
-    def draw(self, screen):
-        self.rect.update(self.rect.x, self.rect.y, self.imgWidth*self.scale, self.imgHeigh*self.scale)
-        screen.blit(self.sprite, dest=(self.rect.x, self.rect.y))
+
 
 class DrunkPigeon(Enemy):
-    def __init__(self, life, projectile, reverse=False):
+    def __init__(self, life, reverse=False):
         super().__init__(life, 1920, 250, 50, 50, spritePath="img/drone.png")
         self.scale = 7
         self.imgWidth = 32
         self.imgHeigh = 32
         self.sprite = pygame.transform.scale(pygame.image.load("img/drone.png"), (self.imgWidth*self.scale, self.imgHeigh*self.scale))
-        self.threshold = False
         self.speedVect = (-1, 0)
         self.reversed = reverse
-        self.speed = 6
-        self.all_projectiles = projectile
-        self.fireCooldown = pygame.time.get_ticks()
+        self.speed = 3
 
-    def resetFireCooldown(self):
-        self.fireCooldown = pygame.time.get_ticks()+10*200
-    
     def update(self, dt):
         # self.pathXAxis += self.speedVect[0] * self.speed
         self.rect.x += self.speedVect[0] * self.speed
@@ -112,34 +110,27 @@ class DrunkPigeon(Enemy):
             self.rect.y = 275 + math.cos(self.rect.x/80) * 250
         else:
             self.rect.y = 275 + math.sin(self.rect.x/80) * 250
-        # fonction de tir des ennemies
-        if self.threshold and pygame.time.get_ticks() > self.fireCooldown:
-            offSetX = self.rect.x - 60
-            offSetY = self.rect.y
-            vect = (-1, 0)
-            self.resetFireCooldown()
 
-            for projIndex in range(len(self.all_projectiles)):
-                if not self.all_projectiles[projIndex]:
-                    self.all_projectiles[projIndex] = Projectile("img/fusée_rouge-Sheet.png", False, offSetX, offSetY, 21, 7, vect, 3, False)
-                    break
-    
     def draw(self, screen):
         self.rect.update(self.rect.x, self.rect.y, self.imgWidth*self.scale, self.imgHeigh*self.scale)
         screen.blit(self.sprite, dest=(self.rect.x, self.rect.y))
+    
+    def shoot(self):
+        None
 
 class Scientist(Enemy):
-    def __init__(self, life: int):
-        super().__init__(life, 1920, 920, 80, 80, spritePath="img/scient-cat-Sheet.png")
+    def __init__(self, life: int, projectile):
+        super().__init__(life, 1920, 700, 80, 80, spritePath="img/scient-cat-Sheet.png")
         self.speedVect = (-1, 0)
         self.speed = 7
+        self.all_projectiles = projectile
+        # self.threshold = False
+        self.fireCooldown = pygame.time.get_ticks()
         # Création de variables pour animation
-        self.scale = 7
+        self.scale = 5
         spritesWidth, spritesHeigh = 80, 48
         self.imgWidth = self.imgHeigh = 16
-        posY = [16,32]
-        couleur = random.choice(posY)
-        self.spriteY = couleur
+        self.spriteY = 16
         self.spriteSheet = pygame.transform.scale(pygame.image.load("img/scient-cat-Sheet.png").convert_alpha(), (spritesWidth * self.scale, spritesHeigh * self.scale))
         self.frame = 0
         self.actualFrame = pygame.Rect(self.frame * self.imgWidth * self.scale, self.spriteY * self.scale, self.imgWidth * self.scale, self.imgHeigh * self.scale)
@@ -159,10 +150,54 @@ class Scientist(Enemy):
         self.rect.update(self.rect.x, self.rect.y, self.imgWidth*self.scale, self.imgHeigh*self.scale)
         screen.blit(self.spriteSheet, dest=(self.rect.x, self.rect.y), area=self.actualFrame)
 
+    def resetFireCooldown(self):
+            self.fireCooldown = pygame.time.get_ticks()+10*150
+
+    def shoot(self):
+        # fonction de tir des ennemies
+        if pygame.time.get_ticks() > self.fireCooldown:
+            offSetX = self.rect.x - 60
+            offSetY = self.rect.y
+            vect = (-1, -1)
+            self.resetFireCooldown()
+            for projIndex in range(len(self.all_projectiles)):
+                if not self.all_projectiles[projIndex]:
+                    self.all_projectiles[projIndex] = Projectile("img/fusée_jaune-Sheet-export.png", False, offSetX, offSetY, 24, 7, vect, 3, False)
+                    break
 
 class Boss(Enemy):
 
-    def __init__(self, level):
+    def __init__(self, level, projectile):
         path = 'img/boss' + str(level) + '.png'
-        super().__init__(level*1000, path)
+        self.level = level
+        self.Cooldown = 3000
+        self.timeStart = pygame.time.get_ticks()
+        self.all_projectiles = projectile
+        super().__init__(level*1000, 1700, 950, 128, 128, path)
         
+    def update(self, dt):
+        if self.life > self.level*1000:
+            if self.canShot():
+                self.timeStart = pygame.time.get_ticks()
+                self.shot(5)
+        if self.life > self.level*500:
+            if self.canShot():
+                self.timeStart = pygame.time.get_ticks()
+                self.shot(10)
+        if self.life > self.level*250:
+            if self.canShot():
+                self.timeStart = pygame.time.get_ticks()
+                self.shot(20)
+
+    def canShot(self):
+        return pygame.time.get_ticks() - self.timeStart > self.Cooldown
+
+    def shot(self, shotCount):
+        offSetX = self.rect.x - 60
+        offSetY = self.rect.y
+        vect = (-1, random() - 0.5)
+
+        for projIndex in range(len(self.all_projectiles)):
+            if not self.all_projectiles[projIndex]:
+                self.all_projectiles[projIndex] = Projectile("img/egges-in-fire.png", False, offSetX, offSetY, 26, 16, vect, 3, False)
+                break
