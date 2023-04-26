@@ -178,14 +178,13 @@ class Boss(Enemy):
         self.shootCount = 1
         
     def update(self, dt):
-        print(str(self.life) + '<' + str(self.maxLife//2))
         if self.life < self.maxLife//2:
                 self.shootCount = 2
                 self.Cooldown = 2000
-        if self.life < self.maxLife//4:
+        if self.life < self.maxLife//3:
                 self.shootCount = 3
                 self.Cooldown = 1500
-        if self.life < self.maxLife//8:
+        if self.life < self.maxLife//4:
                 self.shootCount = 4
                 self.Cooldown = 1000
 
