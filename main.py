@@ -175,7 +175,7 @@ class Game:
         if self.optionQuitButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
             self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.5
             self.state = "menu"
-        
+
     def drawOption(self):
         self.optionQuitButton.draw(self.screen)
 
@@ -184,7 +184,7 @@ class Game:
         self.projectiles = [None for i in range(50)]
         self.enemies = [None for i in range(100)]
         self.obstacle = [None for i in range(100)]
-        self.player = Player(0, 0, 16, 16, self.projectiles, 50, True)
+        self.player = Player(50, self.screen.get_size()[1]//2, 16, 16, self.projectiles, 50, True)
         self.gamePause = False
         self.gameTimeStart = pygame.time.get_ticks()
 

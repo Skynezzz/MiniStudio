@@ -1,6 +1,7 @@
 import pygame, math
 from entity.entity import Entity
 from entity.projectile import Projectile
+from random import random
 
 class Enemy(Entity):
 
@@ -120,11 +121,37 @@ class Scientist(Enemy):
 
 class Boss(Enemy):
 
-    def __init__(self, level):
+    def __init__(self, level, projectile):
         path = 'img/boss' + str(level) + '.png'
         self.level = level
-        super().__init__(level*1000, path)
+        self.Cooldown = 3000
+        self.timeStart = pygame.time.get_ticks()
+        self.all_projectiles = projectile
+        super().__init__(level*1000, 1700, 950, ,path)
         
     def update(self, dt):
         if self.life > self.level*1000:
-            
+            if self.canShot():
+                self.timeStart = pygame.time.get_ticks()
+                self.shot(self, 5)
+        if self.life > self.level*500:
+            if self.canShot():
+                self.timeStart = pygame.time.get_ticks()
+                self.shot(self, 10)
+        if self.life > self.level*250:
+            if self.canShot():
+                self.timeStart = pygame.time.get_ticks()
+                self.shot(self, 20)
+
+    def canShot(self):
+        return pygame.time.get_ticks() - self.timeStart > self.Cooldown
+
+    def shot(self):
+        offSetX = self.rect.x - 60
+        offSetY = self.rect.y
+        vect = (-1, random() - 0.5)
+
+        for projIndex in range(len(self.all_projectiles)):
+            if not self.all_projectiles[projIndex]:
+                self.all_projectiles[projIndex] = Projectile("img/egg-in-fire.png", False, offSetX, offSetY, 26, 16, vect, 3, False)
+                break
