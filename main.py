@@ -28,7 +28,6 @@ class Game:
         # initialisation des variables de cooldown
         self.enemySpawnCooldown = 0
         self.actionCooldown = 0
-
         # initialisation des paramettres
         self.settings = Setting()
         self.startButton = None
@@ -213,7 +212,7 @@ class Game:
             # update de la position des ennemis et suppression de ces dernier
             for i in range(len(self.enemies)):
                 if self.enemies[i]:
-                    self.enemies[i].update()
+                    self.enemies[i].update(self.dt)
                     if self.enemies[i].rectOverlap(self.player):
                         self.enemies[i].takeDamage(10)
                         self.player.takeDamage(10)

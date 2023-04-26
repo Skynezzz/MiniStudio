@@ -14,7 +14,7 @@ class Enemy(Entity):
     def isDead(self):
         return self.life <= 0
     
-    def update(self):
+    def update(self, dt):
         self.rect.x += self.speedVect[0] * self.speed
         self.rect.y += self.speedVect[1] * self.speed
 
@@ -28,6 +28,10 @@ class SuicidePigeon(Enemy):
         super().__init__(life, x, y, 50, 50, spritePath="img/drone_little.png")
         self.speedVect = (-1, 0)
         self.speed = 4
+
+    def update(self, dt):
+        self.rect.x += self.speedVect[0] * self.speed
+        self.rect.y += self.speedVect[1] * self.speed
     
 
 class StrafingDrone(Enemy):
@@ -45,7 +49,7 @@ class StrafingDrone(Enemy):
         self.fireCooldown = pygame.time.get_ticks()+10*200
 
 
-    def update(self):
+    def update(self, dt):
         self.rect.x += self.speedVect[0] * self.speed
         self.rect.y += self.speedVect[1] * self.speed
         # avance puis monte et descend
@@ -65,7 +69,7 @@ class StrafingDrone(Enemy):
 
             for projIndex in range(len(self.all_projectiles)):
                 if not self.all_projectiles[projIndex]:
-                    self.all_projectiles[projIndex] = Projectile("img/projectiles_sheet.png", False, offSetX, offSetY, 26, 9, vect, 3, 4, False)
+                    self.all_projectiles[projIndex] = Projectile("img/fusée_rouge-Sheet.png", False, offSetX, offSetY, 26, 16, vect, 3, False)
                     break
 
 class DrunkPigeon(Enemy):
@@ -75,8 +79,9 @@ class DrunkPigeon(Enemy):
         self.speedVect = (-1, 0)
         self.reversed = reverse
         self.speed = 3
+        self.rect.update(None, None, 50, 50)
     
-    def update(self):
+    def update(self, dt):
         # self.pathXAxis += self.speedVect[0] * self.speed
         self.rect.x += self.speedVect[0] * self.speed
         if self.reversed:
@@ -98,6 +103,7 @@ class Scientist(Enemy):
         self.frame = 0
         self.actualFrame = pygame.Rect(self.frame * self.imgWidth * self.scale, self.spriteY * self.scale, self.imgWidth * self.scale, self.imgHeigh * self.scale)
         self.timeNextFrame = 150
+        self.rect.update(self.rect.x, self.rect.y, self.imgWidth*self.scale, self.imgHeigh*self.scale)
 
     def update(self, dt):
         self.rect.x += self.speedVect[0] * self.speed
