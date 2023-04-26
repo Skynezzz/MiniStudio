@@ -40,7 +40,7 @@ class StrafingDrone(Enemy):
         super().__init__(life, x, y, 100, 100, spritePath="img/drone_big.png")
         self.speedVect = (-1, 0)
         self.threshold = False
-        self.speed = 2
+        self.speed = 4
         self.angle = 0
         self.all_projectiles = projectile
         self.fireCooldown = pygame.time.get_ticks()
