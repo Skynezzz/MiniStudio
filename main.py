@@ -105,7 +105,6 @@ class Game:
         if self.state == "game":
             self.updateLevel()
         elif self.state == "menu":
-            print("menu")
             self.updateMenu()
         elif self.state == "option":
             self.updateOption()
@@ -114,14 +113,12 @@ class Game:
         elif self.state == "gacha":
             self.updateReward()
         elif self.state == "win" :
-            print("boss dead")
             self.updateWin()
 
         # timer
         timeEnd = pygame.time.get_ticks()
         if self.timeStart + 7 > timeEnd:
             pygame.time.delay(timeEnd - self.timeStart + 7)
-            print("cooldown")
                 
     def updateMenu(self):
         
@@ -151,15 +148,12 @@ class Game:
         
         if self.backButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
             self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
-            print("back")
             self.state = "menu"
         elif self.gachaButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
             self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
-            print("gacha")
             self.state = "gacha"
         elif self.replayButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
             self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
-            print("rejouer")
             self.initLevel()
             self.state = "game"
             self.level = Level(1)
@@ -175,15 +169,12 @@ class Game:
     def updateWin(self):
         if self.backButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
             self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
-            print("back")
             self.state = "menu"
         elif self.gachaButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
             self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
-            print("gacha")
             self.state = "gacha"
         elif self.replayButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
             self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
-            print("rejouer")
             self.initLevel()
             self.state = "game"
             self.level = Level(1)
@@ -200,11 +191,9 @@ class Game:
         
         if self.openButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
             self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
-            print("ouverture")
             self.state = "open"
         if self.back1Button.isPressed() and self.actionCooldown < pygame.time.get_ticks():
             self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
-            print("back")
             self.state = "menu"
     
     def drawReward(self):
@@ -254,7 +243,7 @@ class Game:
 
     def initLevel(self):
         # intialisation de la variable en la remplissant de None
-        self.projectiles = [None for i in range(50)]
+        self.projectiles = [None for i in range(100)]
         self.enemies = [None for i in range(100)]
         self.obstacle = [None for i in range(100)]
         self.player = Player(self.screenSize[0]/3-56, self.screenSize[1]/2-56, 16, 16, self.projectiles, 50, True)
@@ -262,14 +251,10 @@ class Game:
         self.gameTimeStart = pygame.time.get_ticks()
 
     def drawLife(self):
-        print (self.player.life)
         health = self.player.life
-        print(health)
         incr = 0
 
         while health > 0 : 
-            print("vie de :",health)
-            print ("1 coeur de dessiner")
             incr += 50 
             x = 50 + incr
             y = 50
@@ -290,7 +275,6 @@ class Game:
         if not self.gamePause:
             # déplacement du joueur si il est vivant
             if not self.player.isDead():
-                print(self.state)
                 
                 move(self.settings, self.screen, self.player,self)
                 
@@ -300,7 +284,6 @@ class Game:
 
             else:
                 self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
-                print("is dead")
                 self.state = "end"
                 self.updateEnd()
                 self.drawEnd()
