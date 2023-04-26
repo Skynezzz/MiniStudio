@@ -28,6 +28,10 @@ class SuicidePigeon(Enemy):
         super().__init__(life, x, y, 50, 50, spritePath="img/drone_little.png")
         self.speedVect = (-1, 0)
         self.speed = 4
+
+    def update(self, dt):
+        self.rect.x += self.speedVect[0] * self.speed
+        self.rect.y += self.speedVect[1] * self.speed
     
 
 class StrafingDrone(Enemy):
