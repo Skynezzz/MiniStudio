@@ -57,6 +57,7 @@ class Game:
         self.game_overButton = Button(self.screenSize[0]/2 - 460 + 100, self.screenSize[1]/2 - 300, "game_over")
 
         # bouton menu principal
+        self.winButton = Button(self.screenSize[0]/2 - 375 , self.screenSize[1]/2 - 300, "win")
         self.startButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 - 100, "start")
         self.optionButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 80, "option")
         self.quitButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 260, "quit")
@@ -94,6 +95,8 @@ class Game:
             self.drawEnd()
         elif self.state == "gacha":
             self.drawReward()
+        elif self.state == "win":
+            self.drawWin()
         # Mise à jour de l'affichage
         pygame.display.flip()
     
@@ -110,6 +113,10 @@ class Game:
             self.updateEnd()
         elif self.state == "gacha":
             self.updateReward()
+        elif self.state == "win" :
+            print("boss dead")
+            self.updateWin()
+
         # timer
         timeEnd = pygame.time.get_ticks()
         if self.timeStart + 7 > timeEnd:
@@ -161,6 +168,30 @@ class Game:
     def drawEnd(self):
         self.drawLevel()
         self.game_overButton.draw(self.screen)
+        self.replayButton.draw(self.screen)
+        self.gachaButton.draw(self.screen)
+        self.backButton.draw(self.screen)
+
+    def updateWin(self):
+        if self.backButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
+            self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
+            print("back")
+            self.state = "menu"
+        elif self.gachaButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
+            self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
+            print("gacha")
+            self.state = "gacha"
+        elif self.replayButton.isPressed() and self.actionCooldown < pygame.time.get_ticks():
+            self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
+            print("rejouer")
+            self.initLevel()
+            self.state = "game"
+            self.level = Level(1)
+            self.gameTimeStart = pygame.time.get_ticks()
+    
+    def drawWin(self):
+        self.drawLevel()
+        self.winButton.draw(self.screen)
         self.replayButton.draw(self.screen)
         self.gachaButton.draw(self.screen)
         self.backButton.draw(self.screen)
@@ -259,8 +290,14 @@ class Game:
         if not self.gamePause:
             # déplacement du joueur si il est vivant
             if not self.player.isDead():
+                print(self.state)
+                
+                move(self.settings, self.screen, self.player,self)
+                
 
-                move(self.settings, self.screen, self.player)
+            
+            
+
             else:
                 self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
                 print("is dead")
