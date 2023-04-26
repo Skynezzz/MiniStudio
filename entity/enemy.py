@@ -25,7 +25,11 @@ class Enemy(Entity):
 class SuicidePigeon(Enemy):
 
     def __init__(self, life: int, x: int, y: int):
-        super().__init__(life, x, y, 50, 50, spritePath="img/drone_little.png")
+        super().__init__(life, x, y, 50, 50, spritePath="img/drone.png")
+        self.scale = 7
+        self.imgWidth = 32
+        self.imgHeigh = 32
+        self.sprite = pygame.transform.scale(pygame.image.load("img/drone.png"), (self.imgWidth*self.scale, self.imgHeigh*self.scale))
         self.speedVect = (-1, 0)
         self.speed = 12
 
@@ -33,11 +37,19 @@ class SuicidePigeon(Enemy):
         self.rect.x += self.speedVect[0] * self.speed
         self.rect.y += self.speedVect[1] * self.speed
     
+    def draw(self, screen):
+        self.rect.update(self.rect.x, self.rect.y, self.imgWidth*self.scale, self.imgHeigh*self.scale)
+        screen.blit(self.sprite, dest=(self.rect.x, self.rect.y))
+    
 
 class StrafingDrone(Enemy):
 
     def __init__(self, life: int, x: int, y: int, projectile):
-        super().__init__(life, x, y, 100, 100, spritePath="img/drone_big.png")
+        super().__init__(life, x, y, 100, 100, spritePath="img/drone.png")
+        self.scale = 7
+        self.imgWidth = 32
+        self.imgHeigh = 32
+        self.sprite = pygame.transform.scale(pygame.image.load("img/drone.png"), (self.imgWidth*self.scale, self.imgHeigh*self.scale))
         self.speedVect = (-1, 0)
         self.threshold = False
         self.speed = 6
@@ -71,11 +83,18 @@ class StrafingDrone(Enemy):
                 if not self.all_projectiles[projIndex]:
                     self.all_projectiles[projIndex] = Projectile("img/fusée_rouge-Sheet.png", False, offSetX, offSetY, 21, 7, vect, 3, False)
                     break
+    
+    def draw(self, screen):
+        self.rect.update(self.rect.x, self.rect.y, self.imgWidth*self.scale, self.imgHeigh*self.scale)
+        screen.blit(self.sprite, dest=(self.rect.x, self.rect.y))
 
 class DrunkPigeon(Enemy):
     def __init__(self, life, projectile, reverse=False):
-        super().__init__(life, 1920, 250, 50, 50, spritePath="img/drone_little.png")
-        # self.pathXAxis = 700
+        super().__init__(life, 1920, 250, 50, 50, spritePath="img/drone.png")
+        self.scale = 7
+        self.imgWidth = 32
+        self.imgHeigh = 32
+        self.sprite = pygame.transform.scale(pygame.image.load("img/drone.png"), (self.imgWidth*self.scale, self.imgHeigh*self.scale))
         self.threshold = False
         self.speedVect = (-1, 0)
         self.reversed = reverse
@@ -104,10 +123,12 @@ class DrunkPigeon(Enemy):
                 if not self.all_projectiles[projIndex]:
                     self.all_projectiles[projIndex] = Projectile("img/fusée_rouge-Sheet.png", False, offSetX, offSetY, 21, 7, vect, 3, False)
                     break
+    
+    def draw(self, screen):
+        self.rect.update(self.rect.x, self.rect.y, self.imgWidth*self.scale, self.imgHeigh*self.scale)
+        screen.blit(self.sprite, dest=(self.rect.x, self.rect.y))
 
 class Scientist(Enemy):
-    def __init__(self, life):
-        super().__init__(life, 1000, 700, 80, 80, spritePath="img/scient-cat-Sheet.png")
     def __init__(self, life: int):
         super().__init__(life, 1920, 920, 80, 80, spritePath="img/scient-cat-Sheet.png")
         self.speedVect = (-1, 0)
@@ -123,7 +144,6 @@ class Scientist(Enemy):
         self.frame = 0
         self.actualFrame = pygame.Rect(self.frame * self.imgWidth * self.scale, self.spriteY * self.scale, self.imgWidth * self.scale, self.imgHeigh * self.scale)
         self.timeNextFrame = 150
-        self.rect.update(self.rect.x, self.rect.y, self.imgWidth*self.scale, self.imgHeigh*self.scale)
 
     def update(self, dt):
         self.rect.x += self.speedVect[0] * self.speed
@@ -136,6 +156,7 @@ class Scientist(Enemy):
             self.actualFrame = pygame.Rect(self.frame * self.imgWidth * self.scale, self.spriteY * self.scale, self.imgWidth * self.scale, self.imgHeigh * self.scale)
 
     def draw(self, screen):
+        self.rect.update(self.rect.x, self.rect.y, self.imgWidth*self.scale, self.imgHeigh*self.scale)
         screen.blit(self.spriteSheet, dest=(self.rect.x, self.rect.y), area=self.actualFrame)
 
 
