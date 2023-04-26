@@ -185,7 +185,7 @@ class Game:
         self.projectiles = [None for i in range(50)]
         self.enemies = [None for i in range(100)]
         self.obstacle = [None for i in range(100)]
-        self.player = Player(0, 0, 16, 16, self.projectiles, 50, True)
+        self.player = Player(self.screenSize[0]/3-56, self.screenSize[1]/2-56, 16, 16, self.projectiles, 50, True)
         self.gamePause = False
         self.gameTimeStart = pygame.time.get_ticks()
 
@@ -249,6 +249,7 @@ class Game:
             for i in range(len(self.enemies)):
                 if self.enemies[i]:
                     self.enemies[i].update(self.dt)
+                    self.enemies[i].shoot()
                     if self.enemies[i].rectOverlap(self.player):
                         self.enemies[i].takeDamage(10)
                         self.player.takeDamage(10)
