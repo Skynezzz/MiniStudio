@@ -119,7 +119,6 @@ class Egg(Entity):
             return self.rectOverlap(Entity(False, mouseX, mouseY))
     
     def update(self, dt):
-        print("updateEgg")
         self.timeNextFrame -= dt
         print(self.timeNextFrame)
         if self.timeNextFrame < 0:
