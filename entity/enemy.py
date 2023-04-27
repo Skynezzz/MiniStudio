@@ -200,7 +200,7 @@ class Boss(Enemy):
         if self.life < self.maxLife//3:
                 self.shootCount = 3
                 self.Cooldown = 1500
-        if self.life < self.maxLife//4:
+        if self.life < self.maxLife//6:
                 self.shootCount = 4
                 self.Cooldown = 1000
     

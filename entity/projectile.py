@@ -3,7 +3,7 @@ from entity.entity import Entity
 
 class Projectile(Entity):
     
-    def __init__(self, spritePath: str, isDestructible: bool, x: int, y: int, w: int, h: int, speedVect: tuple, def_frame: int, friendly=False):
+    def __init__(self, spritePath: str, isDestructible: bool, x: int, y: int, w: int, h: int, speedVect: tuple, def_frame: int, friendly=False, speed=8):
         super().__init__(isDestructible, x, y, w, h, spritePath=spritePath)
         self.speedVect = speedVect
         self.def_frame = def_frame
@@ -11,7 +11,7 @@ class Projectile(Entity):
         vect = (1,0)
         speedVect = (speedVect[0],-speedVect[1])
         self.temp = speedVect
-        self.speed = 8
+        self.speed = speed
         # Création de variables pour animation
         self.scale = 5
         spritesWidth, spritesHeigh = w*def_frame, h

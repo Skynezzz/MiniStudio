@@ -279,6 +279,7 @@ class Game:
 
     def initLevel(self):
         # intialisation de la variable en la remplissant de None
+        self.level = Level(1)
         self.projectiles = [None for i in range(100)]
         self.enemies = [None for i in range(100)]
         self.obstacle = [None for i in range(100)]
@@ -314,7 +315,7 @@ class Game:
                 
                 move(self.settings, self.screen, self.player,self)
             else:
-                self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 0.2
+                self.actionCooldown = pygame.time.get_ticks() + 16 * 60 * 1
                 self.state = "end"
                 self.updateEnd()
                 self.drawEnd()
