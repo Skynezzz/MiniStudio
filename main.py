@@ -16,7 +16,7 @@ class Game:
 
         # Définir la taille de la fenêtre
         self.screenSize = (1920, 1080)
-        self.screen = pygame.display.set_mode(self.screenSize, pygame.FULLSCREEN)
+        self.screen = pygame.display.set_mode(self.screenSize)
         self.screenEntity = Entity(False, 0, 0, self.screenSize[0], self.screenSize[1])
 
         #Définis une clock pour limiter les actions
@@ -40,17 +40,17 @@ class Game:
         self.background.blit(pygame.image.load("img/bg1.png"),(0,0), (0,0,self.screenSize[0],self.screenSize[1]))
 
         # chargement et réduction de l'image de coeur pour un affichage moins gourmand
-        self.ui_sheet = pygame.transform.scale(pygame.image.load("img/ui_sheet.png"), (256*5, 128*5))
+        self.ui_sheet = pygame.transform.scale(pygame.image.load("img/ui_sheet.png"), (256*7.5, 128*7.5))
 
         self.backgroundGacha = pygame.Surface(self.screenSize).convert_alpha()
-        self.backgroundGacha.blit(pygame.image.load("img/bg_gacha.png"),(0,0), (0,0,self.screenSize[0],self.screenSize[1]))
+        self.backgroundGacha.blit(pygame.image.load("img/bg_gacha.png"), (0,0), (0,0,self.screenSize[0],self.screenSize[1]))
         
         
         self.controleSpriteSheet = pygame.transform.scale(pygame.image.load("img/mapping-options_sheet.png"), (112*7, 64*7))
 
         #initialisation des boutons
         # bouton de pause
-        self.PauseButton = Button(self.screenSize[0]/2 + 825, self.screenSize[1]/2 - 539, "pause")
+        self.PauseButton = Button(self.screenSize[0]/2 + 725, self.screenSize[1]/2 - 509 + 65, "pause")
         self.pauseHomeButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 260 , "menu")
         self.pauseReplayButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 80 , "replay")
 
@@ -282,15 +282,15 @@ class Game:
         self.gameTimeStart = pygame.time.get_ticks()
 
     def drawLife(self):
-        self.screen.blit(self.ui_sheet, (30, 30, 0, 0), (16*5,16*5,68*5,13*5))
+        self.screen.blit(self.ui_sheet, (90, 85, 0, 0), (16*7.5,16*7.5,68*7.5,13*7.5))
         health = self.player.life
         incr = 0
 
         while health > 0:
-            incr += 60
-            x = incr - 20
-            y = 40
-            self.screen.blit(self.ui_sheet, (x,y,0,0), (98*5, 18*5, 11*5, 9*5))
+            incr += 90
+            x = incr - 35 +50
+            y = 100
+            self.screen.blit(self.ui_sheet, (x,y,0,0), (98*7.5, 18*7.5, 11*7.5, 9*7.5))
             health -= 10
 
     def updateLevel(self):
@@ -399,7 +399,7 @@ class Game:
 
         self.PauseButton.draw(self.screen)
         self.drawLife()
-        
+
         if self.gamePause:
             self.pauseHomeButton.draw(self.screen)
             self.pauseReplayButton.draw(self.screen)

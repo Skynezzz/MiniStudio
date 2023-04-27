@@ -44,7 +44,7 @@ class Player(Entity):
         screen.blit(self.spriteSheet, dest=(self.rect.x, self.rect.y), area=self.actualFrame)
 
     def resetFireCooldown(self):
-        self.fireCooldown = pygame.time.get_ticks()+10*16
+        self.fireCooldown = pygame.time.get_ticks()+10*50
     
     def resetAbilityCooldown(self):
         self.abilityCooldown = pygame.time.get_ticks()+1800*16
