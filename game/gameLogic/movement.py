@@ -13,7 +13,11 @@ def move(settings, screen, player,game):
     if keyPressed[int(settings.settings['down'])]:
         player.down(screen)
     if keyPressed[int(settings.settings['win'])]:
-        game.state = "win"
+        if game.graceTime == 1500:
+            game.graceTime = 100000000
+            game.grace = True
+        else:
+            game.graceTime = 1500
     if mousePressed == (1, 0, 0):
         player.launchProjectile()
     if mousePressed == (0, 0, 1):

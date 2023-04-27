@@ -72,6 +72,11 @@ class Game:
 
         # bouton menu option
         self.optionQuitButton = Button(self.screenSize[0]/2 - 365 + 100, self.screenSize[1]/2 + 260, "menu")
+
+        # grace
+        self.grace = False
+        self.graceCooldown = 0
+        self.graceTime = 1500
         
         # Boucle principale
         self.game = True
@@ -331,6 +336,9 @@ class Game:
             # ajout d'obstacle
             #self.level.obstaclesSpawn(pygame.time.get_ticks() - self.gameTimeStart, self)
 
+            if pygame.time.get_ticks() - self.graceCooldown >= self.graceTime:
+                self.grace = False
+            print(self.grace)
             # update de la position des projectiles
             for i in range(len(self.projectiles)):
                 if self.projectiles[i]:
@@ -342,15 +350,17 @@ class Game:
                                 self.enemies[j].takeDamage(10)
                                 # suppression lorsqu'ils entrent en colision avec un ennemi
                                 self.projectiles[i] = None
-                    elif self.player.rectOverlap(self.projectiles[i]):
+                    elif self.player.rectOverlap(self.projectiles[i]) and not self.grace:
                         self.player.takeDamage(10)
                         self.projectiles[i] = None
-
-                                    
+                        self.grace = True
+                        self.graceCooldown = pygame.time.get_ticks()
                     else:
-                        if self.projectiles[i] and self.player.rectOverlap(self.projectiles[i]):
+                        if self.projectiles[i] and self.player.rectOverlap(self.projectiles[i]) and not self.grace:
                                 self.player.takeDamage(10)
                                 self.projectiles[i] = None
+                                self.grace = True
+                                self.graceCooldown = pygame.time.get_ticks()
 
                     # si la balle sors de l'écran
                     if self.projectiles[i] and not self.projectiles[i].rectOverlap(self.screenEntity):
@@ -362,9 +372,11 @@ class Game:
                 if self.enemies[i]:
                     self.enemies[i].update(self.dt)
                     self.enemies[i].shoot()
-                    if self.enemies[i].rectOverlap(self.player):
+                    if self.enemies[i].rectOverlap(self.player) and not self.grace:
                         self.enemies[i].takeDamage(10)
                         self.player.takeDamage(10)
+                        self.grace = True
+                        self.graceCooldown = pygame.time.get_ticks()
                     if self.enemies[i].isDead() or not self.enemies[i].rectOverlap(self.screenEntity):
                         if type(self.enemies[i]) == Boss:
                             self.state = 'win'
