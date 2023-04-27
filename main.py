@@ -317,7 +317,16 @@ class Game:
             self.player.update(self.dt)
             
             # ajout d'ennemis
+            onGarde = -1
+            leStock = None
             self.level.ennemiesSpawn(pygame.time.get_ticks() - self.gameTimeStart, self)
+            for i in range(len(self.enemies)):
+                if type(self.enemies[i]) == Boss:
+                    onGarde = i
+            if onGarde != -1:
+                leStock = self.enemies[onGarde]
+                self.enemies[onGarde] = self.enemies[-1]
+                self.enemies[-1] = leStock
 
             # ajout d'obstacle
             #self.level.obstaclesSpawn(pygame.time.get_ticks() - self.gameTimeStart, self)
@@ -378,16 +387,16 @@ class Game:
         if self.player:
             self.player.draw(self.screen)
 
-        # Affichage des ennemis
-        for en in self.enemies:
-            if en:
-                en.draw(self.screen)
-
         # Affichage des projectiles
         for i in self.projectiles:
             if i:
                 i.draw(self.screen)
         
+        # Affichage des ennemis
+        for en in self.enemies:
+            if en:
+                en.draw(self.screen)
+
         self.PauseButton.draw(self.screen)
         self.drawLife()
         

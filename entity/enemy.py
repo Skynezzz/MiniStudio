@@ -169,7 +169,7 @@ class Boss(Enemy):
 
     def __init__(self, level, projectile):
         path = 'img/boss' + str(level) + '.png'
-        super().__init__(level*1000, 900, 300, 128, 128, path)
+        super().__init__(level*1000, 1150, 50, 128, 128, path)
         self.maxLife = self.life
         self.level = level
         self.Cooldown = 3000
@@ -222,5 +222,5 @@ class Boss(Enemy):
                 vect = (-1, random.random() - 0.5)
                 for projIndex in range(len(self.all_projectiles)):
                     if not self.all_projectiles[projIndex]:
-                        self.all_projectiles[projIndex] = Projectile("img/egges-in-fire.png", False, offSetX, offSetY, 39, 16, vect, 2, False)
+                        self.all_projectiles[projIndex] = Projectile("img/egges-in-fire.png", False, offSetX, offSetY + 468, 39, 16, vect, 2, False)
                         break
