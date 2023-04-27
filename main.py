@@ -225,7 +225,6 @@ class Game:
         self.back1Button.draw(self.screen)
     
     def updateEgg(self):
-        print("updateEgg")
         # Création de variables pour animation
         Egg.timeNextFrame -= self.dt
         if Egg.timeNextFrame < 0:
